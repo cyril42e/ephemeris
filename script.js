@@ -2,18 +2,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const latitudeInput = document.getElementById('latitude');
     const longitudeInput = document.getElementById('longitude');
     const altitudeInput = document.getElementById('altitude');
-    const datetimeInput = document.getElementById('datetime');
+    const dateInput = document.getElementById('date');
     const updateButton = document.getElementById('update');
     const currentLocationButton = document.getElementById('current-location');
-    const currentTimeButton = document.getElementById('current-time');
+    const currentDateButton = document.getElementById('current-date');
+
+    function formatDateTime(eventDate, referenceDate) {
+        const dayDifference = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
+        if (Math.abs(dayDifference) > 1) {
+            return eventDate.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        } else {
+            return eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+    }
 
     function updateEphemeris() {
         const latitude = parseFloat(latitudeInput.value);
         const longitude = parseFloat(longitudeInput.value);
         const altitude = parseFloat(altitudeInput.value);
         const observer = new Astronomy.Observer(latitude, longitude, altitude);
-        const now = new Date(datetimeInput.value);
-        const limitDays = 300; // Number of days to search for rise/set events
+
+        // Set the time to noon
+        const selectedDate = new Date(dateInput.value);
+        const noon = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12);
+
+        const limitDays = 300; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
         const sunBlueGoldenHourRow = document.getElementById('sun-blue-golden-hour-row');
@@ -24,44 +37,44 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.innerHTML = ''; // Clear previous ephemeris data
 
         // Calculate dawn and dusk times for the Sun
-        const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const nauticalDawn = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -12).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const civilDawn = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const civilDusk = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const nauticalDusk = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -12).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -18).date;
+        const nauticalDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -12).date;
+        const civilDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -6).date;
+        const civilDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -6).date;
+        const nauticalDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -12).date;
+        const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -18).date;
 
         // Add Sun dawn and dusk row
         const sunDawnDuskRowContent = document.createElement('tr');
         sunDawnDuskRowContent.innerHTML = `
             <td>Sun</td>
-            <td>${astronomicalDawn}</td>
-            <td>${nauticalDawn}</td>
-            <td>${civilDawn}</td>
-            <td>${civilDusk}</td>
-            <td>${nauticalDusk}</td>
-            <td>${astronomicalDusk}</td>
+            <td>${formatDateTime(astronomicalDawn, noon)}</td>
+            <td>${formatDateTime(nauticalDawn, noon)}</td>
+            <td>${formatDateTime(civilDawn, noon)}</td>
+            <td>${formatDateTime(civilDusk, noon)}</td>
+            <td>${formatDateTime(nauticalDusk, noon)}</td>
+            <td>${formatDateTime(astronomicalDusk, noon)}</td>
         `;
         sunDawnDuskRow.appendChild(sunDawnDuskRowContent);
 
         // Calculate blue and golden hour times for the Sun
-        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -4).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, 6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, 6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -4).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -6).date;
+        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -4).date;
+        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, 6).date;
+        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, 6).date;
+        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -4).date;
+        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -6).date;
 
         // Add Sun blue and golden hour row
         const sunBlueGoldenHourRowContent = document.createElement('tr');
         sunBlueGoldenHourRowContent.innerHTML = `
             <td>Sun</td>
-            <td>${blueHourBeginAsc}</td>
-            <td>${goldenHourBeginAsc}</td>
-            <td>${goldenHourEndAsc}</td>
-            <td>${goldenHourBeginDesc}</td>
-            <td>${blueHourBeginDesc}</td>
-            <td>${blueHourEndDesc}</td>
+            <td>${formatDateTime(blueHourBeginAsc, noon)}</td>
+            <td>${formatDateTime(goldenHourBeginAsc, noon)}</td>
+            <td>${formatDateTime(goldenHourEndAsc, noon)}</td>
+            <td>${formatDateTime(goldenHourBeginDesc, noon)}</td>
+            <td>${formatDateTime(blueHourBeginDesc, noon)}</td>
+            <td>${formatDateTime(blueHourEndDesc, noon)}</td>
         `;
         sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
 
@@ -69,14 +82,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             
             // Calculate ephemeris data
-            const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, now).phase_fraction * 100).toFixed(0)}%`;
+            const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, noon).phase_fraction * 100).toFixed(0)}%`;
 
             // Calculate rise and set times
-            const riseTime = Astronomy.SearchRiseSet(objectName, observer, +1, now, limitDays).date;
-            const setTime = Astronomy.SearchRiseSet(objectName, observer, -1, now, limitDays).date;
+            const riseTime = Astronomy.SearchRiseSet(objectName, observer, +1, noon, -limitDays).date;
+            const setTime = Astronomy.SearchRiseSet(objectName, observer, -1, noon, limitDays).date;
 
             // Calculate transit time
-            const transit = Astronomy.SearchHourAngle(objectName, observer, 0, now);
+            const transit = Astronomy.SearchHourAngle(objectName, observer, 0, noon);
             const transitTime = transit.time.date;
 
             // Calculate azimuth and altitude
@@ -93,11 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
             row.innerHTML = `
                 <td>${objectName}</td>
                 <td>${phase}</td>
-                <td>${riseTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${formatDateTime(riseTime, noon)}</td>
                 <td>${riseHorizon.azimuth.toFixed(0)}°</td>
-                <td>${transitTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${formatDateTime(transitTime, noon)}</td>
                 <td>${transitHorizon.altitude.toFixed(0)}°</td>
-                <td>${setTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${formatDateTime(setTime, noon)}</td>
                 <td>${setHorizon.azimuth.toFixed(0)}°</td>
             `;
             tableBody.appendChild(row);
@@ -118,16 +131,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function setCurrentTime() {
+    function setCurrentDate() {
         const now = new Date();
-        datetimeInput.value = now.toISOString().slice(0, 16);
+        dateInput.value = now.toISOString().slice(0, 10);
     }
 
     updateButton.addEventListener('click', updateEphemeris);
     currentLocationButton.addEventListener('click', setCurrentLocation);
-    currentTimeButton.addEventListener('click', setCurrentTime);
+    currentDateButton.addEventListener('click', setCurrentDate);
 
-    // Initialize with current time
-    setCurrentTime();
+    // Initialize with current date
+    setCurrentDate();
     updateEphemeris();
 });

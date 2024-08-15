@@ -23,10 +23,10 @@
         
         <button id="current-location">Use Current Location</button>
         
-        <label for="datetime">Date & Time:</label>
-        <input type="datetime-local" id="datetime">
+        <label for="date">Date:</label>
+        <input type="date" id="date">
         
-        <button id="current-time">Use Current Time</button>
+        <button id="current-date">Use Current Date</button>
         
         <button id="update">Update Ephemeris</button>
     </div>
