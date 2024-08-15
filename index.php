@@ -49,6 +49,20 @@
         <thead>
             <tr>
                 <th>Object</th>
+                <th>Blue Hour Begin</th>
+                <th>Golden Hour Begin</th>
+                <th>Golden Hour End</th>
+                <th>Golden Hour Begin</th>
+                <th>Blue Hour Begin</th>
+                <th>Blue Hour End</th>
+            </tr>
+        </thead>
+        <tbody id="sun-blue-golden-hour-row">
+            <!-- Sun blue and golden hour data will be populated here by JavaScript -->
+        </tbody>
+        <thead>
+            <tr>
+                <th>Object</th>
                 <th>Phase</th>
                 <th>Rise Time</th>
                 <th>Rise Azimuth</th>

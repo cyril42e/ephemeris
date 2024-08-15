@@ -16,10 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const limitDays = 300; // Number of days to search for rise/set events
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
+        const sunBlueGoldenHourRow = document.getElementById('sun-blue-golden-hour-row');
         const tableBody = document.getElementById('ephemeris-table');
 
-        sunDawnDuskRow.innerHTML = ''; // Clear previous sun data
-        tableBody.innerHTML = ''; // Clear previous data
+        sunDawnDuskRow.innerHTML = ''; // Clear previous sun dawn/dusk data
+        sunBlueGoldenHourRow.innerHTML = ''; // Clear previous sun blue/golden hour data
+        tableBody.innerHTML = ''; // Clear previous ephemeris data
 
         // Calculate dawn and dusk times for the Sun
         const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -30,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
         // Add Sun dawn and dusk row
-        const sunRow = document.createElement('tr');
-        sunRow.innerHTML = `
+        const sunDawnDuskRowContent = document.createElement('tr');
+        sunDawnDuskRowContent.innerHTML = `
             <td>Sun</td>
             <td>${astronomicalDawn}</td>
             <td>${nauticalDawn}</td>
@@ -40,7 +42,28 @@ document.addEventListener('DOMContentLoaded', function() {
             <td>${nauticalDusk}</td>
             <td>${astronomicalDusk}</td>
         `;
-        sunDawnDuskRow.appendChild(sunRow);
+        sunDawnDuskRow.appendChild(sunDawnDuskRowContent);
+
+        // Calculate blue and golden hour times for the Sun
+        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, -4).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, now, limitDays, 6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, 6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -4).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+        // Add Sun blue and golden hour row
+        const sunBlueGoldenHourRowContent = document.createElement('tr');
+        sunBlueGoldenHourRowContent.innerHTML = `
+            <td>Sun</td>
+            <td>${blueHourBeginAsc}</td>
+            <td>${goldenHourBeginAsc}</td>
+            <td>${goldenHourEndAsc}</td>
+            <td>${goldenHourBeginDesc}</td>
+            <td>${blueHourBeginDesc}</td>
+            <td>${blueHourEndDesc}</td>
+        `;
+        sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
 
         objects.forEach(objectName => {
             const row = document.createElement('tr');
