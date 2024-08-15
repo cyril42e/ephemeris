@@ -7,6 +7,19 @@ h1 {
     text-align: center;
 }
 
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    margin-right: 10px;
+}
+
+.controls input {
+    margin-right: 20px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
