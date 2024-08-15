@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             
             // Calculate ephemeris data
-            const phase = objectName === 'Sun' ? '' : (Astronomy.Illumination(objectName, now).phase_fraction * 100).toFixed(2);
+            const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, now).phase_fraction * 100).toFixed(0)}%`;
 
             // Calculate rise and set times
             const riseTime = Astronomy.SearchRiseSet(objectName, observer, +1, now, limitDays).date;
@@ -42,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
             let astronomicalDusk = '';
 
             if (objectName === 'Sun') {
-                astronomicalDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -18).date.toLocaleTimeString();
-                nauticalDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -12).date.toLocaleTimeString();
-                civilDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -6).date.toLocaleTimeString();
-                civilDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -6).date.toLocaleTimeString();
-                nauticalDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -12).date.toLocaleTimeString();
-                astronomicalDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -18).date.toLocaleTimeString();
+                astronomicalDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                nauticalDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -12).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                civilDawn = Astronomy.SearchAltitude(objectName, observer, +1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                civilDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -6).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                nauticalDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -12).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                astronomicalDusk = Astronomy.SearchAltitude(objectName, observer, -1, now, limitDays, -18).date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }
 
             // Calculate azimuth and altitude
@@ -67,13 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${astronomicalDawn}</td>
                 <td>${nauticalDawn}</td>
                 <td>${civilDawn}</td>
-                <td>${riseTime.toLocaleTimeString()}</td>
-                <td>${riseHorizon.azimuth.toFixed(2)}</td>
-                <td>${transitTime.toLocaleTimeString()}</td>
-                <td>${transitHorizon.azimuth.toFixed(2)}</td>
-                <td>${transitHorizon.altitude.toFixed(2)}</td>
-                <td>${setTime.toLocaleTimeString()}</td>
-                <td>${setHorizon.azimuth.toFixed(2)}</td>
+                <td>${riseTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${riseHorizon.azimuth.toFixed(0)}°</td>
+                <td>${transitTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${transitHorizon.altitude.toFixed(0)}°</td>
+                <td>${setTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                <td>${setHorizon.azimuth.toFixed(0)}°</td>
                 <td>${civilDusk}</td>
                 <td>${nauticalDusk}</td>
                 <td>${astronomicalDusk}</td>

@@ -35,20 +35,19 @@
         <thead>
             <tr>
                 <th>Object</th>
-                <th>Phase (%)</th>
-                <th>Astronomical Dawn</th>
-                <th>Nautical Dawn</th>
-                <th>Civil Dawn</th>
+                <th>Phase</th>
+                <th>Astronomical Dawn Time</th>
+                <th>Nautical Dawn Time</th>
+                <th>Civil Dawn Time</th>
                 <th>Rise Time</th>
                 <th>Rise Azimuth</th>
                 <th>Peak Elevation Time</th>
-                <th>Peak Elevation Azimuth</th>
                 <th>Peak Elevation</th>
                 <th>Set Time</th>
                 <th>Set Azimuth</th>
-                <th>Civil Dusk</th>
-                <th>Nautical Dusk</th>
-                <th>Astronomical Dusk</th>
+                <th>Civil Dusk Time</th>
+                <th>Nautical Dusk Time</th>
+                <th>Astronomical Dusk Time</th>
             </tr>
         </thead>
         <tbody id="ephemeris-table">
