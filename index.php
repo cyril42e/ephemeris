@@ -17,14 +17,17 @@
 
     <div class="controls">
         <div class="position-controls">
+            <div class="address-container">
+                <label for="address">Address:</label>
+                <input type="text" id="address" autocomplete="off">
+                <div id="suggestions"></div>
+            </div>
+
             <label for="latitude">Latitude:</label>
             <input type="number" id="latitude" step="0.0001" value="48.8566">
 
             <label for="longitude">Longitude:</label>
             <input type="number" id="longitude" step="0.0001" value="2.3522">
-
-            <label for="altitude">Altitude (m):</label>
-            <input type="number" id="altitude" step="1" value="0">
 
             <button id="current-location">Use Current Location</button>
         </div>

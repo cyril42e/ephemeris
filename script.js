@@ -59,10 +59,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const latitudeInput = document.getElementById('latitude');
     const longitudeInput = document.getElementById('longitude');
-    const altitudeInput = document.getElementById('altitude');
     const dateInput = document.getElementById('date');
     const currentLocationButton = document.getElementById('current-location');
     const currentDateButton = document.getElementById('current-date');
+    const addressInput = document.getElementById('address');
+    const suggestionsDiv = document.getElementById('suggestions');
     let refreshTimeout;
 
     function formatDateTime(eventDate, referenceDate) {
@@ -93,13 +94,6 @@ document.addEventListener('DOMContentLoaded', function() {
             longitudeInput.classList.remove('invalid');
         }
 
-        if (altitudeInput.value === '') {
-            altitudeInput.classList.add('invalid');
-            valid = false;
-        } else {
-            altitudeInput.classList.remove('invalid');
-        }
-
         if (dateInput.value === '') {
             dateInput.classList.add('invalid');
             valid = false;
@@ -110,13 +104,54 @@ document.addEventListener('DOMContentLoaded', function() {
         return valid;
     }
 
+    addressInput.addEventListener('input', function() {
+        const query = addressInput.value;
+        if (query.length < 3) {
+            suggestionsDiv.innerHTML = '';
+            return;
+        }
+        fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`)
+            .then(response => response.json())
+            .then(data => {
+                suggestionsDiv.innerHTML = '';
+                data.features.forEach(feature => {
+                    const properties = feature.properties;
+                    const name = properties.name || '';
+                    const region = properties.region || '';
+                    const city = properties.city || '';
+                    const country = properties.country || '';
+                    const type = ' (' + properties.type + ')' || '';
+                    const suggestionText = [name, city, region, country].filter(Boolean).join(', ') + type;
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.className = 'suggestion-item';
+                    suggestionItem.textContent = suggestionText;
+                    suggestionItem.addEventListener('click', () => {
+                        const coordinates = feature.geometry.coordinates;
+                        latitudeInput.value = coordinates[1].toFixed(4);
+                        longitudeInput.value = coordinates[0].toFixed(4);
+                        addressInput.value = suggestionText;
+                        suggestionsDiv.innerHTML = '';
+                        updateEphemeris();
+                    });
+                    suggestionsDiv.appendChild(suggestionItem);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target !== addressInput && event.target.className !== 'suggestion-item' && suggestionsDiv.innerHTML !== '') {
+            suggestionsDiv.innerHTML = '';
+            addressInput.value = '';
+        }
+    });
+
     function updateEphemeris() {
         if (!validateInputs()) return;
 
         const latitude = parseFloat(latitudeInput.value);
         const longitude = parseFloat(longitudeInput.value);
-        const altitude = parseFloat(altitudeInput.value);
-        const observer = new Astronomy.Observer(latitude, longitude, altitude);
+        const observer = new Astronomy.Observer(latitude, longitude, 0.0);
 
         // Set the time to noon
         const selectedDate = new Date(dateInput.value);
@@ -322,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navigator.geolocation.getCurrentPosition(position => {
                 latitudeInput.value = position.coords.latitude.toFixed(4);
                 longitudeInput.value = position.coords.longitude.toFixed(4);
-                altitudeInput.value = position.coords.altitude ? position.coords.altitude.toFixed(0) : '0';
+                addressInput.value = ''; // TODO reverse geocoding ?
                 updateEphemeris();
             }, error => {
                 alert('Error getting location: ' + error.message);
@@ -339,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function triggerRefresh() {
+        addressInput.value = ''; // TODO reverse geocoding ?
         clearTimeout(refreshTimeout);
         refreshTimeout = setTimeout(updateEphemeris, 500);
     }
@@ -352,7 +388,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     latitudeInput.addEventListener('input', triggerRefresh);
     longitudeInput.addEventListener('input', triggerRefresh);
-    altitudeInput.addEventListener('input', triggerRefresh);
     dateInput.addEventListener('input', updateEphemeris);
 
     currentLocationButton.addEventListener('click', setCurrentLocation);

@@ -70,6 +70,52 @@ button:hover {
     background-color: #2980b9;
 }
 
+#latitude, #longitude {
+    width: 100px;
+}
+#address {
+    width: 150px;
+}
+
+
+.position-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between elements */
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    justify-content: center; /* Center the form horizontally */
+}
+
+.address-container {
+/*    display: flex;*/
+    position: relative; /* For positioning suggestions */
+
+}
+
+#suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    width: 300px;
+    z-index: 1001; /* Ensure it appears above other elements */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    top: 100%; /* Position below the input field */
+    left: 0; /* Align with the input field */
+}
+.suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+#suggestions:empty {
+    display: none;
+}
+
 
 /*******************************/
 /* Timeline */
