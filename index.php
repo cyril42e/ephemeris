@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <title>Solar System Ephemeris</title>
     <link rel="stylesheet" href="styles.css">
     <script src="astronomy.browser.min.js"></script>
@@ -10,6 +10,7 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
+<div class="page">
     <div class="title">
         <h1>Solar System Ephemeris</h1>
     </div>
@@ -102,5 +103,6 @@
             <!-- Populated here by JavaScript -->
         </tbody>
     </table>
+</div>
 </body>
 </html>
