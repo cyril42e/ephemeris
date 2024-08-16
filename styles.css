@@ -10,12 +10,20 @@ h1 {
     color: #333;
 }
 
+.title {
+    padding-bottom: 1px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
 /*******************************/
 /* Controls */
 
 .controls {
-    margin-bottom: 20px;
     text-align: center;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .position-controls, .date-controls {
@@ -53,13 +61,17 @@ button:hover {
 
 
 /*******************************/
-/* Day */
+/* Timeline */
+
+.timeline {
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 .timeline-container {
     position: relative;
     max-width: 1200px;
     height: 210px;
-    margin: 60px auto;
 }
 
 .timeline-periods-top, .timeline-periods-bottom, .timeline-points {
@@ -168,7 +180,7 @@ button:hover {
 }
 
 /*******************************/
-/* Ephemeris */
+/* Ephemeris Table */
 
 table {
     width: 100%;

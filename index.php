@@ -9,7 +9,9 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Solar System Ephemeris</h1>
+    <div class="title">
+        <h1>Solar System Ephemeris</h1>
+    </div>
 
     <div class="controls">
         <div class="position-controls">
@@ -33,19 +35,21 @@
         </div>
     </div>
 
-    <div class="timeline-container">
-        <div class="timeline-points top" id="morning-points-top"></div>
-        <div class="timeline-periods-top" id="morning-periods-top"></div>
-        <div class="timeline-periods-bottom" id="morning-periods-bottom"></div>
-        <div class="timeline-points bottom" id="morning-points-bottom"></div>
-        <!-- Populated here by JavaScript -->
-    </div>
-    <div class="timeline-container">
-        <div class="timeline-points top" id="evening-points-top"></div>
-        <div class="timeline-periods-top" id="evening-periods-top"></div>
-        <div class="timeline-periods-bottom" id="evening-periods-bottom"></div>
-        <div class="timeline-points bottom" id="evening-points-bottom"></div>
-        <!-- Populated here by JavaScript -->
+    <div class="timeline">
+        <div class="timeline-container">
+            <div class="timeline-points top" id="morning-points-top"></div>
+            <div class="timeline-periods-top" id="morning-periods-top"></div>
+            <div class="timeline-periods-bottom" id="morning-periods-bottom"></div>
+            <div class="timeline-points bottom" id="morning-points-bottom"></div>
+            <!-- Populated here by JavaScript -->
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-points top" id="evening-points-top"></div>
+            <div class="timeline-periods-top" id="evening-periods-top"></div>
+            <div class="timeline-periods-bottom" id="evening-periods-bottom"></div>
+            <div class="timeline-points bottom" id="evening-points-bottom"></div>
+            <!-- Populated here by JavaScript -->
+        </div>
     </div>
 
     <table>
