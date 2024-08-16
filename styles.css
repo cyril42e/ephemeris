@@ -12,6 +12,10 @@ h1 {
     text-align: center;
 }
 
+.position-controls, .date-controls {
+    margin-bottom: 10px;
+}
+
 .controls label {
     margin-right: 10px;
 }

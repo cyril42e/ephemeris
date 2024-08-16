@@ -12,23 +12,25 @@
     <h1>Astronomy Ephemeris</h1>
     
     <div class="controls">
-        <label for="latitude">Latitude:</label>
-        <input type="number" id="latitude" step="0.0001" value="48.8566">
-        
-        <label for="longitude">Longitude:</label>
-        <input type="number" id="longitude" step="0.0001" value="2.3522">
+        <div class="position-controls">
+            <label for="latitude">Latitude:</label>
+            <input type="number" id="latitude" step="0.0001" value="48.8566">
+            
+            <label for="longitude">Longitude:</label>
+            <input type="number" id="longitude" step="0.0001" value="2.3522">
 
-        <label for="altitude">Altitude (m):</label>
-        <input type="number" id="altitude" step="1" value="0">
+            <label for="altitude">Altitude (m):</label>
+            <input type="number" id="altitude" step="1" value="0">
+            
+            <button id="current-location">Use Current Location</button>
+        </div>
         
-        <button id="current-location">Use Current Location</button>
-        
-        <label for="date">Date:</label>
-        <input type="date" id="date">
-        
-        <button id="current-date">Use Current Date</button>
-        
-        <button id="update">Update Ephemeris</button>
+        <div class="date-controls">
+            <label for="date">Date:</label>
+            <input type="date" id="date">
+            
+            <button id="current-date">Use Current Date</button>
+        </div>
     </div>
     
     <table>

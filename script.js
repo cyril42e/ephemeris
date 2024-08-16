@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const longitudeInput = document.getElementById('longitude');
     const altitudeInput = document.getElementById('altitude');
     const dateInput = document.getElementById('date');
-    const updateButton = document.getElementById('update');
     const currentLocationButton = document.getElementById('current-location');
     const currentDateButton = document.getElementById('current-date');
+    let refreshTimeout;
 
     function formatDateTime(eventDate, referenceDate) {
         const dayDifference = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
@@ -123,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 latitudeInput.value = position.coords.latitude.toFixed(4);
                 longitudeInput.value = position.coords.longitude.toFixed(4);
                 altitudeInput.value = position.coords.altitude ? position.coords.altitude.toFixed(0) : '0';
+                triggerRefresh();
             }, error => {
                 alert('Error getting location: ' + error.message);
             });
@@ -134,9 +135,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function setCurrentDate() {
         const now = new Date();
         dateInput.value = now.toISOString().slice(0, 10);
+        triggerRefresh();
     }
 
-    updateButton.addEventListener('click', updateEphemeris);
+    function triggerRefresh() {
+        clearTimeout(refreshTimeout);
+        refreshTimeout = setTimeout(updateEphemeris, 500);
+    }
+
+    latitudeInput.addEventListener('input', triggerRefresh);
+    longitudeInput.addEventListener('input', triggerRefresh);
+    altitudeInput.addEventListener('input', triggerRefresh);
+    dateInput.addEventListener('input', triggerRefresh);
+
     currentLocationButton.addEventListener('click', setCurrentLocation);
     currentDateButton.addEventListener('click', setCurrentDate);
 
