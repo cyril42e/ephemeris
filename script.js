@@ -67,10 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function formatDateTime(eventDate, referenceDate) {
         const dayDifference = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
+        const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         if (Math.abs(dayDifference) > 1) {
-            return eventDate.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+            const date = eventDate.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
+            return date + '\n' + time;
         } else {
-            return eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return time;
         }
     }
 
@@ -182,75 +184,85 @@ document.addEventListener('DOMContentLoaded', function() {
         const extremitiesDuration = 20;
         const dashDuration = 3;
         const holeDuration = 1;
-        function offsetM(timePoint) {
-             return (timePoint-astronomicalDawn)/60000 + extremitiesDuration;
-        }
-        function offsetE(timePoint) {
-             return (timePoint-goldenHourBeginDesc)/60000 + extremitiesDuration;
-        }
+        const maxDuration = 120;
 
         // Morning timeline data
+        const astronomicalTwilightM = Math.min((nauticalDawn-astronomicalDawn)/60000, maxDuration);
+        const nauticalTwilightM = Math.min((civilDawn-nauticalDawn)/60000, maxDuration);
+        const civilTwilightMr = (sunRise-civilDawn)/60000;
+        const civilTwilightM = Math.min(civilTwilightMr, maxDuration);
+        const blueHourM = ((goldenHourBeginAsc-blueHourBeginAsc)/60000) * civilTwilightM / civilTwilightMr; // scale like civilTwilight
+        const goldenHourM = (goldenHourEndAsc-goldenHourBeginAsc)/60000 * civilTwilightM / civilTwilightMr; // scale like civilTwilight
+
         const morningPeriodsTop = [
             {name: '', class: 'night', duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
-            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (nauticalDawn-astronomicalDawn)/60000},
-            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (civilDawn-nauticalDawn)/60000},
-            {name: 'Civil Twilight', class: 'civil-twilight', duration: (sunRise-civilDawn)/60000},
-            {name: 'Day', class: 'day', duration: (goldenHourEndAsc-sunRise)/60000 + extremitiesDuration - holeDuration*2 - dashDuration*2},
+            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightM},
+            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightM},
+            {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightM},
+            {name: 'Day', class: 'day', duration: goldenHourM+blueHourM-civilTwilightM + extremitiesDuration - holeDuration*2 - dashDuration*2},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: '', class: 'day', duration: dashDuration},
             {name: '', class: 'invisible', duration: dashDuration+holeDuration}
         ];
 
         const morningPeriodsBottom = [
-            {name: 'Blue Hour', class: 'blue-hour', start: offsetM(blueHourBeginAsc), duration: (goldenHourBeginAsc-blueHourBeginAsc)/60000},
-            {name: 'Golden Hour', class: 'golden-hour', start: offsetM(goldenHourBeginAsc), duration: (goldenHourEndAsc-goldenHourBeginAsc)/60000}
+            {name: 'Blue Hour', class: 'blue-hour', start: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, duration: blueHourM},
+            {name: 'Golden Hour', class: 'golden-hour', start: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM, duration: goldenHourM}
         ];
 
         const morningPointsTop = [
-            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: offsetM(astronomicalDawn), arrow: 'center'},
-            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: offsetM(nauticalDawn), arrow: 'center'},
-            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: offsetM(civilDawn), arrow: 'center'},
-            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: offsetM(sunRise), arrow: 'center'}
+            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: extremitiesDuration, arrow: 'center'},
+            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: extremitiesDuration+astronomicalTwilightM, arrow: 'center'},
+            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, arrow: 'center'},
+            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+civilTwilightM, arrow: 'center'}
         ];
 
         const morningPointsBottom = [
-            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: offsetM(blueHourBeginAsc), arrow: 'right'},
-            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: offsetM(goldenHourBeginAsc), arrow: 'left'},
-            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: offsetM(goldenHourEndAsc), arrow: 'center'}
+            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, arrow: 'right'},
+            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM, arrow: 'left'},
+            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM+goldenHourM, arrow: 'center'}
         ];
 
         // Evening timeline data
+        const astronomicalTwilightE = Math.min((astronomicalDusk-nauticalDusk)/60000, maxDuration);
+        const nauticalTwilightE = Math.min((nauticalDusk-civilDusk)/60000, maxDuration);
+        const civilTwilightEr = (civilDusk-sunSet)/60000;
+        const civilTwilightE = Math.min(civilTwilightEr, maxDuration);
+        const blueHourE = ((blueHourEndDesc-blueHourBeginDesc)/60000) * civilTwilightE / civilTwilightEr; // scale like civilTwilight
+        const goldenHourE = (blueHourBeginDesc-goldenHourBeginDesc)/60000 * civilTwilightE / civilTwilightEr; // scale like civilTwilight
+        const sunSetE = extremitiesDuration+goldenHourE+blueHourE-civilTwilightE;
+
         const eveningPeriodsTop = [
             {name: '', class: 'invisible', duration: dashDuration+holeDuration},
             {name: '', class: 'day', duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: 'Day', class: 'day', duration: (sunSet-goldenHourBeginDesc)/60000 + extremitiesDuration - holeDuration*2 - dashDuration*2},
-            {name: 'Civil Twilight', class: 'civil-twilight', duration: (civilDusk-sunSet)/60000},
-            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (nauticalDusk-civilDusk)/60000},
-            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (astronomicalDusk-nauticalDusk)/60000},
+            {name: 'Day', class: 'day', duration: sunSetE - holeDuration*2 - dashDuration*2},
+            {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightE},
+            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightE},
+            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightE},
             {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: '', class: 'night', duration: dashDuration}
         ];
 
         const eveningPeriodsBottom = [
-            {name: 'Golden Hour', class: 'golden-hour', start: offsetE(goldenHourBeginDesc), duration: (blueHourBeginDesc-goldenHourBeginDesc)/60000},
-            {name: 'Blue Hour', class: 'blue-hour', start: offsetE(blueHourBeginDesc), duration: (blueHourEndDesc-blueHourBeginDesc)/60000}
+            {name: 'Golden Hour', class: 'golden-hour', start: extremitiesDuration, duration: goldenHourE},
+            {name: 'Blue Hour', class: 'blue-hour', start: extremitiesDuration+goldenHourE, duration: blueHourE}
         ];
 
         const eveningPointsTop = [
-            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: offsetE(sunSet), arrow: 'center'},
-            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: offsetE(civilDusk), arrow: 'center'},
-            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: offsetE(nauticalDusk), arrow: 'center'},
-            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: offsetE(astronomicalDusk), arrow: 'center'}
+            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: sunSetE, arrow: 'center'},
+            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: sunSetE+civilTwilightE, arrow: 'center'},
+            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: sunSetE+civilTwilightE+nauticalTwilightE, arrow: 'center'},
+            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: sunSetE+civilTwilightE+nauticalTwilightE+astronomicalTwilightE, arrow: 'center'}
         ];
 
         const eveningPointsBottom = [
-            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: offsetE(goldenHourBeginDesc), arrow: 'center'},
-            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: offsetE(blueHourBeginDesc), arrow: 'right'},
-            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: offsetE(blueHourEndDesc), arrow: 'left'}
+            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: extremitiesDuration, arrow: 'center'},
+            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: extremitiesDuration+goldenHourE, arrow: 'right'},
+            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: extremitiesDuration+goldenHourE+blueHourE, arrow: 'left'}
         ];
 
         const morningTotalDuration = morningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
