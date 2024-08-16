@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="astronomy.browser.min.js"></script>
     <script src="script.js" defer></script>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="title">
