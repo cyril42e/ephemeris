@@ -41,6 +41,13 @@ h1 {
     border-radius: 5px;
 }
 
+#date {
+    margin-right: 0px;
+}
+#current-date {
+    margin-left: 20px;
+}
+
 input.invalid {
     background-color: #FFADB0;
 }

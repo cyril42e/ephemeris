@@ -30,7 +30,9 @@
 
         <div class="date-controls">
             <label for="date">Date:</label>
+            <button id="decrease-date"><</button>
             <input type="date" id="date">
+            <button id="increase-date">></button>
 
             <button id="current-date">Use Current Date</button>
         </div>

@@ -343,6 +343,13 @@ document.addEventListener('DOMContentLoaded', function() {
         refreshTimeout = setTimeout(updateEphemeris, 500);
     }
 
+    function changeDate(days) {
+        const currentDate = new Date(dateInput.value);
+        currentDate.setDate(currentDate.getDate() + days);
+        dateInput.value = currentDate.toISOString().slice(0, 10);
+        updateEphemeris();
+    }
+
     latitudeInput.addEventListener('input', triggerRefresh);
     longitudeInput.addEventListener('input', triggerRefresh);
     altitudeInput.addEventListener('input', triggerRefresh);
@@ -350,6 +357,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     currentLocationButton.addEventListener('click', setCurrentLocation);
     currentDateButton.addEventListener('click', setCurrentDate);
+
+    const decreaseDateButton = document.getElementById('decrease-date');
+    const increaseDateButton = document.getElementById('increase-date');
+    decreaseDateButton.addEventListener('click', () => changeDate(-1));
+    increaseDateButton.addEventListener('click', () => changeDate(1));
+
 
     // Initialize with current date
     setCurrentDate();
