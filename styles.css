@@ -10,6 +10,9 @@ h1 {
     color: #333;
 }
 
+/*******************************/
+/* Controls */
+
 .controls {
     margin-bottom: 20px;
     text-align: center;
@@ -48,6 +51,124 @@ button:hover {
     background-color: #2980b9;
 }
 
+
+/*******************************/
+/* Day */
+
+.timeline-container {
+    position: relative;
+    max-width: 1200px;
+    height: 210px;
+    margin: 60px auto;
+}
+
+.timeline-periods-top, .timeline-periods-bottom, .timeline-points {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.timeline-periods-top, .timeline-periods-bottom {
+    height: 40px;
+    display: flex;
+}
+
+.timeline-periods-top {
+    top: 80px;
+}
+
+.timeline-periods-bottom {
+    top: 120px;
+}
+
+.timeline-points {
+    height: 30px;
+}
+
+.timeline-points.top .time-point {
+    bottom: -40px;
+}
+
+.timeline-points.bottom .time-point {
+    top: 170px;
+}
+
+.period {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    /*font-weight: bold;*/
+    font-size: 14px;
+    border-radius: 8px; /* rounding */
+    margin: 0 1px;
+}
+ 
+.time-point {
+    --arrow-position: 70%;
+    white-space: pre;  /* wrap at \n */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    transform: translateX(calc(-1 * var(--arrow-position)));
+    background: white;
+    border: 2px solid #333;
+    border-radius: 8px; /* rounding */
+    padding: 3px 5px;
+    font-size: 14px;
+    z-index: 10;
+}
+ 
+.time-point::before,
+.time-point::after {
+    content: '';
+    position: absolute;
+    left: var(--arrow-position);
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+}
+ 
+.time-point::after {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.time-point::before {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    z-index: 1;
+}
+
+.timeline-points.top .time-point::after,
+.timeline-points.top .time-point::before {
+    bottom: -10px;
+    border-top: 10px solid #333;
+}
+
+.timeline-points.bottom .time-point::after,
+.timeline-points.bottom .time-point::before {
+    top: -10px;
+    border-bottom: 10px solid #333;
+}
+
+.night { background-color: #000; }
+.astronomical-twilight { background-color: #000080; }
+.nautical-twilight { background-color: #0070FF; }
+.civil-twilight { background-color: #00CDEC; }
+.day { background-color: #EAEA00; color: #000 !important; }
+.blue-hour { background-color: #00AAFF; }
+.golden-hour { background-color: #FFA500; }
+.sun-event { background-color: #808080 !important; color: white !important; }
+
+.front {
+  z-index: 1000;
+}
+
+/*******************************/
+/* Ephemeris */
 
 table {
     width: 100%;

@@ -1,4 +1,63 @@
+function createTimePeriodsTop(containerId, data) {
+    const container = document.getElementById(containerId);
+    while (container.firstChild) container.removeChild(container.lastChild);
+    let totalDuration = data.reduce((sum, item) => sum + item.duration, 0);
+
+    data.forEach(item => {
+        const period = document.createElement('div');
+        period.className = `period ${item.class}`;
+        period.style.width = `${(item.duration / totalDuration) * 100}%`;
+        period.textContent = item.name;
+        container.appendChild(period);
+    });
+}
+
+function createTimePeriodsBottom(containerId, data, totalDuration) {
+    const container = document.getElementById(containerId);
+    while (container.firstChild) container.removeChild(container.lastChild);
+    data.forEach(item => {
+        const period = document.createElement('div');
+        period.className = `period ${item.class}`;
+        period.style.position = 'absolute';
+        period.style.left = `${(item.start / totalDuration) * 100}%`;
+        period.style.width = `${(item.duration / totalDuration) * 100}%`;
+        period.style.height = '100%';  // Set the height to 100%
+        period.textContent = item.name;
+        container.appendChild(period);
+    });
+}
+
+
+function createTimePoints(containerId, points, totalDuration, top) {
+    const container = document.getElementById(containerId);
+    while (container.firstChild) container.removeChild(container.lastChild);
+    points.forEach(point => {
+        const timePoint = document.createElement('div');
+        timePoint.className = `time-point ${point.class}`;
+        timePoint.innerHTML = top ? point.name + '<br/><b>' + point.time + '</b>' : '<b>' + point.time + '</b></br>' + point.name;
+        timePoint.style.left = `${(point.position / totalDuration) * 100}%`;
+        arrowPosition = (point.arrow === 'left') ? 25 : ((point.arrow === 'right') ? 75 : 50);
+        timePoint.style.setProperty('--arrow-position', `${arrowPosition}%`);
+        timePoint.addEventListener('mouseenter', bringToFront);
+        timePoint.addEventListener('click', bringToFront);
+        container.appendChild(timePoint);
+    });
+}
+
+function bringToFront(event) {
+  // Remove 'front' class from all time points
+  document.querySelectorAll('.time-point').forEach(point => {
+    point.classList.remove('front');
+  });
+  // Add 'front' class to the hovered/clicked element
+  event.currentTarget.classList.add('front');
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
+    //***************************/
+    // Controls
+
     const latitudeInput = document.getElementById('latitude');
     const longitudeInput = document.getElementById('longitude');
     const altitudeInput = document.getElementById('altitude');
@@ -116,9 +175,89 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
 
+        // Compute Sun rise and set time
+        const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, noon, -limitDays).date;
+        const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, noon, limitDays).date;
+
+        // Create timelines
+        const extremitiesDuration = 20;
+        function offsetM(timePoint) {
+             return (timePoint-astronomicalDawn)/60000 + extremitiesDuration;
+        }
+        function offsetE(timePoint) {
+             return (timePoint-goldenHourBeginDesc)/60000 + extremitiesDuration;
+        }
+
+        // Morning timeline data
+        const morningPeriodsTop = [
+            {name: 'Night', class: 'night', duration: extremitiesDuration},
+            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (nauticalDawn-astronomicalDawn)/60000},
+            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (civilDawn-nauticalDawn)/60000},
+            {name: 'Civil Twilight', class: 'civil-twilight', duration: (sunRise-civilDawn)/60000},
+            {name: 'Day', class: 'day', duration: (goldenHourEndAsc-sunRise)/60000 + extremitiesDuration}
+        ];
+
+        const morningPeriodsBottom = [
+            {name: 'Blue Hour', class: 'blue-hour', start: offsetM(blueHourBeginAsc), duration: (goldenHourBeginAsc-blueHourBeginAsc)/60000},
+            {name: 'Golden Hour', class: 'golden-hour', start: offsetM(goldenHourBeginAsc), duration: (goldenHourEndAsc-goldenHourBeginAsc)/60000}
+        ];
+
+        const morningPointsTop = [
+            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: offsetM(astronomicalDawn), arrow: 'center'},
+            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: offsetM(nauticalDawn), arrow: 'center'},
+            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: offsetM(civilDawn), arrow: 'center'},
+            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: offsetM(sunRise), arrow: 'center'}
+        ];
+
+        const morningPointsBottom = [
+            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: offsetM(blueHourBeginAsc), arrow: 'right'},
+            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: offsetM(goldenHourBeginAsc), arrow: 'left'},
+            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: offsetM(goldenHourEndAsc), arrow: 'center'}
+        ];
+
+        // Evening timeline data
+        const eveningPeriodsTop = [
+            {name: 'Day', class: 'day', duration: (sunSet-goldenHourBeginDesc)/60000 + extremitiesDuration},
+            {name: 'Civil Twilight', class: 'civil-twilight', duration: (civilDusk-sunSet)/60000},
+            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (nauticalDusk-civilDusk)/60000},
+            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (astronomicalDusk-nauticalDusk)/60000},
+            {name: 'Night', class: 'night', duration: extremitiesDuration}
+        ];
+
+        const eveningPeriodsBottom = [
+            {name: 'Golden Hour', class: 'golden-hour', start: offsetE(goldenHourBeginDesc), duration: (blueHourBeginDesc-goldenHourBeginDesc)/60000},
+            {name: 'Blue Hour', class: 'blue-hour', start: offsetE(blueHourBeginDesc), duration: (blueHourEndDesc-blueHourBeginDesc)/60000}
+        ];
+
+        const eveningPointsTop = [
+            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: offsetE(sunSet), arrow: 'center'},
+            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: offsetE(civilDusk), arrow: 'center'},
+            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: offsetE(nauticalDusk), arrow: 'center'},
+            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: offsetE(astronomicalDusk), arrow: 'center'}
+        ];
+
+        const eveningPointsBottom = [
+            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: offsetE(goldenHourBeginDesc), arrow: 'center'},
+            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: offsetE(blueHourBeginDesc), arrow: 'right'},
+            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: offsetE(blueHourEndDesc), arrow: 'left'}
+        ];
+
+        const morningTotalDuration = morningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
+        const eveningTotalDuration = eveningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
+
+        createTimePeriodsTop('morning-periods-top', morningPeriodsTop);
+        createTimePeriodsBottom('morning-periods-bottom', morningPeriodsBottom, morningTotalDuration);
+        createTimePoints('morning-points-top', morningPointsTop, morningTotalDuration, true);
+        createTimePoints('morning-points-bottom', morningPointsBottom, morningTotalDuration, false);
+
+        createTimePeriodsTop('evening-periods-top', eveningPeriodsTop);
+        createTimePeriodsBottom('evening-periods-bottom', eveningPeriodsBottom, eveningTotalDuration);
+        createTimePoints('evening-points-top', eveningPointsTop, eveningTotalDuration, true);
+        createTimePoints('evening-points-bottom', eveningPointsBottom, eveningTotalDuration, false);
+
         objects.forEach(objectName => {
             const row = document.createElement('tr');
-            
+
             // Calculate ephemeris data
             const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, noon).phase_fraction * 100).toFixed(0)}%`;
 

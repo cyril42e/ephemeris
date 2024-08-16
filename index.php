@@ -15,24 +15,39 @@
         <div class="position-controls">
             <label for="latitude">Latitude:</label>
             <input type="number" id="latitude" step="0.0001" value="48.8566">
-            
+
             <label for="longitude">Longitude:</label>
             <input type="number" id="longitude" step="0.0001" value="2.3522">
 
             <label for="altitude">Altitude (m):</label>
             <input type="number" id="altitude" step="1" value="0">
-            
+
             <button id="current-location">Use Current Location</button>
         </div>
-        
+
         <div class="date-controls">
             <label for="date">Date:</label>
             <input type="date" id="date">
-            
+
             <button id="current-date">Use Current Date</button>
         </div>
     </div>
-    
+
+    <div class="timeline-container">
+        <div class="timeline-points top" id="morning-points-top"></div>
+        <div class="timeline-periods-top" id="morning-periods-top"></div>
+        <div class="timeline-periods-bottom" id="morning-periods-bottom"></div>
+        <div class="timeline-points bottom" id="morning-points-bottom"></div>
+        <!-- Populated here by JavaScript -->
+    </div>
+    <div class="timeline-container">
+        <div class="timeline-points top" id="evening-points-top"></div>
+        <div class="timeline-periods-top" id="evening-periods-top"></div>
+        <div class="timeline-periods-bottom" id="evening-periods-bottom"></div>
+        <div class="timeline-points bottom" id="evening-points-bottom"></div>
+        <!-- Populated here by JavaScript -->
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -47,7 +62,7 @@
             </tr>
         </thead>
         <tbody id="sun-dawn-dusk-row">
-            <!-- Sun dawn and dusk data will be populated here by JavaScript -->
+            <!-- Populated here by JavaScript -->
         </tbody>
         <thead>
             <tr>
@@ -62,7 +77,7 @@
             </tr>
         </thead>
         <tbody id="sun-blue-golden-hour-row">
-            <!-- Sun blue and golden hour data will be populated here by JavaScript -->
+            <!-- Populated here by JavaScript -->
         </tbody>
         <thead>
             <tr>
@@ -77,7 +92,7 @@
             </tr>
         </thead>
         <tbody id="ephemeris-table">
-            <!-- Ephemeris data will be populated here by JavaScript -->
+            <!-- Populated here by JavaScript -->
         </tbody>
     </table>
 </body>
