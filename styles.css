@@ -47,6 +47,8 @@ h1 {
 
 #date {
     margin-right: 0px;
+    text-align: center;
+    width: 100px;
 }
 #current-date {
     margin-left: 20px;

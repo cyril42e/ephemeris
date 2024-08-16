@@ -68,9 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function formatDateTime(eventDate, referenceDate) {
         const dayDifference = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
-        const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         if (Math.abs(dayDifference) > 1) {
-            const date = eventDate.toLocaleString([], { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const date = eventDate.toISOString().slice(0, 10);
             return date + '\n' + time;
         } else {
             return time;

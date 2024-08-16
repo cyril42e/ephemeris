@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css " rel="stylesheet">
     <script src="script.js" defer></script>
     <link rel="manifest" href="manifest.json">
 </head>
@@ -21,7 +23,7 @@
         <div class="position-controls">
             <div class="address-container">
                 <label for="address">Address:</label>
-                <input type="text" id="address" autocomplete="off">
+                <input type="text" id="address" autocomplete="off" value="Paris">
                 <div id="suggestions"></div>
             </div>
 
@@ -31,16 +33,17 @@
             <label for="longitude">Longitude:</label>
             <input type="number" id="longitude" step="0.0001" value="2.3522">
 
-            <button id="current-location">Use Current Location</button>
+            <button id="current-location">Current Location</button>
         </div>
 
         <div class="date-controls">
             <label for="date">Date:</label>
             <button id="decrease-date"><</button>
-            <input type="date" id="date">
+            <input type="text" id="date">
+            <script>flatpickr("#date", {dateFormat: "Y-m-d"});</script>
             <button id="increase-date">></button>
 
-            <button id="current-date">Use Current Date</button>
+            <button id="current-date">Current Date</button>
         </div>
     </div>
 
