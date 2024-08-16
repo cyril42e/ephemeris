@@ -70,7 +70,6 @@ button:hover {
 
 .timeline-container {
     position: relative;
-    max-width: 1200px;
     height: 210px;
 }
 
@@ -114,7 +113,6 @@ button:hover {
     /*font-weight: bold;*/
     font-size: 14px;
     border-radius: 8px; /* rounding */
-    margin: 0 1px;
 }
  
 .time-point {
@@ -167,6 +165,7 @@ button:hover {
 }
 
 .night { background-color: #000; }
+.invisible { background-color: transparent; }
 .astronomical-twilight { background-color: #000080; }
 .nautical-twilight { background-color: #0070FF; }
 .civil-twilight { background-color: #00CDEC; }

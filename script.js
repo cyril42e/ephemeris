@@ -181,6 +181,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create timelines
         const extremitiesDuration = 20;
+        const dashDuration = 3;
+        const holeDuration = 1;
         function offsetM(timePoint) {
              return (timePoint-astronomicalDawn)/60000 + extremitiesDuration;
         }
@@ -190,11 +192,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Morning timeline data
         const morningPeriodsTop = [
-            {name: 'Night', class: 'night', duration: extremitiesDuration},
+            {name: '', class: 'night', duration: dashDuration},
+            {name: '', class: 'invisible', duration: holeDuration},
+            {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
             {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (nauticalDawn-astronomicalDawn)/60000},
             {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (civilDawn-nauticalDawn)/60000},
             {name: 'Civil Twilight', class: 'civil-twilight', duration: (sunRise-civilDawn)/60000},
-            {name: 'Day', class: 'day', duration: (goldenHourEndAsc-sunRise)/60000 + extremitiesDuration}
+            {name: 'Day', class: 'day', duration: (goldenHourEndAsc-sunRise)/60000 + extremitiesDuration - holeDuration*2 - dashDuration*2},
+            {name: '', class: 'invisible', duration: holeDuration},
+            {name: '', class: 'day', duration: dashDuration},
+            {name: '', class: 'invisible', duration: dashDuration+holeDuration}
         ];
 
         const morningPeriodsBottom = [
@@ -217,11 +224,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Evening timeline data
         const eveningPeriodsTop = [
-            {name: 'Day', class: 'day', duration: (sunSet-goldenHourBeginDesc)/60000 + extremitiesDuration},
+            {name: '', class: 'invisible', duration: dashDuration+holeDuration},
+            {name: '', class: 'day', duration: dashDuration},
+            {name: '', class: 'invisible', duration: holeDuration},
+            {name: 'Day', class: 'day', duration: (sunSet-goldenHourBeginDesc)/60000 + extremitiesDuration - holeDuration*2 - dashDuration*2},
             {name: 'Civil Twilight', class: 'civil-twilight', duration: (civilDusk-sunSet)/60000},
             {name: 'Nautical Twilight', class: 'nautical-twilight', duration: (nauticalDusk-civilDusk)/60000},
             {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: (astronomicalDusk-nauticalDusk)/60000},
-            {name: 'Night', class: 'night', duration: extremitiesDuration}
+            {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
+            {name: '', class: 'invisible', duration: holeDuration},
+            {name: '', class: 'night', duration: dashDuration}
         ];
 
         const eveningPeriodsBottom = [
