@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Astronomy Ephemeris</title>
+    <title>Solar System Ephemeris</title>
     <link rel="stylesheet" href="styles.css">
     <script src="astronomy.browser.min.js"></script>
     <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Astronomy Ephemeris</h1>
-    
+    <h1>Solar System Ephemeris</h1>
+
     <div class="controls">
         <div class="position-controls">
             <label for="latitude">Latitude:</label>
@@ -37,6 +37,7 @@
         <thead>
             <tr>
                 <th>Object</th>
+                <th></th>
                 <th>Astronomical Dawn</th>
                 <th>Nautical Dawn</th>
                 <th>Civil Dawn</th>
@@ -51,6 +52,7 @@
         <thead>
             <tr>
                 <th>Object</th>
+                <th></th>
                 <th>Blue Hour Begin</th>
                 <th>Golden Hour Begin</th>
                 <th>Golden Hour End</th>

@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sunDawnDuskRowContent = document.createElement('tr');
         sunDawnDuskRowContent.innerHTML = `
             <td>Sun</td>
+            <td></td>
             <td>${formatDateTime(astronomicalDawn, noon)}</td>
             <td>${formatDateTime(nauticalDawn, noon)}</td>
             <td>${formatDateTime(civilDawn, noon)}</td>
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const sunBlueGoldenHourRowContent = document.createElement('tr');
         sunBlueGoldenHourRowContent.innerHTML = `
             <td>Sun</td>
+            <td></td>
             <td>${formatDateTime(blueHourBeginAsc, noon)}</td>
             <td>${formatDateTime(goldenHourBeginAsc, noon)}</td>
             <td>${formatDateTime(goldenHourEndAsc, noon)}</td>
@@ -159,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 latitudeInput.value = position.coords.latitude.toFixed(4);
                 longitudeInput.value = position.coords.longitude.toFixed(4);
                 altitudeInput.value = position.coords.altitude ? position.coords.altitude.toFixed(0) : '0';
-                triggerRefresh();
+                updateEphemeris();
             }, error => {
                 alert('Error getting location: ' + error.message);
             });
@@ -171,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setCurrentDate() {
         const now = new Date();
         dateInput.value = now.toISOString().slice(0, 10);
-        triggerRefresh();
+        updateEphemeris();
     }
 
     function triggerRefresh() {
@@ -182,12 +184,11 @@ document.addEventListener('DOMContentLoaded', function() {
     latitudeInput.addEventListener('input', triggerRefresh);
     longitudeInput.addEventListener('input', triggerRefresh);
     altitudeInput.addEventListener('input', triggerRefresh);
-    dateInput.addEventListener('input', triggerRefresh);
+    dateInput.addEventListener('input', updateEphemeris);
 
     currentLocationButton.addEventListener('click', setCurrentLocation);
     currentDateButton.addEventListener('click', setCurrentDate);
 
     // Initialize with current date
     setCurrentDate();
-    updateEphemeris();
 });
