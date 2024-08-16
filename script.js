@@ -154,8 +154,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const observer = new Astronomy.Observer(latitude, longitude, 0.0);
 
         // Set the time to noon
+        const { DateTime } = luxon;
         const selectedDate = new Date(dateInput.value);
-        const noon = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12);
+        const timeZone = tzlookup(latitude, longitude);
+        const noon = DateTime.fromObject({
+            year: selectedDate.getFullYear(),
+            month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
+            day: selectedDate.getDate(),
+            hour: 12},
+            {zone: timeZone}
+        ).toJSDate();
 
         const limitDays = 300; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];

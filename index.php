@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <title>Solar System Ephemeris</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.min.js"></script>
     <script src="astronomy.browser.min.js"></script>
     <script src="script.js" defer></script>
     <link rel="manifest" href="manifest.json">
