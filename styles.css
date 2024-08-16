@@ -24,6 +24,10 @@ h1 {
     margin-right: 20px;
 }
 
+input.invalid {
+    background-color: #FFADB0;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

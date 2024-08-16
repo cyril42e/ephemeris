@@ -16,7 +16,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function validateInputs() {
+        let valid = true;
+
+        if (latitudeInput.value < -90 || latitudeInput.value > 90 || latitudeInput.value === '') {
+            latitudeInput.classList.add('invalid');
+            valid = false;
+        } else {
+            latitudeInput.classList.remove('invalid');
+        }
+
+        if (longitudeInput.value < -180 || longitudeInput.value > 180 || longitudeInput.value === '') {
+            longitudeInput.classList.add('invalid');
+            valid = false;
+        } else {
+            longitudeInput.classList.remove('invalid');
+        }
+
+        if (altitudeInput.value === '') {
+            altitudeInput.classList.add('invalid');
+            valid = false;
+        } else {
+            altitudeInput.classList.remove('invalid');
+        }
+
+        if (dateInput.value === '') {
+            dateInput.classList.add('invalid');
+            valid = false;
+        } else {
+            dateInput.classList.remove('invalid');
+        }
+
+        return valid;
+    }
+
     function updateEphemeris() {
+        if (!validateInputs()) return;
+
         const latitude = parseFloat(latitudeInput.value);
         const longitude = parseFloat(longitudeInput.value);
         const altitude = parseFloat(altitudeInput.value);
