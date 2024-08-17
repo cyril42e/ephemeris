@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const civilTwilightMr = (sunRise-civilDawn)/60000;
         const civilTwilightM = Math.min(civilTwilightMr, maxDuration);
         const blueHourM = ((goldenHourBeginAsc-blueHourBeginAsc)/60000) * civilTwilightM / civilTwilightMr; // scale like civilTwilight
-        const goldenHourM = (goldenHourEndAsc-goldenHourBeginAsc)/60000 * civilTwilightM / civilTwilightMr; // scale like civilTwilight
+        const goldenHourM = Math.min((goldenHourEndAsc-goldenHourBeginAsc)/60000, maxDuration);
 
         const morningPeriodsTop = [
             {name: '', class: 'night', duration: dashDuration},
@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const civilTwilightEr = (civilDusk-sunSet)/60000;
         const civilTwilightE = Math.min(civilTwilightEr, maxDuration);
         const blueHourE = ((blueHourEndDesc-blueHourBeginDesc)/60000) * civilTwilightE / civilTwilightEr; // scale like civilTwilight
-        const goldenHourE = (blueHourBeginDesc-goldenHourBeginDesc)/60000 * civilTwilightE / civilTwilightEr; // scale like civilTwilight
+        const goldenHourE = Math.min((blueHourBeginDesc-goldenHourBeginDesc)/60000, maxDuration);
         const sunSetE = extremitiesDuration+goldenHourE+blueHourE-civilTwilightE;
 
         const eveningPeriodsTop = [
