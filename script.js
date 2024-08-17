@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {zone: timeZone}
         ).toJSDate();
 
-        const limitDays = 300; // Search within a wide range to handle polar regions
+        const limitDays = 3000; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
         const sunBlueGoldenHourRow = document.getElementById('sun-blue-golden-hour-row');
@@ -328,11 +328,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, noon).phase_fraction * 100).toFixed(0)}%`;
 
             // Calculate rise and set times
-            const riseTime = Astronomy.SearchRiseSet(objectName, observer, +1, noon, -limitDays).date;
-            const setTime = Astronomy.SearchRiseSet(objectName, observer, -1, noon, limitDays).date;
+            const rise = Astronomy.SearchRiseSet(objectName, observer, +1, noon, -limitDays);
+            if (rise === null) { console.log('No rise found for ' + objectName); return; }
+            const riseTime = rise.date;
+            const set = Astronomy.SearchRiseSet(objectName, observer, -1, noon, limitDays);
+            if (set === null) { console.log('No set found for ' + objectName); return; }
+            const setTime = set.date;
 
             // Calculate transit time
             const transit = Astronomy.SearchHourAngle(objectName, observer, 0, noon);
+            if (transit === null) { console.log('No transit found for ' + objectName); return; }
             const transitTime = transit.time.date;
 
             // Calculate azimuth and altitude
