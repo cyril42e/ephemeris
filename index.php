@@ -33,10 +33,10 @@
             </div>
 
             <label for="latitude">Latitude:</label>
-            <input type="number" id="latitude" step="5.0" value="48.8566">
+            <input type="number" id="latitude" step="1.0" value="48.8566">
 
             <label for="longitude">Longitude:</label>
-            <input type="number" id="longitude" step="5.0" value="2.3522">
+            <input type="number" id="longitude" step="1.0" value="2.3522">
 
             <button id="current-location">Current Location</button>
         </div>

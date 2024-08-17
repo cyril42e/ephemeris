@@ -253,25 +253,29 @@ document.addEventListener('DOMContentLoaded', function() {
         let blueHourM = ((goldenHourBeginAsc-blueHourBeginAsc)/60000) * civilTwilightM / civilTwilightMr; // scale like civilTwilight
         let goldenHourM = Math.min((goldenHourEndAsc-goldenHourBeginAsc)/60000, maxDuration);
 
-        let dashM = 'night';
+        let dashTM = 'night';
+        let dashBLM = 'invisible';
+        let dashBRM = 'invisible';
         if (dayDistance(astronomicalDawn, noon) > 1) {
             nightM = 0;
             astronomicalTwilightM = extDuration;
             offsetM = extDuration;
-            dashM = 'astronomical-twilight';
+            dashTM = 'astronomical-twilight';
             if (dayDistance(nauticalDawn, noon) > 1) {
                 astronomicalTwilightM = 0;
                 nauticalTwilightM = extDuration;
-                dashM = 'nautical-twilight'
+                dashTM = 'nautical-twilight'
                 if (dayDistance(civilDawn, noon) > 1) {
                     nauticalTwilightM = 0;
                     civilTwilightM = extDuration;
-                    dashM = 'civil-twilight'
+                    dashTM = 'civil-twilight'
+                    dashBLM = 'blue-hour'
                     if (dayDistance(goldenHourBeginAsc, noon) > 1) {
                         blueHourM = 0;
+                        dashBLM = 'golden-hour'
                         if (dayDistance(sunRise, noon) > 1) {
                             civilTwilightM = 0;
-                            dashM = 'day'
+                            dashTM = 'day'
                             if (dayDistance(goldenHourEndAsc, noon) > 1) {
                                 goldenHourM = 0;
                             }
@@ -291,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const goldenHourEndM = goldenHourStartM + goldenHourM;
 
         const morningPeriodsTop = [
-            {name: '', class: dashM, duration: dashDuration},
+            {name: '', class: dashTM, duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: 'Night', class: 'night', duration: nightM},
             {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightM},
@@ -306,8 +310,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const validRangeM = [dashDuration + holeDuration, morningTotalDuration - dashDuration - holeDuration];
 
         const morningPeriodsBottom = [
+            {name: '', class: dashBLM, start: 0, duration: dashDuration},
             {name: 'Blue Hour', class: 'blue-hour', start: blueHourStartM, duration: blueHourM},
-            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartM, duration: goldenHourM}
+            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartM, duration: goldenHourM},
+            {name: '', class: dashBRM, start: morningTotalDuration - holeDuration - dashDuration*2, duration: dashDuration}
         ];
 
         const morningPointsTop = [
@@ -334,6 +340,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let goldenHourE = Math.min((blueHourBeginDesc-goldenHourBeginDesc)/60000, maxDuration);
 
         let dashE = 'night';
+        let dashBLE = 'invisible';
+        let dashBRE = 'invisible';
         if (dayDistance(astronomicalDusk, noon) > 1) {
             nightE = 0;
             astronomicalTwilightE = extDuration;
@@ -346,8 +354,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     nauticalTwilightE = 0;
                     civilTwilightE = extDuration;
                     dashE = 'civil-twilight'
+                    dashBRE = 'blue-hour'
                     if (dayDistance(blueHourBeginDesc, noon) > 1) {
                         blueHourE = 0;
+                        dashBRE = 'golden-hour'
                         if (dayDistance(sunSet, noon) > 1) {
                             civilTwilightE = 0;
                             dashE = 'day'
@@ -385,8 +395,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const validRangeE = [dashDuration + holeDuration, eveningTotalDuration - dashDuration - holeDuration];
 
         const eveningPeriodsBottom = [
+            {name: '', class: dashBLE, start: dashDuration + holeDuration, duration: dashDuration},
             {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartE, duration: goldenHourE},
-            {name: 'Blue Hour', class: 'blue-hour', start: goldenHourEndE, duration: blueHourE}
+            {name: 'Blue Hour', class: 'blue-hour', start: goldenHourEndE, duration: blueHourE},
+            {name: '', class: dashBRE, start: eveningTotalDuration - dashDuration, duration: dashDuration}
         ];
 
         const eveningPointsTop = [
