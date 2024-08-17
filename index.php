@@ -17,6 +17,11 @@
 <div class="page">
     <div class="title">
         <h1>Solar System Ephemeris</h1>
+        <div class="links">
+            <a href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
+            <a href="https://github.com/cyril42e/ephemeris">Source Code</a><br/>
+            <a href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/>
+        </div>
     </div>
 
     <div class="controls">

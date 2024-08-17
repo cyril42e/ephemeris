@@ -1,24 +1,37 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
+    margin-top: 0px;
     background-color: #f4f4f9;
     color: #333;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-.title {
-    padding-bottom: 1px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .page {
     padding: 0px;
 }
 
+.title {
+    display: flex;
+    justify-content: center; /* Center the title */
+    align-items: center; /* Vertically center items */
+    position: relative; /* Position relative for absolute positioning of links */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.title h1 {
+    margin: 0;
+    flex: 1; /* Allow the title to take up available space */
+    text-align: center;
+    color: #333;
+}
+.title .links {
+    position: absolute;
+    right: 20px; /* Align links to the right */
+}
+.title .links a {
+    text-decoration: none;
+    color: #007bff;
+}
 
 /*******************************/
 /* Controls */
