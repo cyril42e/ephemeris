@@ -4,6 +4,9 @@ function createTimePeriodsTop(containerId, data) {
     let totalDuration = data.reduce((sum, item) => sum + item.duration, 0);
 
     data.forEach(item => {
+        if (item.duration == 0) {
+            return;
+        }
         const period = document.createElement('div');
         period.className = `period ${item.class}`;
         period.style.width = `${(item.duration / totalDuration) * 100}%`;
@@ -16,6 +19,9 @@ function createTimePeriodsBottom(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
     data.forEach(item => {
+        if (item.duration == 0) {
+            return;
+        }
         const period = document.createElement('div');
         period.className = `period ${item.class}`;
         period.style.position = 'absolute';
@@ -32,6 +38,9 @@ function createTimePoints(containerId, points, totalDuration, top) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
     points.forEach(point => {
+        if (point.position <= point.range[0] || point.position >= point.range[1]) {
+            return;
+        }
         const timePoint = document.createElement('div');
         timePoint.className = `time-point ${point.class}`;
         timePoint.innerHTML = top ? point.name + '<br/><b>' + point.time + '</b>' : '<b>' + point.time + '</b></br>' + point.name;
@@ -66,10 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const suggestionsDiv = document.getElementById('suggestions');
     let refreshTimeout;
 
+    function dayDistance(eventDate, referenceDate) {
+        return Math.abs((eventDate - referenceDate) / (1000 * 60 * 60 * 24));
+    }
+
     function formatDateTime(eventDate, referenceDate) {
-        const dayDifference = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
+        const dayDist = dayDistance(eventDate, referenceDate);
         const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        if (Math.abs(dayDifference) > 1) {
+        if (dayDist > 1) {
             const date = eventDate.toISOString().slice(0, 10);
             return date + '\n' + time;
         } else {
@@ -227,89 +240,167 @@ document.addEventListener('DOMContentLoaded', function() {
         const extremitiesDuration = 20;
         const dashDuration = 3;
         const holeDuration = 1;
+        const extDuration = extremitiesDuration - holeDuration - dashDuration;
         const maxDuration = 120;
 
         // Morning timeline data
-        const astronomicalTwilightM = Math.min((nauticalDawn-astronomicalDawn)/60000, maxDuration);
-        const nauticalTwilightM = Math.min((civilDawn-nauticalDawn)/60000, maxDuration);
-        const civilTwilightMr = (sunRise-civilDawn)/60000;
-        const civilTwilightM = Math.min(civilTwilightMr, maxDuration);
-        const blueHourM = ((goldenHourBeginAsc-blueHourBeginAsc)/60000) * civilTwilightM / civilTwilightMr; // scale like civilTwilight
-        const goldenHourM = Math.min((goldenHourEndAsc-goldenHourBeginAsc)/60000, maxDuration);
+        let offsetM = 0;
+        let nightM = extDuration;
+        let astronomicalTwilightM = Math.min((nauticalDawn-astronomicalDawn)/60000, maxDuration);
+        let nauticalTwilightM = Math.min((civilDawn-nauticalDawn)/60000, maxDuration);
+        let civilTwilightMr = (sunRise-civilDawn)/60000;
+        let civilTwilightM = Math.min(civilTwilightMr, maxDuration);
+        let blueHourM = ((goldenHourBeginAsc-blueHourBeginAsc)/60000) * civilTwilightM / civilTwilightMr; // scale like civilTwilight
+        let goldenHourM = Math.min((goldenHourEndAsc-goldenHourBeginAsc)/60000, maxDuration);
+
+        let dashM = 'night';
+        if (dayDistance(astronomicalDawn, noon) > 1) {
+            nightM = 0;
+            astronomicalTwilightM = extDuration;
+            offsetM = extDuration;
+            dashM = 'astronomical-twilight';
+            if (dayDistance(nauticalDawn, noon) > 1) {
+                astronomicalTwilightM = 0;
+                nauticalTwilightM = extDuration;
+                dashM = 'nautical-twilight'
+                if (dayDistance(civilDawn, noon) > 1) {
+                    nauticalTwilightM = 0;
+                    civilTwilightM = extDuration;
+                    dashM = 'civil-twilight'
+                    if (dayDistance(goldenHourBeginAsc, noon) > 1) {
+                        blueHourM = 0;
+                        if (dayDistance(sunRise, noon) > 1) {
+                            civilTwilightM = 0;
+                            dashM = 'day'
+                            if (dayDistance(goldenHourEndAsc, noon) > 1) {
+                                goldenHourM = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        const dayM = goldenHourM + blueHourM - civilTwilightM + extDuration - holeDuration - dashDuration;
+        const astronomicalDawnM = extremitiesDuration - offsetM;
+        const nauticalDawnM = astronomicalDawnM + astronomicalTwilightM;
+        const civilDawnM = nauticalDawnM + nauticalTwilightM;
+        const sunRiseM = civilDawnM + civilTwilightM;
+        const blueHourStartM = civilDawnM;
+        const goldenHourStartM = civilDawnM + blueHourM;
+        const goldenHourEndM = goldenHourStartM + goldenHourM;
 
         const morningPeriodsTop = [
-            {name: '', class: 'night', duration: dashDuration},
+            {name: '', class: dashM, duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
+            {name: 'Night', class: 'night', duration: nightM},
             {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightM},
             {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightM},
             {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightM},
-            {name: 'Day', class: 'day', duration: goldenHourM+blueHourM-civilTwilightM + extremitiesDuration - holeDuration*2 - dashDuration*2},
+            {name: 'Day', class: 'day', duration: dayM},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: '', class: 'day', duration: dashDuration},
-            {name: '', class: 'invisible', duration: dashDuration+holeDuration}
+            {name: '', class: 'invisible', duration: dashDuration + holeDuration}
         ];
+        const morningTotalDuration = morningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
+        const validRangeM = [dashDuration + holeDuration, morningTotalDuration - dashDuration - holeDuration];
 
         const morningPeriodsBottom = [
-            {name: 'Blue Hour', class: 'blue-hour', start: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, duration: blueHourM},
-            {name: 'Golden Hour', class: 'golden-hour', start: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM, duration: goldenHourM}
+            {name: 'Blue Hour', class: 'blue-hour', start: blueHourStartM, duration: blueHourM},
+            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartM, duration: goldenHourM}
         ];
 
         const morningPointsTop = [
-            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: extremitiesDuration, arrow: 'center'},
-            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: extremitiesDuration+astronomicalTwilightM, arrow: 'center'},
-            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, arrow: 'center'},
-            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+civilTwilightM, arrow: 'center'}
+            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: astronomicalDawnM, arrow: 'center', range: validRangeM},
+            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: nauticalDawnM, arrow: 'center', range: validRangeM},
+            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: civilDawnM, arrow: 'center', range: validRangeM},
+            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: sunRiseM, arrow: 'center', range: validRangeM}
         ];
 
         const morningPointsBottom = [
-            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM, arrow: 'right'},
-            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM, arrow: 'left'},
-            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: extremitiesDuration+astronomicalTwilightM+nauticalTwilightM+blueHourM+goldenHourM, arrow: 'center'}
+            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: blueHourStartM, arrow: 'right', range: validRangeM},
+            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: goldenHourStartM, arrow: 'left', range: validRangeM},
+            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: goldenHourEndM, arrow: 'center', range: validRangeM}
         ];
 
         // Evening timeline data
-        const astronomicalTwilightE = Math.min((astronomicalDusk-nauticalDusk)/60000, maxDuration);
-        const nauticalTwilightE = Math.min((nauticalDusk-civilDusk)/60000, maxDuration);
-        const civilTwilightEr = (civilDusk-sunSet)/60000;
-        const civilTwilightE = Math.min(civilTwilightEr, maxDuration);
-        const blueHourE = ((blueHourEndDesc-blueHourBeginDesc)/60000) * civilTwilightE / civilTwilightEr; // scale like civilTwilight
-        const goldenHourE = Math.min((blueHourBeginDesc-goldenHourBeginDesc)/60000, maxDuration);
-        const sunSetE = extremitiesDuration+goldenHourE+blueHourE-civilTwilightE;
+        let offsetE = 0;
+        let nightE = extDuration;
+        let astronomicalTwilightE = Math.min((astronomicalDusk-nauticalDusk)/60000, maxDuration);
+        let nauticalTwilightE = Math.min((nauticalDusk-civilDusk)/60000, maxDuration);
+        let civilTwilightEr = (civilDusk-sunSet)/60000;
+        let civilTwilightE = Math.min(civilTwilightEr, maxDuration);
+        let blueHourE = ((blueHourEndDesc-blueHourBeginDesc)/60000) * civilTwilightE / civilTwilightEr; // scale like civilTwilight
+        let goldenHourE = Math.min((blueHourBeginDesc-goldenHourBeginDesc)/60000, maxDuration);
+
+        let dashE = 'night';
+        if (dayDistance(astronomicalDusk, noon) > 1) {
+            nightE = 0;
+            astronomicalTwilightE = extDuration;
+            dashE = 'astronomical-twilight';
+            if (dayDistance(nauticalDusk, noon) > 1) {
+                astronomicalTwilightE = 0;
+                nauticalTwilightE = extDuration;
+                dashE = 'nautical-twilight'
+                if (dayDistance(civilDusk, noon) > 1) {
+                    nauticalTwilightE = 0;
+                    civilTwilightE = extDuration;
+                    dashE = 'civil-twilight'
+                    if (dayDistance(blueHourBeginDesc, noon) > 1) {
+                        blueHourE = 0;
+                        if (dayDistance(sunSet, noon) > 1) {
+                            civilTwilightE = 0;
+                            dashE = 'day'
+                            if (dayDistance(goldenHourBeginDesc, noon) > 1) {
+                                goldenHourE = 0;
+                                offsetE = extDuration;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        const goldenHourStartE = extremitiesDuration - offsetE;
+        const goldenHourEndE = goldenHourStartE + goldenHourE;
+        const civilDuskE = goldenHourEndE + blueHourE;
+        const nauticalDuskE = civilDuskE + nauticalTwilightE;
+        const astronomicalDuskE = nauticalDuskE + astronomicalTwilightE;
+        const sunSetE = civilDuskE - civilTwilightE;
+        const dayE = sunSetE - holeDuration*2 - dashDuration*2;
 
         const eveningPeriodsTop = [
-            {name: '', class: 'invisible', duration: dashDuration+holeDuration},
+            {name: '', class: 'invisible', duration: dashDuration + holeDuration},
             {name: '', class: 'day', duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: 'Day', class: 'day', duration: sunSetE - holeDuration*2 - dashDuration*2},
+            {name: 'Day', class: 'day', duration: dayE},
             {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightE},
             {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightE},
             {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightE},
-            {name: 'Night', class: 'night', duration: extremitiesDuration - holeDuration - dashDuration},
+            {name: 'Night', class: 'night', duration: nightE},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: '', class: 'night', duration: dashDuration}
+            {name: '', class: dashE, duration: dashDuration}
         ];
+        const eveningTotalDuration = eveningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
+        const validRangeE = [dashDuration + holeDuration, eveningTotalDuration - dashDuration - holeDuration];
 
         const eveningPeriodsBottom = [
-            {name: 'Golden Hour', class: 'golden-hour', start: extremitiesDuration, duration: goldenHourE},
-            {name: 'Blue Hour', class: 'blue-hour', start: extremitiesDuration+goldenHourE, duration: blueHourE}
+            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartE, duration: goldenHourE},
+            {name: 'Blue Hour', class: 'blue-hour', start: goldenHourEndE, duration: blueHourE}
         ];
 
         const eveningPointsTop = [
-            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: sunSetE, arrow: 'center'},
-            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: sunSetE+civilTwilightE, arrow: 'center'},
-            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: sunSetE+civilTwilightE+nauticalTwilightE, arrow: 'center'},
-            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: sunSetE+civilTwilightE+nauticalTwilightE+astronomicalTwilightE, arrow: 'center'}
+            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: sunSetE, arrow: 'center', range: validRangeE},
+            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: civilDuskE, arrow: 'center', range: validRangeE},
+            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: nauticalDuskE, arrow: 'center', range: validRangeE},
+            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: astronomicalDuskE, arrow: 'center', range: validRangeE}
         ];
 
         const eveningPointsBottom = [
-            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: extremitiesDuration, arrow: 'center'},
-            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: extremitiesDuration+goldenHourE, arrow: 'right'},
-            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: extremitiesDuration+goldenHourE+blueHourE, arrow: 'left'}
+            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: goldenHourStartE, arrow: 'center', range: validRangeE},
+            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: goldenHourEndE, arrow: 'right', range: validRangeE},
+            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: civilDuskE, arrow: 'left', range: validRangeE}
         ];
-
-        const morningTotalDuration = morningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
-        const eveningTotalDuration = eveningPeriodsTop.reduce((sum, item) => sum + item.duration, 0);
 
         createTimePeriodsTop('morning-periods-top', morningPeriodsTop);
         createTimePeriodsBottom('morning-periods-bottom', morningPeriodsBottom, morningTotalDuration);

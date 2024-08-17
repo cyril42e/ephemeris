@@ -51,7 +51,8 @@ Setting the date can also be done in multiple ways:
 
 ### Interpretation
 
-The date is interpreted in the time zone corresponding to the input location. So if you want the ephemeris for the 2024-08-16 in Paris,
+The date is interpreted in the time zone corresponding to the input location (it is necessary to have consistent sunrise and sunset corresponding to the same day).
+So if you want the ephemeris for the 2024-08-16 in Paris,
 you will get the sunrise for this day in Paris time zone, and the sunset for this day in Paris time zone, even if you are in San Francisco
 where it will still be the 2024-08-15 when the sun rises in Paris.
 
