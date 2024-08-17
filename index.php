@@ -28,7 +28,7 @@
         <div class="position-controls">
             <div class="address-container">
                 <label for="address">Address:</label>
-                <input type="text" id="address" autocomplete="off" value="Paris">
+                <input type="text" id="address" autocomplete="off" value="Paris, France">
                 <div id="suggestions"></div>
             </div>
 
@@ -45,7 +45,7 @@
             <label for="date">Date:</label>
             <button id="decrease-date"><</button>
             <input type="text" id="date">
-            <script>flatpickr("#date", {dateFormat: "Y-m-d"});</script>
+            <script>flatpickr("#date", {dateFormat: "Y-m-d", disableMobile: "true"});</script>
             <button id="increase-date">></button>
 
             <button id="current-date">Current Date</button>
