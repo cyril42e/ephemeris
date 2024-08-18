@@ -191,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         noon = transit; // now the solar noon, in order to ensure symmetry
 
-
         const limitDays = 3000; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
@@ -547,9 +546,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const setTime = set.date;
 
             // Calculate transit time
-            const transit = Astronomy.SearchHourAngle(objectName, observer, 0, riseTime, +1);
-            if (transit === null) { console.log('No transit found for ' + objectName); return; }
-            const transitTime = transit.time.date;
+            let transitTime;
+            if (objectName === 'Sun') {
+                transitTime = transit; // get the closest to civil noon, already done above
+            } else {
+                const transit = Astronomy.SearchHourAngle(objectName, observer, 0, riseTime, +1);
+                if (transit === null) { console.log('No transit found for ' + objectName); return; }
+                transitTime = transit.time.date;
+            }
 
             // Calculate azimuth and altitude
             const riseEquator = Astronomy.Equator(objectName, riseTime, observer, true, true);
