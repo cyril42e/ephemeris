@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const setTime = set.date;
 
             // Calculate transit time
-            const transit = Astronomy.SearchHourAngle(objectName, observer, 0, noon);
+            const transit = Astronomy.SearchHourAngle(objectName, observer, 0, riseTime, +1);
             if (transit === null) { console.log('No transit found for ' + objectName); return; }
             const transitTime = transit.time.date;
 

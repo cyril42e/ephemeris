@@ -55,6 +55,7 @@ The date is interpreted in the time zone corresponding to the input location (it
 So if you want the ephemeris for the 2024-08-16 in Paris,
 you will get the sunrise for this day in Paris time zone, and the sunset for this day in Paris time zone, even if you are in San Francisco
 where it will still be the 2024-08-15 when the sun rises in Paris.
+For the Moon and planets, only the rise time is guaranteed to be the requested day, transit and set time may be the following day.
 
 However the displayed timepoints are always provided in the time zone configured in the device with which you are loading the page.
 Thus in our example if you are in San Francisco, you won't see that the sun rises at 06:45 Paris time in Paris, but at 21:45 San Francisco time,
