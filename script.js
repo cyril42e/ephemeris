@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         if (dayDist >= 1) {
             if (showDate) {
-                const date = eventDate.toISOString().slice(0, 10);
+                const date = eventDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
                 return date + '\n' + time;
             } else {
                 return '';
@@ -174,7 +174,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const { DateTime } = luxon;
         const selectedDate = new Date(dateInput.value);
         const timeZone = tzlookup(latitude, longitude);
-        let noon = DateTime.fromObject({
+        const civil00h = DateTime.fromObject({
+            year: selectedDate.getFullYear(),
+            month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
+            day: selectedDate.getDate()},
+            {zone: timeZone}
+        ).toJSDate();
+        const civil24h = DateTime.fromObject({
+            year: selectedDate.getFullYear(),
+            month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
+            day: selectedDate.getDate(),
+            hour: 24},
+            {zone: timeZone}
+        ).toJSDate();
+        const civilNoon = DateTime.fromObject({
             year: selectedDate.getFullYear(),
             month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
             day: selectedDate.getDate(),
@@ -183,13 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
         ).toJSDate();
 
         // Calculate transit time
-        const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, noon, +1).time.date;
-        const transitBefore = Astronomy.SearchHourAngle('Sun', observer, 0, noon, -1).time.date;
+        const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, +1).time.date;
+        const transitBefore = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, -1).time.date;
         let transit = transitAfter;
-        if (dayDistance(transitBefore, noon) < dayDistance(transitAfter, noon)) {
+        if (dayDistance(transitBefore, civilNoon) < dayDistance(transitAfter, civilNoon)) {
             transit = transitBefore;
         }
-        noon = transit; // now the solar noon, in order to ensure symmetry
+        const solarNoon = transit; // use the solar noon when symmetry is required
 
         const limitDays = 3000; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
@@ -202,52 +215,52 @@ document.addEventListener('DOMContentLoaded', function() {
         tableBody.innerHTML = ''; // Clear previous ephemeris data
 
         // Calculate dawn and dusk times for the Sun
-        const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -18).date;
-        const nauticalDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -12).date;
-        const civilDawn = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -6).date;
-        const civilDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -6).date;
-        const nauticalDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -12).date;
-        const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -18).date;
+        const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -18).date;
+        const nauticalDawn = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -12).date;
+        const civilDawn = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -6).date;
+        const civilDusk = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -6).date;
+        const nauticalDusk = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -12).date;
+        const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -18).date;
 
         // Add Sun dawn and dusk row
         const sunDawnDuskRowContent = document.createElement('tr');
         sunDawnDuskRowContent.innerHTML = `
             <td>Sun</td>
             <td></td>
-            <td>${formatDateTime(astronomicalDawn, noon)}</td>
-            <td>${formatDateTime(nauticalDawn, noon)}</td>
-            <td>${formatDateTime(civilDawn, noon)}</td>
-            <td>${formatDateTime(civilDusk, noon)}</td>
-            <td>${formatDateTime(nauticalDusk, noon)}</td>
-            <td>${formatDateTime(astronomicalDusk, noon)}</td>
+            <td>${formatDateTime(astronomicalDawn, solarNoon)}</td>
+            <td>${formatDateTime(nauticalDawn, solarNoon)}</td>
+            <td>${formatDateTime(civilDawn, solarNoon)}</td>
+            <td>${formatDateTime(civilDusk, solarNoon)}</td>
+            <td>${formatDateTime(nauticalDusk, solarNoon)}</td>
+            <td>${formatDateTime(astronomicalDusk, solarNoon)}</td>
         `;
         sunDawnDuskRow.appendChild(sunDawnDuskRowContent);
 
         // Calculate blue and golden hour times for the Sun
-        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -6).date;
-        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, -4).date;
-        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, noon, -limitDays, 6).date;
-        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, 6).date;
-        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -4).date;
-        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, noon, limitDays, -6).date;
+        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -6).date;
+        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -4).date;
+        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, 6).date;
+        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, 6).date;
+        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -4).date;
+        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -6).date;
 
         // Add Sun blue and golden hour row
         const sunBlueGoldenHourRowContent = document.createElement('tr');
         sunBlueGoldenHourRowContent.innerHTML = `
             <td>Sun</td>
             <td></td>
-            <td>${formatDateTime(blueHourBeginAsc, noon)}</td>
-            <td>${formatDateTime(goldenHourBeginAsc, noon)}</td>
-            <td>${formatDateTime(goldenHourEndAsc, noon)}</td>
-            <td>${formatDateTime(goldenHourBeginDesc, noon)}</td>
-            <td>${formatDateTime(blueHourBeginDesc, noon)}</td>
-            <td>${formatDateTime(blueHourEndDesc, noon)}</td>
+            <td>${formatDateTime(blueHourBeginAsc, solarNoon)}</td>
+            <td>${formatDateTime(goldenHourBeginAsc, solarNoon)}</td>
+            <td>${formatDateTime(goldenHourEndAsc, solarNoon)}</td>
+            <td>${formatDateTime(goldenHourBeginDesc, solarNoon)}</td>
+            <td>${formatDateTime(blueHourBeginDesc, solarNoon)}</td>
+            <td>${formatDateTime(blueHourEndDesc, solarNoon)}</td>
         `;
         sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
 
         // Compute Sun rise and set time
-        const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, noon, -limitDays).date;
-        const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, noon, limitDays).date;
+        const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, solarNoon, -limitDays).date;
+        const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, solarNoon, limitDays).date;
 
         const transitEquator = Astronomy.Equator('Sun', transit, observer, true, true);
         const transitHorizon = Astronomy.Horizon(transit, observer, transitEquator.ra, transitEquator.dec, 'normal');
@@ -276,27 +289,27 @@ document.addEventListener('DOMContentLoaded', function() {
         let dashBLM = 'invisible'; // Bottom Left Morning
         let dashBRM = 'invisible'; // Bottom Left Morning
         // check for missing periods when day is longer
-        if (peakElevation > 0 && dayDistance(astronomicalDawn, noon) > dayThreshold) {
+        if (peakElevation > 0 && dayDistance(astronomicalDawn, solarNoon) > dayThreshold) {
             nightM = 0;
             astronomicalTwilightM = extDuration;
             offsetM = extDuration;
             dashTLM = 'astronomical-twilight';
-            if (dayDistance(nauticalDawn, noon) > dayThreshold) {
+            if (dayDistance(nauticalDawn, solarNoon) > dayThreshold) {
                 astronomicalTwilightM = 0;
                 nauticalTwilightM = extDuration;
                 dashTLM = 'nautical-twilight'
-                if (dayDistance(civilDawn, noon) > dayThreshold) {
+                if (dayDistance(civilDawn, solarNoon) > dayThreshold) {
                     nauticalTwilightM = 0;
                     civilTwilightM = extDuration;
                     dashTLM = 'civil-twilight'
                     dashBLM = 'blue-hour'
-                    if (dayDistance(goldenHourBeginAsc, noon) > dayThreshold) {
+                    if (dayDistance(goldenHourBeginAsc, solarNoon) > dayThreshold) {
                         blueHourM = 0;
                         dashBLM = 'golden-hour'
-                        if (dayDistance(sunRise, noon) > dayThreshold) {
+                        if (dayDistance(sunRise, solarNoon) > dayThreshold) {
                             civilTwilightM = 0;
                             dashTLM = 'day'
-                            if (dayDistance(goldenHourEndAsc, noon) > dayThreshold) {
+                            if (dayDistance(goldenHourEndAsc, solarNoon) > dayThreshold) {
                                 goldenHourM = 0;
                                 dashBLM = 'invisible';
                             }
@@ -312,34 +325,34 @@ document.addEventListener('DOMContentLoaded', function() {
         let offsetDM = 0; // Day Morning
         // check for missing periods when night is longer
         // fixme peakElevation threshold justification is not clear
-        if (peakElevation < 6+2 && dayDistance(goldenHourEndAsc, noon) > dayThreshold) {
+        if (peakElevation < 6+2 && dayDistance(goldenHourEndAsc, solarNoon) > dayThreshold) {
             goldenHourM = civilTwilightM - blueHourM + extDuration;
             dayM = goldenHourM + blueHourM - civilTwilightM;
             dashBRM = 'golden-hour'
-            if (dayDistance(sunRise, noon) > dayThreshold) {
+            if (dayDistance(sunRise, solarNoon) > dayThreshold) {
                 dayM = 0;
                 civilTwilightM = blueHourM + extDuration;
                 dashTRM = 'civil-twilight';
                 goldenHourM = extDuration;
                 dashBRM = 'golden-hour';
-                if (dayDistance(goldenHourBeginAsc, noon) > dayThreshold) {
+                if (dayDistance(goldenHourBeginAsc, solarNoon) > dayThreshold) {
                     goldenHourM = 0;
                     civilTwilightM = extDuration;
                     blueHourM = extDuration;
                     dashBRM = 'blue-hour';
-                    if (dayDistance(civilDawn, noon) > dayThreshold) {
+                    if (dayDistance(civilDawn, solarNoon) > dayThreshold) {
                         civilTwilightM = 0;
                         blueHourM = 0;
                         nauticalTwilightM = extDuration;
                         dashTRM = 'nautical-twilight'
                         dashBRM = 'invisible';
-                        if (dayDistance(nauticalDawn, noon) > dayThreshold) {
+                        if (dayDistance(nauticalDawn, solarNoon) > dayThreshold) {
                             nauticalTwilightM = 0;
                             astronomicalTwilightM = maxDuration;
                             offsetM = -maxDuration + extDuration;
                             nightM = maxDuration;
                             dashTRM = 'astronomical-twilight'
-                            if (dayDistance(astronomicalDawn, noon) > dayThreshold) {
+                            if (dayDistance(astronomicalDawn, solarNoon) > dayThreshold) {
                                 astronomicalTwilightM = 0;
                                 nightM = maxDuration*2;
                                 dashTRM = 'night'
@@ -380,16 +393,16 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const morningPointsTop = [
-            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, noon), class: '', position: astronomicalDawnM, arrow: 'center'},
-            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, noon), class: '', position: nauticalDawnM, arrow: 'center'},
-            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, noon), class: '', position: civilDawnM, arrow: 'center'},
-            {name: 'Sun\nRise', time: formatDateTime(sunRise, noon), class: 'sun-event', position: sunRiseM, arrow: 'center'}
+            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, solarNoon), class: '', position: astronomicalDawnM, arrow: 'center'},
+            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, solarNoon), class: '', position: nauticalDawnM, arrow: 'center'},
+            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, solarNoon), class: '', position: civilDawnM, arrow: 'center'},
+            {name: 'Sun\nRise', time: formatDateTime(sunRise, solarNoon), class: 'sun-event', position: sunRiseM, arrow: 'center'}
         ];
 
         const morningPointsBottom = [
-            {name: '', time: formatDateTime(blueHourBeginAsc, noon), class: '', position: blueHourStartM, arrow: 'right'},
-            {name: '', time: formatDateTime(goldenHourBeginAsc, noon), class: '', position: goldenHourStartM, arrow: 'left'},
-            {name: '', time: formatDateTime(goldenHourEndAsc, noon), class: '', position: goldenHourEndM, arrow: 'center'}
+            {name: '', time: formatDateTime(blueHourBeginAsc, solarNoon), class: '', position: blueHourStartM, arrow: 'right'},
+            {name: '', time: formatDateTime(goldenHourBeginAsc, solarNoon), class: '', position: goldenHourStartM, arrow: 'left'},
+            {name: '', time: formatDateTime(goldenHourEndAsc, solarNoon), class: '', position: goldenHourEndM, arrow: 'center'}
         ];
 
         // Evening timeline data
@@ -407,26 +420,26 @@ document.addEventListener('DOMContentLoaded', function() {
         let dashBLE = 'invisible'; // Bottom Left Evening
         let dashBRE = 'invisible'; // Bottom Right Evening
         // check for missing periods when day is longer
-        if (peakElevation > 0 && dayDistance(astronomicalDusk, noon) > dayThreshold) {
+        if (peakElevation > 0 && dayDistance(astronomicalDusk, solarNoon) > dayThreshold) {
             nightE = 0;
             astronomicalTwilightE = extDuration;
             dashTRE = 'astronomical-twilight';
-            if (dayDistance(nauticalDusk, noon) > dayThreshold) {
+            if (dayDistance(nauticalDusk, solarNoon) > dayThreshold) {
                 astronomicalTwilightE = 0;
                 nauticalTwilightE = extDuration;
                 dashTRE = 'nautical-twilight'
-                if (dayDistance(civilDusk, noon) > dayThreshold) {
+                if (dayDistance(civilDusk, solarNoon) > dayThreshold) {
                     nauticalTwilightE = 0;
                     civilTwilightE = extDuration;
                     dashTRE = 'civil-twilight'
                     dashBRE = 'blue-hour'
-                    if (dayDistance(blueHourBeginDesc, noon) > dayThreshold) {
+                    if (dayDistance(blueHourBeginDesc, solarNoon) > dayThreshold) {
                         blueHourE = 0;
                         dashBRE = 'golden-hour'
-                        if (dayDistance(sunSet, noon) > dayThreshold) {
+                        if (dayDistance(sunSet, solarNoon) > dayThreshold) {
                             civilTwilightE = 0;
                             dashTRE = 'day'
-                            if (dayDistance(goldenHourBeginDesc, noon) > dayThreshold) {
+                            if (dayDistance(goldenHourBeginDesc, solarNoon) > dayThreshold) {
                                 goldenHourE = 0;
                                 dashBRE = 'invisible'
                                 offsetE = extDuration;
@@ -442,33 +455,33 @@ document.addEventListener('DOMContentLoaded', function() {
         let offsetGE = 0; // Golden Evening
         // check for missing periods when night is longer
         // fixme peakElevation threshold justification is not clear
-        if (peakElevation < 6+2 && dayDistance(goldenHourBeginDesc, noon) > dayThreshold) {
+        if (peakElevation < 6+2 && dayDistance(goldenHourBeginDesc, solarNoon) > dayThreshold) {
             goldenHourE = civilTwilightE - blueHourE + extDuration;
             offsetGE = extDuration - holeDuration - dashDuration;
             dashBLE = 'golden-hour'
-            if (dayDistance(sunSet, noon) > dayThreshold) {
+            if (dayDistance(sunSet, solarNoon) > dayThreshold) {
                 dayE = 0;
                 civilTwilightE = extDuration + blueHourE;
                 dashTLE = 'civil-twilight';
                 goldenHourE = extDuration;
                 dashBLE = 'golden-hour';
-                if (dayDistance(blueHourBeginDesc, noon) > dayThreshold) {
+                if (dayDistance(blueHourBeginDesc, solarNoon) > dayThreshold) {
                     goldenHourE = 0;
                     civilTwilightE = extDuration;
                     blueHourE = extDuration;
                     dashBLE = 'blue-hour';
-                    if (dayDistance(civilDusk, noon) > dayThreshold) {
+                    if (dayDistance(civilDusk, solarNoon) > dayThreshold) {
                         civilTwilightE = 0;
                         blueHourE = 0;
                         nauticalTwilightE = extDuration;
                         dashTLE = 'nautical-twilight'
                         dashBLE = 'invisible';
-                        if (dayDistance(nauticalDusk, noon) > dayThreshold) {
+                        if (dayDistance(nauticalDusk, solarNoon) > dayThreshold) {
                             nauticalTwilightE = 0;
                             astronomicalTwilightE = maxDuration;
                             nightE = maxDuration;
                             dashTLE = 'astronomical-twilight'
-                            if (dayDistance(astronomicalDusk, noon) > dayThreshold) {
+                            if (dayDistance(astronomicalDusk, solarNoon) > dayThreshold) {
                                 astronomicalTwilightE = 0;
                                 nightE = maxDuration*2;
                                 dashTLE = 'night'
@@ -509,16 +522,16 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const eveningPointsTop = [
-            {name: 'Sun\nSet', time: formatDateTime(sunSet, noon), class: 'sun-event', position: sunSetE, arrow: 'center'},
-            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, noon), class: '', position: civilDuskE, arrow: 'center'},
-            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, noon), class: '', position: nauticalDuskE, arrow: 'center'},
-            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, noon), class: '', position: astronomicalDuskE, arrow: 'center'}
+            {name: 'Sun\nSet', time: formatDateTime(sunSet, solarNoon), class: 'sun-event', position: sunSetE, arrow: 'center'},
+            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, solarNoon), class: '', position: civilDuskE, arrow: 'center'},
+            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, solarNoon), class: '', position: nauticalDuskE, arrow: 'center'},
+            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, solarNoon), class: '', position: astronomicalDuskE, arrow: 'center'}
         ];
 
         const eveningPointsBottom = [
-            {name: '', time: formatDateTime(goldenHourBeginDesc, noon), class: '', position: goldenHourStartE, arrow: 'center'},
-            {name: '', time: formatDateTime(blueHourBeginDesc, noon), class: '', position: goldenHourEndE, arrow: 'right'},
-            {name: '', time: formatDateTime(blueHourEndDesc, noon), class: '', position: civilDuskE, arrow: 'left'}
+            {name: '', time: formatDateTime(goldenHourBeginDesc, solarNoon), class: '', position: goldenHourStartE, arrow: 'center'},
+            {name: '', time: formatDateTime(blueHourBeginDesc, solarNoon), class: '', position: goldenHourEndE, arrow: 'right'},
+            {name: '', time: formatDateTime(blueHourEndDesc, solarNoon), class: '', position: civilDuskE, arrow: 'left'}
         ];
 
         createTimePeriodsTop('morning-periods-top', morningPeriodsTop);
@@ -535,24 +548,44 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
 
             // Calculate ephemeris data
-            const phase = objectName === 'Sun' ? '' : `${(Astronomy.Illumination(objectName, noon).phase_fraction * 100).toFixed(0)}%`;
-
-            // Calculate rise and set times
-            const rise = Astronomy.SearchRiseSet(objectName, observer, +1, noon, -limitDays);
-            if (rise === null) { console.log('No rise found for ' + objectName); return; }
-            const riseTime = rise.date;
-            const set = Astronomy.SearchRiseSet(objectName, observer, -1, noon, limitDays);
-            if (set === null) { console.log('No set found for ' + objectName); return; }
-            const setTime = set.date;
-
-            // Calculate transit time
-            let transitTime;
+            let phase, riseTime, setTime, transitTime;
             if (objectName === 'Sun') {
+            //const noon = objectName === 'Sun' ? solarNoon : civilNoon;
+                phase = '';
+
+                // Calculate rise and set times
+                const rise = Astronomy.SearchRiseSet(objectName, observer, +1, solarNoon, -limitDays);
+                if (rise === null) { console.log('No rise found for ' + objectName); return; }
+                riseTime = rise.date;
+
+                const set = Astronomy.SearchRiseSet(objectName, observer, -1, solarNoon, limitDays);
+                if (set === null) { console.log('No set found for ' + objectName); return; }
+                setTime = set.date;
+
+                // Calculate transit time
                 transitTime = transit; // get the closest to civil noon, already done above
+
             } else {
+                // Calculate rise and set times
+                let rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil00h, limitDays);
+
+                if (rise === null || rise.date >= civil24h) {
+                    console.log(objectName, "no valid rise after 00h", rise);
+                    rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil24h, -limitDays);
+                    if (rise === null) { console.log('No rise found for ' + objectName); return; }
+                }
+                riseTime = rise.date;
+
+                const set = Astronomy.SearchRiseSet(objectName, observer, -1, riseTime, limitDays);
+                if (set === null) { console.log('No set found for ' + objectName); return; }
+                setTime = set.date;
+
+                // Calculate transit time
                 const transit = Astronomy.SearchHourAngle(objectName, observer, 0, riseTime, +1);
                 if (transit === null) { console.log('No transit found for ' + objectName); return; }
                 transitTime = transit.time.date;
+
+                phase = `${(Astronomy.Illumination(objectName, transitTime).phase_fraction * 100).toFixed(0)}%`;
             }
 
             // Calculate azimuth and altitude
@@ -569,11 +602,11 @@ document.addEventListener('DOMContentLoaded', function() {
             row.innerHTML = `
                 <td>${objectName}</td>
                 <td>${phase}</td>
-                <td>${formatDateTime(riseTime, noon, true)}</td>
+                <td>${formatDateTime(riseTime, civilNoon, true)}</td>
                 <td>${riseHorizon.azimuth.toFixed(0)}°</td>
-                <td>${formatDateTime(transitTime, noon, true)}</td>
+                <td>${formatDateTime(transitTime, civilNoon, true)}</td>
                 <td>${transitHorizon.altitude.toFixed(0)}°</td>
-                <td>${formatDateTime(setTime, noon, true)}</td>
+                <td>${formatDateTime(setTime, civilNoon, true)}</td>
                 <td>${setHorizon.azimuth.toFixed(0)}°</td>
             `;
             tableBody.appendChild(row);
@@ -597,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setCurrentDate() {
         const now = new Date();
-        dateInput.value = now.toISOString().slice(0, 10);
+        dateInput.value = now.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
         updateEphemeris();
     }
 
