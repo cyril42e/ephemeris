@@ -170,13 +170,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const { DateTime } = luxon;
         const selectedDate = new Date(dateInput.value);
         const timeZone = tzlookup(latitude, longitude);
-        const noon = DateTime.fromObject({
+        let noon = DateTime.fromObject({
             year: selectedDate.getFullYear(),
             month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
             day: selectedDate.getDate(),
             hour: 12},
             {zone: timeZone}
         ).toJSDate();
+
+        // Calculate transit time
+        const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, noon, +1).time.date;
+        const transitBefore = Astronomy.SearchHourAngle('Sun', observer, 0, noon, -1).time.date;
+        let transit = transitAfter;
+        if (dayDistance(transitBefore, noon) < dayDistance(transitAfter, noon)) {
+            transit = transitBefore;
+        }
+        noon = transit; // now the solar noon, in order to ensure symmetry
+
 
         const limitDays = 3000; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
