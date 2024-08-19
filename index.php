@@ -32,10 +32,8 @@
                 <div id="suggestions"></div>
             </div>
 
-            <label for="latitude">Latitude:</label>
+            <label for="latitude,longitude">Lat, Lon:</label>
             <input type="number" id="latitude" step="1.0" value="48.8566">
-
-            <label for="longitude">Longitude:</label>
             <input type="number" id="longitude" step="1.0" value="2.3522">
 
             <button id="current-location">Current Location</button>

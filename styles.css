@@ -48,7 +48,7 @@ body {
 }
 
 .controls label {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .controls input {
@@ -86,10 +86,13 @@ button:hover {
 }
 
 #latitude, #longitude {
-    width: 100px;
+    width: 80px;
 }
 #address {
-    width: 150px;
+    width: 160px;
+}
+#latitude {
+    margin-right: 0px;
 }
 
 
