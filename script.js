@@ -79,12 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
         return Math.abs((eventDate - referenceDate) / (1000 * 60 * 60 * 24));
     }
 
+    const timeFormat = new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    const dateFormat = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
     function formatDateTime(eventDate, referenceDate, showDate = false) {
         const dayDist = dayDistance(eventDate, referenceDate);
-        const time = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const time = timeFormat.format(eventDate);
         if (dayDist >= 1) {
             if (showDate) {
-                const date = eventDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const date = dateFormat.format(eventDate);
                 return date + '\n' + time;
             } else {
                 return '';
@@ -630,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setCurrentDate() {
         const now = new Date();
-        dateInput.value = now.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        dateInput.value = dateFormat.format(now);
         updateEphemeris();
     }
 
