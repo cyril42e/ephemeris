@@ -178,24 +178,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedDate = new Date(dateInput.value);
         const timeZone = tzlookup(latitude, longitude);
 
-        const timeFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, hour: '2-digit', minute: '2-digit', hour12: false });
-        const dateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
-
-        function formatDateTime(eventDate, referenceDate, showDate = false) {
-            const dayDist = dayDistance(eventDate, referenceDate);
-            const time = timeFormat.format(eventDate);
-            if (dayDist >= 1) {
-                if (showDate) {
-                    const date = dateFormat.format(eventDate);
-                    return date + '\n' + time;
-                } else {
-                    return '';
-                }
-            } else {
-                return time;
-            }
-        }
-
         const civil00h = DateTime.fromObject({
             year: selectedDate.getFullYear(),
             month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
@@ -216,6 +198,28 @@ document.addEventListener('DOMContentLoaded', function() {
             hour: 12},
             {zone: timeZone}
         ).toJSDate();
+
+        const timeFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, hour: '2-digit', minute: '2-digit', hour12: false });
+        const dateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+
+        function dayOffset(eventDate) {
+            return Math.floor((eventDate - civil00h) / (1000 * 60 * 60 * 24));
+        }
+
+        function formatDateTime(eventDate, referenceDate, showDate = false) {
+            const dayOff = dayOffset(eventDate);
+            const time = timeFormat.format(eventDate);
+            if (Math.abs(dayOff) >= 1) {
+                if (showDate) {
+                    return time + ' ' + (dayOff > 0 ? '+' : '') + dayOff;
+                } else {
+                    return '';
+                }
+            } else {
+                return time;
+            }
+        }
+
 
         function getTimezoneOffset(date, timeZone) {
             const offsetFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, timeZoneName: 'shortOffset' });
@@ -253,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, +1).time.date;
         const transitBefore = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, -1).time.date;
         let transit = transitAfter;
-        if (dayDistance(transitBefore, civilNoon) < dayDistance(transitAfter, civilNoon)) {
+        if ((civilNoon - transitBefore) < (transitAfter - civilNoon)) {
             transit = transitBefore;
         }
         const solarNoon = transit; // use the solar noon when symmetry is required
