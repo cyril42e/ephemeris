@@ -47,6 +47,7 @@
             <button id="increase-date">></button>
 
             <button id="current-date">Current Date</button>
+            <label for="timezone" id="timezone"></label>
         </div>
     </div>
 

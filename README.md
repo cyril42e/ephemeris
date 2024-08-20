@@ -51,15 +51,16 @@ Setting the date can also be done in multiple ways:
 
 ### Interpretation
 
-The date is interpreted in the time zone corresponding to the input location (it is necessary to have consistent sunrise and sunset corresponding to the same day).
-So if you want the ephemeris for the 2024-08-16 in Paris,
-you will get the sunrise for this day in Paris time zone, and the sunset for this day in Paris time zone, even if you are in San Francisco
-where it will still be the 2024-08-15 when the sun rises in Paris.
-For the Moon and planets, only the rise time is guaranteed to be the requested day, transit and set time may be the following day.
+All the dates and times (inputs and outputs) are expressed in the time zone corresponding to the input location (a.k.a. the target timezone):
 
-However the displayed timepoints are always provided in the time zone configured in the device with which you are loading the page.
-Thus in our example if you are in San Francisco, you won't see that the sun rises at 06:45 Paris time in Paris, but at 21:45 San Francisco time,
-so that you can compare it with the time provided by your device.
+- The date input is interpreted in the target timezone.
+- The 'Current date' button sets the current date in the target timezone.
+- The times of the timeline and ephemeris table are expressed in the target timezone.
+
+For clarity, the target timezone is displayed at the top, along with its corresponding UTC offset and its offset compared
+with the local (i.e. browser) timezone.
+
+For the Moon and planets, only the rise time is guaranteed to be the requested day, transit and set time may be the following day.
 
 Note that time and dates always respect ISO conventions (24 hours, year-month-day).
 

@@ -73,28 +73,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentDateButton = document.getElementById('current-date');
     const addressInput = document.getElementById('address');
     const suggestionsDiv = document.getElementById('suggestions');
+    const timezoneOutput = document.getElementById('timezone');
     let refreshTimeout;
 
     function dayDistance(eventDate, referenceDate) {
         return Math.abs((eventDate - referenceDate) / (1000 * 60 * 60 * 24));
-    }
-
-    const timeFormat = new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit', hour12: false });
-    const dateFormat = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
-
-    function formatDateTime(eventDate, referenceDate, showDate = false) {
-        const dayDist = dayDistance(eventDate, referenceDate);
-        const time = timeFormat.format(eventDate);
-        if (dayDist >= 1) {
-            if (showDate) {
-                const date = dateFormat.format(eventDate);
-                return date + '\n' + time;
-            } else {
-                return '';
-            }
-        } else {
-            return time;
-        }
     }
 
     function validateInputs() {
@@ -177,6 +160,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const { DateTime } = luxon;
         const selectedDate = new Date(dateInput.value);
         const timeZone = tzlookup(latitude, longitude);
+
+        const timeFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, hour: '2-digit', minute: '2-digit', hour12: false });
+        const dateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+
+        function formatDateTime(eventDate, referenceDate, showDate = false) {
+            const dayDist = dayDistance(eventDate, referenceDate);
+            const time = timeFormat.format(eventDate);
+            if (dayDist >= 1) {
+                if (showDate) {
+                    const date = dateFormat.format(eventDate);
+                    return date + '\n' + time;
+                } else {
+                    return '';
+                }
+            } else {
+                return time;
+            }
+        }
+
         const civil00h = DateTime.fromObject({
             year: selectedDate.getFullYear(),
             month: selectedDate.getMonth() + 1, // Luxon months are 1-indexed
@@ -197,6 +199,38 @@ document.addEventListener('DOMContentLoaded', function() {
             hour: 12},
             {zone: timeZone}
         ).toJSDate();
+
+        function getTimezoneOffset(date, timeZone) {
+            const offsetFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, timeZoneName: 'shortOffset' });
+            let offset = offsetFormat.formatToParts(date).find(part => part.type === 'timeZoneName').value.slice(3);
+            if (offset === '') {
+                offset = '+0';
+            }
+            const match = offset.match(/([+-]?)(\d{1,2})(?::(\d{2}))?/);
+            if (!match) {
+                console.log('Invalid UTC offset format "' + offset + '" for time zone "' + timeZone + '"');
+                return [offset, 0];
+            }
+            const sign = match[1] === '-' ? -1 : 1;
+            const hours = parseInt(match[2], 10);
+            const minutes = match[3] ? parseInt(match[3], 10) : 0;
+
+	    return [offset, sign * (hours * 60 + minutes)];
+        }
+
+        function formatOffset(diff) {
+            const diffHours = Math.floor(Math.abs(diff) / 60);
+            const diffMinutes = Math.abs(diff) % 60;
+            const sign = diff >= 0 ? '+' : '-';
+
+            const strMinutes = (diffMinutes !== 0 ? `:${diffMinutes.toString().padStart(2, '0')}` : '');
+            return `${sign}${diffHours}${strMinutes}`;
+        }
+
+        const targetOffset = getTimezoneOffset(selectedDate, timeZone);
+        const localOffset = getTimezoneOffset(selectedDate, undefined);
+        const diff = formatOffset(targetOffset[1] - localOffset[1]);
+        timezoneOutput.textContent = timeZone + ' (UTC' + targetOffset[0] + ' = local' + diff + ')';
 
         // Calculate transit time
         const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, +1).time.date;
@@ -632,7 +666,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setCurrentDate() {
+        if (latitudeInput.classList.contains('invalid') || longitudeInput.classList.contains('invalid')) return;
+
         const now = new Date();
+        const latitude = parseFloat(latitudeInput.value);
+        const longitude = parseFloat(longitudeInput.value);
+        const timeZone = tzlookup(latitude, longitude);
+        const dateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+
         dateInput.value = dateFormat.format(now);
         updateEphemeris();
     }
