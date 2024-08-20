@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const solarNoon = transit; // use the solar noon when symmetry is required
 
-        const limitDays = 3000; // Search within a wide range to handle polar regions
+        const limitDays = 300; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
         const sunBlueGoldenHourRow = document.getElementById('sun-blue-golden-hour-row');
@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } else {
                 // Calculate rise and set times
-                let rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil00h, limitDays);
+                let rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil00h, 1); // no need to look for more than 1 day
 
                 if (rise === null || rise.date >= civil24h) {
                     console.log(objectName, "no valid rise after 00h", rise);
