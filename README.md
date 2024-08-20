@@ -38,23 +38,23 @@ The ephemeris depends on two inputs: the location, and the date.
 
 Setting the location can be done in multiple ways:
 
-- by searching for an address in the 'Address' input field,
+- by searching for an address in the 'Search address...' input field,
 - by entering directly latitude and longitude coordinates in the corresponding input fields,
-- by clicking on the 'Current Location' button to get automatically the current position of the device (you will need to accept
+- by clicking on the 'Here' button to get automatically the current position of the device (you will need to accept
   permissions to access it).
 
 Setting the date can also be done in multiple ways:
 
 - by choosing a date in the calendar that opens when the date input field is clicked on,
 - by incrementing or decrementing the day using the buttons on each side of the date input field,
-- by clicking on the 'Current Date' button
+- by clicking on the 'Now' button
 
 ### Interpretation
 
 All the dates and times (inputs and outputs) are expressed in the time zone corresponding to the input location (a.k.a. the target timezone):
 
 - The date input is interpreted in the target timezone.
-- The 'Current date' button sets the current date in the target timezone.
+- The 'Now' button sets the current date in the target timezone.
 - The times of the timeline and ephemeris table are expressed in the target timezone.
 
 For clarity, the target timezone is displayed at the top, along with its corresponding UTC offset and its offset compared

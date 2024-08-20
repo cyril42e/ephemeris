@@ -76,6 +76,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const timezoneOutput = document.getElementById('timezone');
     let refreshTimeout;
 
+    const emptyAddressStr = 'Search address...';
+    function clearAddress() {
+        addressInput.value = emptyAddressStr;
+        addressInput.classList.add('empty');
+    }
+    function setAddress(text) {
+        addressInput.value = text;
+        addressInput.classList.remove('empty');
+    }
+
     function dayDistance(eventDate, referenceDate) {
         return Math.abs((eventDate - referenceDate) / (1000 * 60 * 60 * 24));
     }
@@ -107,6 +117,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return valid;
     }
 
+    addressInput.addEventListener('focus', function() {
+        if (addressInput.value === emptyAddressStr) {
+            addressInput.value = '';
+        }
+        addressInput.classList.remove('empty');
+    });
+
     addressInput.addEventListener('input', function() {
         const query = addressInput.value;
         if (query.length < 3) {
@@ -132,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const coordinates = feature.geometry.coordinates;
                         latitudeInput.value = coordinates[1].toFixed(4);
                         longitudeInput.value = coordinates[0].toFixed(4);
-                        addressInput.value = suggestionText;
+                        setAddress(suggestionText);
                         suggestionsDiv.innerHTML = '';
                         updateEphemeris();
                     });
@@ -143,9 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('click', function(event) {
-        if (event.target !== addressInput && event.target.className !== 'suggestion-item' && suggestionsDiv.innerHTML !== '') {
+        if (event.target !== addressInput && event.target.className !== 'suggestion-item' && (suggestionsDiv.innerHTML !== '' || addressInput.value === '')) {
             suggestionsDiv.innerHTML = '';
-            addressInput.value = '';
+            clearAddress();
         }
     });
 
@@ -655,7 +672,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navigator.geolocation.getCurrentPosition(position => {
                 latitudeInput.value = position.coords.latitude.toFixed(4);
                 longitudeInput.value = position.coords.longitude.toFixed(4);
-                addressInput.value = ''; // TODO reverse geocoding ?
+                clearAddress(); // TODO reverse geocoding ?
                 updateEphemeris();
             }, error => {
                 alert('Error getting location: ' + error.message);
@@ -679,7 +696,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function triggerRefresh() {
-        addressInput.value = ''; // TODO reverse geocoding ?
+        clearAddress(); // TODO reverse geocoding ?
         clearTimeout(refreshTimeout);
         refreshTimeout = setTimeout(updateEphemeris, 500);
     }

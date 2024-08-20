@@ -27,26 +27,23 @@
     <div class="controls">
         <div class="position-controls">
             <div class="address-container">
-                <label for="address">Address:</label>
                 <input type="text" id="address" autocomplete="off" value="Paris, France">
                 <div id="suggestions"></div>
             </div>
 
-            <label for="latitude,longitude">Lat, Lon:</label>
             <input type="number" id="latitude" step="1.0" value="48.8566">
             <input type="number" id="longitude" step="1.0" value="2.3522">
 
-            <button id="current-location">Current Location</button>
+            <button id="current-location">Here</button>
         </div>
 
         <div class="date-controls">
-            <label for="date">Date:</label>
             <button id="decrease-date"><</button>
             <input type="text" id="date">
             <script>flatpickr("#date", {dateFormat: "Y-m-d", disableMobile: "true"});</script>
             <button id="increase-date">></button>
 
-            <button id="current-date">Current Date</button>
+            <button id="current-date">Now</button>
             <label for="timezone" id="timezone"></label>
         </div>
     </div>

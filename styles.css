@@ -86,14 +86,18 @@ button:hover {
     background-color: #2980b9;
 }
 
-#latitude, #longitude {
-    width: 80px;
-}
 #address {
-    width: 160px;
+    width: 30ch;
 }
 #latitude {
     margin-right: 0px;
+    width: 11ch;
+}
+#longitude {
+    width: 11ch;
+}
+#address.empty {
+    color: #888;
 }
 
 
