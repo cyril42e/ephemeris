@@ -60,7 +60,12 @@ All the dates and times (inputs and outputs) are expressed in the time zone corr
 For clarity, the target timezone is displayed at the top, along with its corresponding UTC offset and its offset compared
 with the local (i.e. browser) timezone.
 
-For the Moon and planets, only the rise time is guaranteed to be the requested day, transit and set time may be the following day.
+Only the transit time is guaranteed to be the requested day. The rise and set time may be the day before or after,
+or even multiple days before or after in some cases.
+When the object is visible at one moment during the day (especially at transit), the previous rise and the following set are displayed.
+When the object is never visible during the day, the previous set and the following rise are displayed.
+When an event does not happen during the requested day, the day offset is displayed after the corresponding time.
+When this offset is larger than 300 days in the past, then '<<<' is displayed, or '>>>' in the future.
 
 Note that time and dates always respect ISO conventions (24 hours, year-month-day).
 

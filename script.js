@@ -254,13 +254,12 @@ document.addEventListener('DOMContentLoaded', function() {
         timezoneOutput.textContent = timeZone + ' (UTC' + targetOffset[0] + ' = local' + diff + ')';
 
         // Calculate transit time
-        const transitAfter = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, +1).time.date;
-        const transitBefore = Astronomy.SearchHourAngle('Sun', observer, 0, civilNoon, -1).time.date;
-        let transit = transitAfter;
-        if ((civilNoon - transitBefore) < (transitAfter - civilNoon)) {
-            transit = transitBefore;
+        function searchClosestTransit(object, date) {
+            const transitAfter = Astronomy.SearchHourAngle(object, observer, 0, date, +1).time.date;
+            const transitBefore = Astronomy.SearchHourAngle(object, observer, 0, date, -1).time.date;
+            return ((civilNoon - transitBefore) < (transitAfter - civilNoon)) ? transitBefore : transitAfter;
         }
-        const solarNoon = transit; // use the solar noon when symmetry is required
+        const solarNoon = searchClosestTransit("Sun", civilNoon); // use the solar noon when symmetry is required
 
         const limitDays = 300; // Search within a wide range to handle polar regions
         const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
@@ -320,8 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, solarNoon, -limitDays).date;
         const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, solarNoon, limitDays).date;
 
-        const transitEquator = Astronomy.Equator('Sun', transit, observer, true, true);
-        const transitHorizon = Astronomy.Horizon(transit, observer, transitEquator.ra, transitEquator.dec, 'normal');
+        const transitEquator = Astronomy.Equator('Sun', solarNoon, observer, true, true);
+        const transitHorizon = Astronomy.Horizon(solarNoon, observer, transitEquator.ra, transitEquator.dec, 'normal');
         const peakElevation = transitHorizon.altitude;
 
         // Create timelines
@@ -606,66 +605,65 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
 
             // Calculate ephemeris data
-            let phase, riseTime, setTime, transitTime;
+
+            // transit and phase
+            let phase, transitTime;
             if (objectName === 'Sun') {
-            //const noon = objectName === 'Sun' ? solarNoon : civilNoon;
+                transitTime = solarNoon;
                 phase = '';
-
-                // Calculate rise and set times
-                const rise = Astronomy.SearchRiseSet(objectName, observer, +1, solarNoon, -limitDays);
-                if (rise === null) { console.log('No rise found for ' + objectName); return; }
-                riseTime = rise.date;
-
-                const set = Astronomy.SearchRiseSet(objectName, observer, -1, solarNoon, limitDays);
-                if (set === null) { console.log('No set found for ' + objectName); return; }
-                setTime = set.date;
-
-                // Calculate transit time
-                transitTime = transit; // get the closest to civil noon, already done above
-
             } else {
-                // Calculate rise and set times
-                let rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil00h, 1); // no need to look for more than 1 day
-
-                if (rise === null || rise.date >= civil24h) {
-                    console.log(objectName, "no valid rise after 00h", rise);
-                    rise = Astronomy.SearchRiseSet(objectName, observer, +1, civil24h, -limitDays);
-                    if (rise === null) { console.log('No rise found for ' + objectName); return; }
-                }
-                riseTime = rise.date;
-
-                const set = Astronomy.SearchRiseSet(objectName, observer, -1, riseTime, limitDays);
-                if (set === null) { console.log('No set found for ' + objectName); return; }
-                setTime = set.date;
-
-                // Calculate transit time
-                const transit = Astronomy.SearchHourAngle(objectName, observer, 0, riseTime, +1);
-                if (transit === null) { console.log('No transit found for ' + objectName); return; }
-                transitTime = transit.time.date;
-
+                transitTime = searchClosestTransit(objectName, civilNoon);
                 phase = `${(Astronomy.Illumination(objectName, transitTime).phase_fraction * 100).toFixed(0)}%`;
             }
-
-            // Calculate azimuth and altitude
-            const riseEquator = Astronomy.Equator(objectName, riseTime, observer, true, true);
-            const riseHorizon = Astronomy.Horizon(riseTime, observer, riseEquator.ra, riseEquator.dec, 'normal');
-
             const transitEquator = Astronomy.Equator(objectName, transitTime, observer, true, true);
             const transitHorizon = Astronomy.Horizon(transitTime, observer, transitEquator.ra, transitEquator.dec, 'normal');
 
-            const setEquator = Astronomy.Equator(objectName, setTime, observer, true, true);
-            const setHorizon = Astronomy.Horizon(setTime, observer, setEquator.ra, setEquator.dec, 'normal');
+            // rise and set
+            let rise, set;
+            let visible = true;
+            let riseStr = '<<<', setStr = '>>>';
+            if (transitHorizon.altitude > 0.0) { // visible
+                // the object is for sure visible at transit, so look for rise in the past
+                rise = Astronomy.SearchRiseSet(objectName, observer, +1, transitTime, -limitDays);
+                set = Astronomy.SearchRiseSet(objectName, observer, -1, transitTime, limitDays);
+            } else {
+                // the object may not be visible, so check it by looking for rise less than 1 day before
+                rise = Astronomy.SearchRiseSet(objectName, observer, +1, transitTime, -1);
+                if (rise === null) {
+                    // the object is not visible, so get the last set and the next rise
+                    set = Astronomy.SearchRiseSet(objectName, observer, -1, transitTime, -limitDays);
+                    rise = Astronomy.SearchRiseSet(objectName, observer, +1, transitTime, limitDays);
+                    visible = false;
+                    setStr = [riseStr, riseStr = setStr][0]; // swap
+                } else {
+                    set = Astronomy.SearchRiseSet(objectName, observer, -1, transitTime, limitDays);
+                }
+            }
+
+            let riseTime, riseHorizon;
+            if (rise !== null) {
+                riseTime = rise.date;
+                const riseEquator = Astronomy.Equator(objectName, riseTime, observer, true, true);
+                riseHorizon = Astronomy.Horizon(riseTime, observer, riseEquator.ra, riseEquator.dec, 'normal');
+            }
+
+            let setTime, setHorizon;
+            if (set !== null) {
+                setTime = set.date;
+                const setEquator = Astronomy.Equator(objectName, setTime, observer, true, true);
+                setHorizon = Astronomy.Horizon(setTime, observer, setEquator.ra, setEquator.dec, 'normal');
+            }
 
             // Populate table row
             row.innerHTML = `
                 <td>${objectName}</td>
                 <td>${phase}</td>
-                <td>${formatDateTime(riseTime, civilNoon, true)}</td>
-                <td>${riseHorizon.azimuth.toFixed(0)}°</td>
-                <td>${formatDateTime(transitTime, civilNoon, true)}</td>
+                <td>${rise ? formatDateTime(riseTime, civilNoon, true) : riseStr}</td>
+                <td>${rise ? riseHorizon.azimuth.toFixed(0) + "°" : ""}</td>
+                <td>${visible ? formatDateTime(transitTime, civilNoon, true) : ""}</td>
                 <td>${transitHorizon.altitude.toFixed(0)}°</td>
-                <td>${formatDateTime(setTime, civilNoon, true)}</td>
-                <td>${setHorizon.azimuth.toFixed(0)}°</td>
+                <td>${set ? formatDateTime(setTime, civilNoon, true) : setStr}</td>
+                <td>${set ? setHorizon.azimuth.toFixed(0) + "°" : ""}</td>
             `;
             tableBody.appendChild(row);
         });
