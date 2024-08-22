@@ -273,6 +273,10 @@ th, td {
     text-align: center;
 }
 
+td.notvisibletoday {
+    color: #aaa;
+}
+
 th {
     background-color: #abdbff;
     padding: 3px;

@@ -19,7 +19,9 @@ It is also a Progressive Web App (PWA), which can be used offline on a smartphon
 
 The visual timeline describes explicitly how the different concepts relate to each other. What can be precised is that:
 
-- During civil twilight (after civil dawn or before civil dusk, when the sun is between elevation -6° and 0°),
+- The rise and set are defined with the top of the Sun or Moon being visible, which means an elevation of around -0.8°
+  by taking into account the object apparent size (around 0.25°) and the atmosphere refraction (around 0.55°).
+- During civil twilight (after civil dawn or before civil dusk, when the sun is between elevation -6° and -0.8°),
   there is enough light to perform outdoor activities. It is not part of the civil night.
 - During nautical twilight (after nautical dawn or before nautical dusk, when the sun is between elevation -12° and -6°),
   there is enough light to see the horizon between the sea and the sky. It is not part of the nautical night.
@@ -66,8 +68,9 @@ Only the transit time is guaranteed to be the requested day. The rise and set ti
 or even multiple days before or after in some cases.
 When the object is visible at one moment during the day (especially at transit), the previous rise and the following set are displayed.
 When the object is never visible during the day, the previous set and the following rise are displayed.
-When an event does not happen during the requested day, the day offset is displayed after the corresponding time.
-When this offset is larger than 300 days in the past, then '<<<' is displayed, or '>>>' in the future.
+When an event does not happen during the requested day, but the day before or the day after, then the day offset is displayed after the corresponding time.
+If the day offset is larger than one, then only the day offset is displayed, and appears grayed out, as well as associated data.
+When this offset is larger than 300 days in the past, then '< -300' is displayed, or '> +300' in the future.
 
 Note that time and dates always respect ISO conventions (24 hours, year-month-day).
 

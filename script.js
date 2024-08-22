@@ -200,18 +200,20 @@ document.addEventListener('DOMContentLoaded', function() {
         ).toJSDate();
 
         const timeFormat = new Intl.DateTimeFormat([], { timeZone: timeZone, hour: '2-digit', minute: '2-digit', hour12: false });
-        const dateFormat = new Intl.DateTimeFormat('en-CA', { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
 
         function dayOffset(eventDate) {
             return Math.floor((eventDate - civil00h) / (1000 * 60 * 60 * 24));
         }
 
-        function formatDateTime(eventDate, referenceDate, showDate = false) {
-            const dayOff = dayOffset(eventDate);
+        function formatDateTime(eventDate, showDate = false) {
             const time = timeFormat.format(eventDate);
+            const dayOff = dayOffset(eventDate);
+            const dayOffStr = (dayOff > 0 ? '+' : '') + dayOff;
             if (Math.abs(dayOff) >= 1) {
-                if (showDate) {
-                    return time + ' ' + (dayOff > 0 ? '+' : '') + dayOff;
+                if (Math.abs(dayOff) < 2) {
+                    return time + ' ' + dayOffStr;
+                } else if (showDate) {
+                    return dayOffStr;
                 } else {
                     return '';
                 }
@@ -284,12 +286,12 @@ document.addEventListener('DOMContentLoaded', function() {
         sunDawnDuskRowContent.innerHTML = `
             <td>Sun</td>
             <td></td>
-            <td>${formatDateTime(astronomicalDawn, solarNoon)}</td>
-            <td>${formatDateTime(nauticalDawn, solarNoon)}</td>
-            <td>${formatDateTime(civilDawn, solarNoon)}</td>
-            <td>${formatDateTime(civilDusk, solarNoon)}</td>
-            <td>${formatDateTime(nauticalDusk, solarNoon)}</td>
-            <td>${formatDateTime(astronomicalDusk, solarNoon)}</td>
+            <td>${formatDateTime(astronomicalDawn)}</td>
+            <td>${formatDateTime(nauticalDawn)}</td>
+            <td>${formatDateTime(civilDawn)}</td>
+            <td>${formatDateTime(civilDusk)}</td>
+            <td>${formatDateTime(nauticalDusk)}</td>
+            <td>${formatDateTime(astronomicalDusk)}</td>
         `;
         sunDawnDuskRow.appendChild(sunDawnDuskRowContent);
 
@@ -306,12 +308,12 @@ document.addEventListener('DOMContentLoaded', function() {
         sunBlueGoldenHourRowContent.innerHTML = `
             <td>Sun</td>
             <td></td>
-            <td>${formatDateTime(blueHourBeginAsc, solarNoon)}</td>
-            <td>${formatDateTime(goldenHourBeginAsc, solarNoon)}</td>
-            <td>${formatDateTime(goldenHourEndAsc, solarNoon)}</td>
-            <td>${formatDateTime(goldenHourBeginDesc, solarNoon)}</td>
-            <td>${formatDateTime(blueHourBeginDesc, solarNoon)}</td>
-            <td>${formatDateTime(blueHourEndDesc, solarNoon)}</td>
+            <td>${formatDateTime(blueHourBeginAsc)}</td>
+            <td>${formatDateTime(goldenHourBeginAsc)}</td>
+            <td>${formatDateTime(goldenHourEndAsc)}</td>
+            <td>${formatDateTime(goldenHourBeginDesc)}</td>
+            <td>${formatDateTime(blueHourBeginDesc)}</td>
+            <td>${formatDateTime(blueHourEndDesc)}</td>
         `;
         sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
 
@@ -450,16 +452,16 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const morningPointsTop = [
-            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn, solarNoon), class: '', position: astronomicalDawnM, arrow: 'center'},
-            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn, solarNoon), class: '', position: nauticalDawnM, arrow: 'center'},
-            {name: 'Civil\nDawn', time: formatDateTime(civilDawn, solarNoon), class: '', position: civilDawnM, arrow: 'center'},
-            {name: 'Sun\nRise', time: formatDateTime(sunRise, solarNoon), class: 'sun-event', position: sunRiseM, arrow: 'center'}
+            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn), class: '', position: astronomicalDawnM, arrow: 'center'},
+            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn), class: '', position: nauticalDawnM, arrow: 'center'},
+            {name: 'Civil\nDawn', time: formatDateTime(civilDawn), class: '', position: civilDawnM, arrow: 'center'},
+            {name: 'Sun\nRise', time: formatDateTime(sunRise), class: 'sun-event', position: sunRiseM, arrow: 'center'}
         ];
 
         const morningPointsBottom = [
-            {name: '', time: formatDateTime(blueHourBeginAsc, solarNoon), class: '', position: blueHourStartM, arrow: 'right'},
-            {name: '', time: formatDateTime(goldenHourBeginAsc, solarNoon), class: '', position: goldenHourStartM, arrow: 'left'},
-            {name: '', time: formatDateTime(goldenHourEndAsc, solarNoon), class: '', position: goldenHourEndM, arrow: 'center'}
+            {name: '', time: formatDateTime(blueHourBeginAsc), class: '', position: blueHourStartM, arrow: 'right'},
+            {name: '', time: formatDateTime(goldenHourBeginAsc), class: '', position: goldenHourStartM, arrow: 'left'},
+            {name: '', time: formatDateTime(goldenHourEndAsc), class: '', position: goldenHourEndM, arrow: 'center'}
         ];
 
         // Evening timeline data
@@ -579,16 +581,16 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const eveningPointsTop = [
-            {name: 'Sun\nSet', time: formatDateTime(sunSet, solarNoon), class: 'sun-event', position: sunSetE, arrow: 'center'},
-            {name: 'Civil\nDusk', time: formatDateTime(civilDusk, solarNoon), class: '', position: civilDuskE, arrow: 'center'},
-            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk, solarNoon), class: '', position: nauticalDuskE, arrow: 'center'},
-            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk, solarNoon), class: '', position: astronomicalDuskE, arrow: 'center'}
+            {name: 'Sun\nSet', time: formatDateTime(sunSet), class: 'sun-event', position: sunSetE, arrow: 'center'},
+            {name: 'Civil\nDusk', time: formatDateTime(civilDusk), class: '', position: civilDuskE, arrow: 'center'},
+            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk), class: '', position: nauticalDuskE, arrow: 'center'},
+            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk), class: '', position: astronomicalDuskE, arrow: 'center'}
         ];
 
         const eveningPointsBottom = [
-            {name: '', time: formatDateTime(goldenHourBeginDesc, solarNoon), class: '', position: goldenHourStartE, arrow: 'center'},
-            {name: '', time: formatDateTime(blueHourBeginDesc, solarNoon), class: '', position: goldenHourEndE, arrow: 'right'},
-            {name: '', time: formatDateTime(blueHourEndDesc, solarNoon), class: '', position: civilDuskE, arrow: 'left'}
+            {name: '', time: formatDateTime(goldenHourBeginDesc), class: '', position: goldenHourStartE, arrow: 'center'},
+            {name: '', time: formatDateTime(blueHourBeginDesc), class: '', position: goldenHourEndE, arrow: 'right'},
+            {name: '', time: formatDateTime(blueHourEndDesc), class: '', position: civilDuskE, arrow: 'left'}
         ];
 
         createTimePeriodsTop('morning-periods-top', morningPeriodsTop);
@@ -625,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // rise and set
             let rise, set;
             let visible = true;
-            let riseStr = '<<<', setStr = '>>>';
+            let riseStr = '< -' + limitDays, setStr = '> +' + limitDays;
             if (transitHorizon.altitude > 0.0) { // visible
                 // the object is for sure visible at transit, so look for rise in the past
                 rise = Astronomy.SearchRiseSet(objectName, observer, +1, transitTime, -limitDays);
@@ -659,15 +661,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Populate table row
+            const td = '<td>';
+            const td_nvt = '<td class="notvisibletoday">';
+            const rise_vt = Math.abs(dayOffset(riseTime)) < 2;
+            const set_vt = Math.abs(dayOffset(setTime)) < 2;
             row.innerHTML = `
                 <td>${objectName}</td>
                 <td>${phase}</td>
-                <td>${rise ? formatDateTime(riseTime, civilNoon, true) : riseStr}</td>
-                <td>${rise ? riseHorizon.azimuth.toFixed(0) + "°" : ""}</td>
-                <td>${visible ? formatDateTime(transitTime, civilNoon, true) : ""}</td>
-                <td>${transitHorizon.altitude.toFixed(0)}°</td>
-                <td>${set ? formatDateTime(setTime, civilNoon, true) : setStr}</td>
-                <td>${set ? setHorizon.azimuth.toFixed(0) + "°" : ""}</td>
+                ${rise ? (rise_vt ? td : td_nvt) + formatDateTime(riseTime, true) : td_nvt + riseStr}</td>
+                ${rise_vt ? td + riseHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>
+                ${visible ? td : td_nvt}${formatDateTime(transitTime, true)}</td>
+                ${visible ? td : td_nvt}${transitHorizon.altitude.toFixed(0)}°</td>
+                ${set ? (set_vt ? td : td_nvt) + formatDateTime(setTime, true) : td_nvt + setStr}</td>
+                ${set_vt ? td + setHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>
             `;
             tableBody.appendChild(row);
         });
