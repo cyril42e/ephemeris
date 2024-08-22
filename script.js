@@ -705,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function changeDate(days) {
         const currentDate = new Date(dateInput.value);
-        currentDate.setDate(currentDate.getDate() + days);
+        currentDate.setUTCDate(currentDate.getUTCDate() + days);
         dateInput.value = currentDate.toISOString().slice(0, 10);
         updateEphemeris();
     }
