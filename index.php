@@ -68,12 +68,12 @@
     <table>
         <thead>
             <tr>
-                <th>Astro. Dawn</th>
-                <th>Nautical Dawn</th>
-                <th>Civil Dawn</th>
-                <th>Civil Dusk</th>
-                <th>Nautical Dusk</th>
-                <th>Astro. Dusk</th>
+                <th>🔭 ↦</th>
+                <th>🛥 ↦</th>
+                <th>🏠🔵 ↦</th>
+                <th>↤ 🔵 🟠 ↦</th>
+                <th>↤ 🏠  🟡↑</th>
+                <th>↤ 🟠</th>
             </tr>
         </thead>
         <tbody id="sun-dawn-dusk-row">
@@ -81,12 +81,12 @@
         </tbody>
         <thead>
             <tr>
-                <th>Blue Hour Begin</th>
-                <th>Golden Hour Begin</th>
-                <th>Golden Hour End</th>
-                <th>Golden Hour Begin</th>
-                <th>Blue Hour Begin</th>
-                <th>Blue Hour End</th>
+                <th>🟠 ↦</th>
+                <th>🟡↓  🏠 ↦</th>
+                <th>↤ 🟠 🔵 ↦</th>
+                <th>↤ 🔵🏠</th>
+                <th>↤ 🛥</th>
+                <th>↤ 🔭</th>
             </tr>
         </thead>
         <tbody id="sun-blue-golden-hour-row">

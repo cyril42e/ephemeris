@@ -283,45 +283,45 @@ document.addEventListener('DOMContentLoaded', function() {
         const nauticalDusk = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -12).date;
         const astronomicalDusk = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -18).date;
 
-        // Add Sun dawn and dusk row
+        // Compute Sun rise and set time
+        const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, solarNoon, -limitDays).date;
+        const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, solarNoon, limitDays).date;
+        const transitEquator = Astronomy.Equator('Sun', solarNoon, observer, true, true);
+        const transitHorizon = Astronomy.Horizon(solarNoon, observer, transitEquator.ra, transitEquator.dec, 'normal');
+        const peakElevation = transitHorizon.altitude;
+
+        // Calculate blue and golden hour times for the Sun
+        const blueHourBeginAsc = civilDawn;
+        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -4).date;
+        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, 6).date;
+        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, 6).date;
+        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -4).date;
+        const blueHourEndDesc = civilDusk;
+
+
+        // Add morning row
         const sunDawnDuskRowContent = document.createElement('tr');
         sunDawnDuskRowContent.innerHTML = `
             <td>${formatDateTime(astronomicalDawn)}</td>
             <td>${formatDateTime(nauticalDawn)}</td>
             <td>${formatDateTime(civilDawn)}</td>
-            <td>${formatDateTime(civilDusk)}</td>
-            <td>${formatDateTime(nauticalDusk)}</td>
-            <td>${formatDateTime(astronomicalDusk)}</td>
+            <td>${formatDateTime(goldenHourBeginAsc)}</td>
+            <td>${formatDateTime(sunRise)}</td>
+            <td>${formatDateTime(goldenHourEndAsc)}</td>
         `;
         sunDawnDuskRow.appendChild(sunDawnDuskRowContent);
-
-        // Calculate blue and golden hour times for the Sun
-        const blueHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -6).date;
-        const goldenHourBeginAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -4).date;
-        const goldenHourEndAsc = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, 6).date;
-        const goldenHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, 6).date;
-        const blueHourBeginDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -4).date;
-        const blueHourEndDesc = Astronomy.SearchAltitude('Sun', observer, -1, solarNoon, limitDays, -6).date;
 
         // Add Sun blue and golden hour row
         const sunBlueGoldenHourRowContent = document.createElement('tr');
         sunBlueGoldenHourRowContent.innerHTML = `
-            <td>${formatDateTime(blueHourBeginAsc)}</td>
-            <td>${formatDateTime(goldenHourBeginAsc)}</td>
-            <td>${formatDateTime(goldenHourEndAsc)}</td>
             <td>${formatDateTime(goldenHourBeginDesc)}</td>
+            <td>${formatDateTime(sunSet)}</td>
             <td>${formatDateTime(blueHourBeginDesc)}</td>
-            <td>${formatDateTime(blueHourEndDesc)}</td>
+            <td>${formatDateTime(civilDusk)}</td>
+            <td>${formatDateTime(nauticalDusk)}</td>
+            <td>${formatDateTime(astronomicalDusk)}</td>
         `;
         sunBlueGoldenHourRow.appendChild(sunBlueGoldenHourRowContent);
-
-        // Compute Sun rise and set time
-        const sunRise = Astronomy.SearchRiseSet('Sun', observer, +1, solarNoon, -limitDays).date;
-        const sunSet = Astronomy.SearchRiseSet('Sun', observer, -1, solarNoon, limitDays).date;
-
-        const transitEquator = Astronomy.Equator('Sun', solarNoon, observer, true, true);
-        const transitHorizon = Astronomy.Horizon(solarNoon, observer, transitEquator.ra, transitEquator.dec, 'normal');
-        const peakElevation = transitHorizon.altitude;
 
         // Create timelines
         const extremitiesDuration = 20;
