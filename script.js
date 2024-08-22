@@ -38,7 +38,9 @@ function createTimePoints(containerId, points, totalDuration, top) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
     points.forEach(point => {
-        if (point.time === '') {
+        // .time criterion is not sufficient due to +1/-1 that are sometimes legit, and sometimes not
+        // FIXME .position criterion uses hard coded position equal to (holeDuration+dashDuration)*2
+        if (point.time === '' || point.position <= 12) {
             return;
         }
         const timePoint = document.createElement('div');
@@ -348,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let dashBLM = 'invisible'; // Bottom Left Morning
         let dashBRM = 'invisible'; // Bottom Left Morning
         // check for missing periods when day is longer
-        if (peakElevation > 0 && dayDistance(astronomicalDawn, solarNoon) > dayThreshold) {
+        if (peakElevation > -12 && dayDistance(astronomicalDawn, solarNoon) > dayThreshold) {
             nightM = 0;
             astronomicalTwilightM = extDuration;
             offsetM = extDuration;
@@ -384,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let offsetDM = 0; // Day Morning
         // check for missing periods when night is longer
         // fixme peakElevation threshold justification is not clear
-        if (peakElevation < 6+2 && dayDistance(goldenHourEndAsc, solarNoon) > dayThreshold) {
+        if (peakElevation < 12 && dayDistance(goldenHourEndAsc, solarNoon) > dayThreshold) {
             goldenHourM = civilTwilightM - blueHourM + extDuration;
             dayM = goldenHourM + blueHourM - civilTwilightM;
             dashBRM = 'golden-hour'
@@ -479,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let dashBLE = 'invisible'; // Bottom Left Evening
         let dashBRE = 'invisible'; // Bottom Right Evening
         // check for missing periods when day is longer
-        if (peakElevation > 0 && dayDistance(astronomicalDusk, solarNoon) > dayThreshold) {
+        if (peakElevation > -12 && dayDistance(astronomicalDusk, solarNoon) > dayThreshold) {
             nightE = 0;
             astronomicalTwilightE = extDuration;
             dashTRE = 'astronomical-twilight';
@@ -514,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let offsetGE = 0; // Golden Evening
         // check for missing periods when night is longer
         // fixme peakElevation threshold justification is not clear
-        if (peakElevation < 6+2 && dayDistance(goldenHourBeginDesc, solarNoon) > dayThreshold) {
+        if (peakElevation < 12 && dayDistance(goldenHourBeginDesc, solarNoon) > dayThreshold) {
             goldenHourE = civilTwilightE - blueHourE + extDuration;
             offsetGE = extDuration - holeDuration - dashDuration;
             dashBLE = 'golden-hour'
