@@ -613,7 +613,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 phase = '';
             } else {
                 transitTime = searchClosestTransit(objectName, civilNoon);
-                phase = `${(Astronomy.Illumination(objectName, transitTime).phase_fraction * 100).toFixed(0)}%`;
+                const pf = Astronomy.Illumination(objectName, transitTime).phase_fraction;
+                const tomorrow = new Date(transitTime);
+                tomorrow.setUTCDate(transitTime.getUTCDate()+1);
+                const pf_t = Astronomy.Illumination(objectName, tomorrow).phase_fraction;
+                phase = `${(pf * 100).toFixed(0)}% ${pf_t>pf?'↗':'↘'}`;
             }
             const transitEquator = Astronomy.Equator(objectName, transitTime, observer, true, true);
             const transitHorizon = Astronomy.Horizon(transitTime, observer, transitEquator.ra, transitEquator.dec, 'normal');

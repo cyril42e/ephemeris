@@ -51,6 +51,8 @@ Setting the date can also be done in multiple ways:
 
 ### Interpretation
 
+#### Time
+
 All the dates and times (inputs and outputs) are expressed in the time zone corresponding to the input location (a.k.a. the target timezone):
 
 - The date input is interpreted in the target timezone.
@@ -72,6 +74,16 @@ Note that time and dates always respect ISO conventions (24 hours, year-month-da
 The timeline bubbles are in general to scale, but with exceptions as a maximum bound is applied
 in order to have a readable display for extreme cases, at higher latitudes
 (for instance in Paris around the summer solstice, there is no astronomical night, only a 4.5 hours astronomical twilight).
+
+#### Other data
+
+The phase correponds to the phase fraction, i.e. the percentage of the object that appears illuminated by the Sun.
+It is followed by an arrow that indicates whether it is increasing or decreasing.
+
+For rise and set events, the azimuth at which it happens is also shown, which is the clockwise angle from North
+(thus with 0° indicating North, and 90° indicating East).
+
+For peak elevation (i.e. transit), the reached elevation is also shown, which is the angle above the horizon.
 
 ## Technical explanations
 
