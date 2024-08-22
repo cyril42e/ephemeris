@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
     <title>Solar System Ephemeris</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
@@ -70,12 +70,12 @@
             <tr>
                 <th>Object</th>
                 <th></th>
-                <th>Astronomical Dawn</th>
+                <th>Astro. Dawn</th>
                 <th>Nautical Dawn</th>
                 <th>Civil Dawn</th>
                 <th>Civil Dusk</th>
                 <th>Nautical Dusk</th>
-                <th>Astronomical Dusk</th>
+                <th>Astro. Dusk</th>
             </tr>
         </thead>
         <tbody id="sun-dawn-dusk-row">

@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const dayOffStr = (dayOff > 0 ? '+' : '') + dayOff;
             if (Math.abs(dayOff) >= 1) {
                 if (Math.abs(dayOff) < 2) {
-                    return time + ' ' + dayOffStr;
+                    return time + '&nbsp;' + dayOffStr;
                 } else if (showDate) {
                     return dayOffStr;
                 } else {
@@ -621,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tomorrow = new Date(transitTime);
                 tomorrow.setUTCDate(transitTime.getUTCDate()+1);
                 const pf_t = Astronomy.Illumination(objectName, tomorrow).phase_fraction;
-                phase = `${(pf * 100).toFixed(0)}% ${pf_t>pf?'↗':'↘'}`;
+                phase = `${(pf * 100).toFixed(0)}%&nbsp;${pf_t>pf?'↗':'↘'}`;
             }
             const transitEquator = Astronomy.Equator(objectName, transitTime, observer, true, true);
             const transitHorizon = Astronomy.Horizon(transitTime, observer, transitEquator.ra, transitEquator.dec, 'normal');
