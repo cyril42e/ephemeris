@@ -286,8 +286,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add Sun dawn and dusk row
         const sunDawnDuskRowContent = document.createElement('tr');
         sunDawnDuskRowContent.innerHTML = `
-            <td>Sun</td>
-            <td></td>
             <td>${formatDateTime(astronomicalDawn)}</td>
             <td>${formatDateTime(nauticalDawn)}</td>
             <td>${formatDateTime(civilDawn)}</td>
@@ -308,8 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add Sun blue and golden hour row
         const sunBlueGoldenHourRowContent = document.createElement('tr');
         sunBlueGoldenHourRowContent.innerHTML = `
-            <td>Sun</td>
-            <td></td>
             <td>${formatDateTime(blueHourBeginAsc)}</td>
             <td>${formatDateTime(goldenHourBeginAsc)}</td>
             <td>${formatDateTime(goldenHourEndAsc)}</td>

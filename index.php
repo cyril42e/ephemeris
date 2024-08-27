@@ -68,8 +68,6 @@
     <table>
         <thead>
             <tr>
-                <th>Object</th>
-                <th></th>
                 <th>Astro. Dawn</th>
                 <th>Nautical Dawn</th>
                 <th>Civil Dawn</th>
@@ -83,8 +81,6 @@
         </tbody>
         <thead>
             <tr>
-                <th>Object</th>
-                <th></th>
                 <th>Blue Hour Begin</th>
                 <th>Golden Hour Begin</th>
                 <th>Golden Hour End</th>
@@ -96,16 +92,15 @@
         <tbody id="sun-blue-golden-hour-row">
             <!-- Populated here by JavaScript -->
         </tbody>
+    </table>
+    <table>
         <thead>
             <tr>
                 <th>Object</th>
                 <th>Phase</th>
-                <th>Rise Time</th>
-                <th>Rise Azimuth</th>
-                <th>Peak Elevation Time</th>
-                <th>Peak Elevation</th>
-                <th>Set Time</th>
-                <th>Set Azimuth</th>
+                <th colspan="2">Rise 🕒&nbsp;⬌</th>
+                <th colspan="2">Peak 🕒&nbsp;⬍</th>
+                <th colspan="2">Set 🕒&nbsp;⬌</th>
             </tr>
         </thead>
         <tbody id="ephemeris-table">
