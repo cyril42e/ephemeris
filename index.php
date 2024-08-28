@@ -16,11 +16,11 @@
 <body>
 <div class="page">
     <div class="title">
-        <h1>Solar System Ephemeris</h1>
+        <h1 id="title">Solar System Ephemeris</h1>
         <div class="links">
-            <a href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
-            <a href="https://github.com/cyril42e/ephemeris">Source Code</a><br/>
-            <a href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/>
+            <a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
+            <a id="code" href="https://github.com/cyril42e/ephemeris">Source Code</a><br/>
+            <a id="bugs" href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/>
         </div>
     </div>
 
@@ -96,11 +96,11 @@
     <table>
         <thead>
             <tr>
-                <th>Object</th>
-                <th>Phase</th>
-                <th colspan="2">Rise 🕒&nbsp;⬌</th>
-                <th colspan="2">Peak 🕒&nbsp;⬍</th>
-                <th colspan="2">Set 🕒&nbsp;⬌</th>
+                <th></th>
+                <th id="phase">Phase</th>
+                <th colspan="2"><span id="rise">Rise</span> 🕒&nbsp;⬌</th>
+                <th colspan="2"><span id="peak">High</span> 🕒&nbsp;⬍</th>
+                <th colspan="2"><span id="set">Set</span> 🕒&nbsp;⬌</th>
             </tr>
         </thead>
         <tbody id="ephemeris-table">

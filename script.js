@@ -54,6 +54,100 @@ function createTimePoints(containerId, points, totalDuration, top) {
     });
 }
 
+const translation_english = {
+    'title': 'Solar System Ephemeris',
+    'n': 'Night',
+    'mad': 'Astro. Dawn',
+    'mat': 'Astro. Twilight',
+    'mnd': 'Nautical Dawn',
+    'mnt': 'Nautical Twilight',
+    'mcd': 'Civil Dawn',
+    'mct': 'Civil Twilight',
+    'sr': 'Sun Rise',
+    'bh': 'Blue Hour',
+    'gh': 'Golden Hour',
+    'ss': 'Sun Set',
+    'd': 'Day',
+    'ecd': 'Civil Dusk',
+    'ect': 'Civil Twilight',
+    'end': 'Nautical Dusk',
+    'ent': 'Nautical Twilight',
+    'ead': 'Astro. Dusk',
+    'eat': 'Astro. Twilight',
+    'begin': 'Begin of',
+    'endof': 'End of',
+    'phase': 'Phase',
+    'rise': 'Rise',
+    'peak': 'High',
+    'set': 'Set',
+    'rise_d': 'Rise Time and Azimuth',
+    'peak_d': 'Culmination / High Point Time and Elevation',
+    'set_d': 'Set Time and Azimuth',
+    'now': 'Now',
+    'here': 'Here',
+    'addr': 'Search address...',
+    'doc': 'Documentation',
+    'code': 'Source code',
+    'bugs': 'Bug reports',
+    'Sun': 'Sun',
+    'Moon': 'Moon',
+    'Mercury': 'Mercury',
+    'Venus': 'Venus',
+    'Mars': 'Mars',
+    'Jupiter': 'Jupiter',
+    'Saturn': 'Saturn',
+    'Uranus': 'Uranus',
+    'Neptune': 'Neptune'
+};
+const translation_french = {
+    'title': 'Éphemérides du systeme solaire',
+    'n': 'Nuit',
+    'mad': '',
+    'mat': 'Aube astro.',
+    'mnd': '',
+    'mnt': 'Aube nautique',
+    'mcd': '',
+    'mct': 'Aube civile',
+    'sr': 'Lever Soleil',
+    'bh': 'Heure bleue',
+    'gh': 'Heure dorée',
+    'ss': 'Coucher Soleil',
+    'd': 'Jour',
+    'ecd': '',
+    'ect': 'Crépuscule civil',
+    'end': '',
+    'ent': 'Crépuscule nautique',
+    'ead': '',
+    'eat': 'Crépuscule astro.',
+    'begin': 'Début de',
+    'endof': 'Fin de',
+    'phase': 'Phase',
+    'rise': 'Lever',
+    'peak': 'Haut',
+    'set': 'Coucher',
+    'rise_d': 'Heure et azimut de lever',
+    'peak_d': 'Heure et hauteur maximale',
+    'set_d': 'Heure et azimut de coucher',
+    'now': 'Maintenant',
+    'here': 'Ici',
+    'addr': 'Chercher une addresse...',
+    'doc': 'Documentation',
+    'code': 'Code source',
+    'bugs': 'Signaler un bug',
+    'Sun': 'Soleil',
+    'Moon': 'Lune',
+    'Mercury': 'Mercure',
+    'Venus': 'Venus',
+    'Mars': 'Mars',
+    'Jupiter': 'Jupiter',
+    'Saturn': 'Saturne',
+    'Uranus': 'Uranus',
+    'Neptune': 'Neptune'
+};
+
+let tr = translation_french;
+
+
 function bringToFront(event) {
   // Remove 'front' class from all time points
   document.querySelectorAll('.time-point').forEach(point => {
@@ -77,9 +171,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const timezoneOutput = document.getElementById('timezone');
     let refreshTimeout;
 
-    const emptyAddressStr = 'Search address...';
+    function applyTranslation() {
+        currentLocationButton.textContent = tr.here;
+        currentDateButton.textContent = tr.now;
+        document.getElementById('title').textContent = tr.title;
+        document.getElementById('doc').textContent = tr.doc;
+        document.getElementById('code').textContent = tr.code;
+        document.getElementById('bugs').textContent = tr.bugs;
+        document.getElementById('phase').textContent = tr.phase;
+        document.getElementById('rise').textContent = tr.rise;
+        document.getElementById('peak').textContent = tr.peak;
+        document.getElementById('set').textContent = tr.set;
+        //if (addressInput.value === old) // TODO
+    }
+    applyTranslation();
+
     function clearAddress() {
-        addressInput.value = emptyAddressStr;
+        addressInput.value = tr.addr;
         addressInput.classList.add('empty');
     }
     function setAddress(text) {
@@ -430,11 +538,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const morningPeriodsTop = [
             {name: '', class: dashTLM, duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: 'Night', class: 'night', duration: nightM},
-            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightM},
-            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightM},
-            {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightM},
-            {name: 'Day', class: 'day', duration: dayM},
+            {name: tr.n, class: 'night', duration: nightM},
+            {name: tr.mat, class: 'astronomical-twilight', duration: astronomicalTwilightM},
+            {name: tr.mnt, class: 'nautical-twilight', duration: nauticalTwilightM},
+            {name: tr.mct, class: 'civil-twilight', duration: civilTwilightM},
+            {name: tr.d, class: 'day', duration: dayM},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: '', class: dashTRM, duration: dashDuration},
             {name: '', class: 'invisible', duration: dashDuration + holeDuration}
@@ -443,16 +551,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const morningPeriodsBottom = [
             {name: '', class: dashBLM, start: 0, duration: dashDuration},
-            {name: 'Blue Hour', class: 'blue-hour', start: blueHourStartM, duration: blueHourM},
-            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartM, duration: goldenHourM},
+            {name: tr.bh, class: 'blue-hour', start: blueHourStartM, duration: blueHourM},
+            {name: tr.gh, class: 'golden-hour', start: goldenHourStartM, duration: goldenHourM},
             {name: '', class: dashBRM, start: morningTotalDuration - holeDuration - dashDuration*2, duration: dashDuration}
         ];
 
         const morningPointsTop = [
-            {name: 'Astro.\nDawn', time: formatDateTime(astronomicalDawn), class: '', position: astronomicalDawnM, arrow: 'center'},
-            {name: 'Nautical\nDawn', time: formatDateTime(nauticalDawn), class: '', position: nauticalDawnM, arrow: 'center'},
-            {name: 'Civil\nDawn', time: formatDateTime(civilDawn), class: '', position: civilDawnM, arrow: 'center'},
-            {name: 'Sun\nRise', time: formatDateTime(sunRise), class: 'sun-event', position: sunRiseM, arrow: 'center'}
+            {name: tr.mad.replace(' ', '\n'), time: formatDateTime(astronomicalDawn), class: '', position: astronomicalDawnM, arrow: 'center'},
+            {name: tr.mnd.replace(' ', '\n'), time: formatDateTime(nauticalDawn), class: '', position: nauticalDawnM, arrow: 'center'},
+            {name: tr.mcd.replace(' ', '\n'), time: formatDateTime(civilDawn), class: '', position: civilDawnM, arrow: 'center'},
+            {name: tr.sr.replace(' ', '\n'), time: formatDateTime(sunRise), class: 'sun-event', position: sunRiseM, arrow: 'center'}
         ];
 
         const morningPointsBottom = [
@@ -560,11 +668,11 @@ document.addEventListener('DOMContentLoaded', function() {
             {name: '', class: 'invisible', duration: dashDuration + holeDuration},
             {name: '', class: dashTLE, duration: dashDuration},
             {name: '', class: 'invisible', duration: holeDuration},
-            {name: 'Day', class: 'day', duration: dayE},
-            {name: 'Civil Twilight', class: 'civil-twilight', duration: civilTwilightE},
-            {name: 'Nautical Twilight', class: 'nautical-twilight', duration: nauticalTwilightE},
-            {name: 'Astro. Twilight', class: 'astronomical-twilight', duration: astronomicalTwilightE},
-            {name: 'Night', class: 'night', duration: nightE},
+            {name: tr.d, class: 'day', duration: dayE},
+            {name: tr.ect, class: 'civil-twilight', duration: civilTwilightE},
+            {name: tr.ent, class: 'nautical-twilight', duration: nauticalTwilightE},
+            {name: tr.eat, class: 'astronomical-twilight', duration: astronomicalTwilightE},
+            {name: tr.n, class: 'night', duration: nightE},
             {name: '', class: 'invisible', duration: holeDuration},
             {name: '', class: dashTRE, duration: dashDuration}
         ];
@@ -572,16 +680,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const eveningPeriodsBottom = [
             {name: '', class: dashBLE, start: dashDuration + holeDuration, duration: dashDuration},
-            {name: 'Golden Hour', class: 'golden-hour', start: goldenHourStartE, duration: goldenHourE},
-            {name: 'Blue Hour', class: 'blue-hour', start: goldenHourEndE, duration: blueHourE},
+            {name: tr.gh, class: 'golden-hour', start: goldenHourStartE, duration: goldenHourE},
+            {name: tr.bh, class: 'blue-hour', start: goldenHourEndE, duration: blueHourE},
             {name: '', class: dashBRE, start: eveningTotalDuration - dashDuration, duration: dashDuration}
         ];
 
         const eveningPointsTop = [
-            {name: 'Sun\nSet', time: formatDateTime(sunSet), class: 'sun-event', position: sunSetE, arrow: 'center'},
-            {name: 'Civil\nDusk', time: formatDateTime(civilDusk), class: '', position: civilDuskE, arrow: 'center'},
-            {name: 'Nautical\nDusk', time: formatDateTime(nauticalDusk), class: '', position: nauticalDuskE, arrow: 'center'},
-            {name: 'Astro.\nDusk', time: formatDateTime(astronomicalDusk), class: '', position: astronomicalDuskE, arrow: 'center'}
+            {name: tr.ss.replace(' ', '\n'), time: formatDateTime(sunSet), class: 'sun-event', position: sunSetE, arrow: 'center'},
+            {name: tr.ecd.replace(' ', '\n'), time: formatDateTime(civilDusk), class: '', position: civilDuskE, arrow: 'center'},
+            {name: tr.end.replace(' ', '\n'), time: formatDateTime(nauticalDusk), class: '', position: nauticalDuskE, arrow: 'center'},
+            {name: tr.ead.replace(' ', '\n'), time: formatDateTime(astronomicalDusk), class: '', position: astronomicalDuskE, arrow: 'center'}
         ];
 
         const eveningPointsBottom = [
@@ -663,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const rise_vt = Math.abs(dayOffset(riseTime)) < 2;
             const set_vt = Math.abs(dayOffset(setTime)) < 2;
             row.innerHTML = `
-                <td>${objectName}</td>
+                <td>${tr[objectName]}</td>
                 <td>${phase}</td>
                 ${rise ? (rise_vt ? td : td_nvt) + formatDateTime(riseTime, true) : td_nvt + riseStr}</td>
                 ${rise_vt ? td + riseHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>
