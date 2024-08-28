@@ -258,6 +258,10 @@ button:hover {
   z-index: 1000;
 }
 
+.bigger {
+  font-size: 110%;
+}
+
 /*******************************/
 /* Ephemeris Table */
 

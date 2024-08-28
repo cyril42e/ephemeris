@@ -33,7 +33,6 @@ function createTimePeriodsBottom(containerId, data, totalDuration) {
     });
 }
 
-
 function createTimePoints(containerId, points, totalDuration, top) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
@@ -45,7 +44,7 @@ function createTimePoints(containerId, points, totalDuration, top) {
         }
         const timePoint = document.createElement('div');
         timePoint.className = `time-point ${point.class}`;
-        timePoint.innerHTML = top ? point.name + '<br/><b>' + point.time + '</b>' : '<b>' + point.time + '</b></br>' + point.name;
+        timePoint.innerHTML = top ? point.name + (point.name === '' ? '' : '<br/>') + '<b class="bigger">' + point.time + '</b>' : '<b class="bigger">' + point.time + '</b></br>' + point.name;
         timePoint.style.left = `${(point.position / totalDuration) * 100}%`;
         arrowPosition = (point.arrow === 'left') ? 25 : ((point.arrow === 'right') ? 75 : 50);
         timePoint.style.setProperty('--arrow-position', `${arrowPosition}%`);
