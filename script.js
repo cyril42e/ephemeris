@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const addressInput = document.getElementById('address');
     const suggestionsDiv = document.getElementById('suggestions');
     const timezoneOutput = document.getElementById('timezone');
+    const languageDropdown = document.getElementById('languageDropdown');
     let refreshTimeout;
 
     function applyTranslation() {
@@ -184,7 +185,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('set').textContent = tr.set;
         //if (addressInput.value === old) // TODO
     }
-    applyTranslation();
+
+    function changeLanguage() {
+        const selectedLanguage = languageDropdown.value;
+
+        if (selectedLanguage === 'en') {
+            tr = translation_english;
+        } else if (selectedLanguage === 'fr') {
+            tr = translation_french;
+        }
+
+        applyTranslation();
+        updateEphemeris();
+    }
+    languageDropdown.addEventListener('change', function() { changeLanguage(); });
 
     function clearAddress() {
         addressInput.value = tr.addr;
@@ -839,6 +853,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Initialize with current date
+    changeLanguage();
     setCurrentDate();
 });
 

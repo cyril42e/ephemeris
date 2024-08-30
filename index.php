@@ -16,6 +16,12 @@
 <body>
 <div class="page">
     <div class="title">
+        <div class="language-selector">
+            <select id="languageDropdown">
+                <option value="en">&#x1F1EC;&#x1F1E7;</option>
+                <option value="fr">&#x1F1EB;&#x1F1F7;</option>
+            </select>
+        </div>
         <h1 id="title">Solar System Ephemeris</h1>
         <div class="links">
             <a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>

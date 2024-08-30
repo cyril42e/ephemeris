@@ -36,6 +36,19 @@ body {
 /*******************************/
 /* Controls */
 
+#languageDropdown {
+    padding: 5px;
+    font-size: 24px; /* Increase font size for better visibility of flags */
+    border: none;
+    background: transparent;
+    appearance: none;
+    cursor: pointer;
+}
+
+#languageDropdown::-ms-expand {
+    display: none; /* Remove default dropdown arrow in IE */
+}
+
 .controls {
     text-align: center;
     padding-bottom: 10px;
