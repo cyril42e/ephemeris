@@ -148,8 +148,7 @@ const translation_french = {
 let tr = translation_english;
 
 function getLanguageParameter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('lang') || 'en';
+    return localStorage.getItem('language') || 'en';
 }
 
 function bringToFront(event) {
@@ -194,13 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedLanguage = languageDropdown.value;
 
         // Change the URL parameter
-        const url = new URL(window.location);
-        if (selectedLanguage === 'en') {
-            url.searchParams.delete('lang');
-        } else {
-            url.searchParams.set('lang', selectedLanguage);
-        }
-        window.history.pushState({}, '', url);
+        localStorage.setItem('language', selectedLanguage);
 
         // Apply language
         if (selectedLanguage === 'en') {
