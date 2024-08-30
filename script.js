@@ -145,8 +145,12 @@ const translation_french = {
     'Neptune': 'Neptune'
 };
 
-let tr = translation_french;
+let tr = translation_english;
 
+function getLanguageParameter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('lang') || 'en';
+}
 
 function bringToFront(event) {
   // Remove 'front' class from all time points
@@ -189,6 +193,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function changeLanguage() {
         const selectedLanguage = languageDropdown.value;
 
+        // Change the URL parameter
+        const url = new URL(window.location);
+        if (selectedLanguage === 'en') {
+            url.searchParams.delete('lang');
+        } else {
+            url.searchParams.set('lang', selectedLanguage);
+        }
+        window.history.pushState({}, '', url);
+
+        // Apply language
         if (selectedLanguage === 'en') {
             tr = translation_english;
         } else if (selectedLanguage === 'fr') {
@@ -198,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
         applyTranslation();
         updateEphemeris();
     }
+    languageDropdown.value = getLanguageParameter();
     languageDropdown.addEventListener('change', function() { changeLanguage(); });
 
     function clearAddress() {
