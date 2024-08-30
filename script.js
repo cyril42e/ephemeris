@@ -147,8 +147,21 @@ const translation_french = {
 
 let tr = translation_english;
 
-function getLanguageParameter() {
-    return localStorage.getItem('language') || 'en';
+function getLanguageBrowser() {
+    const supportedLocales = ['en', 'fr'];
+    const browserLocales = navigator.languages || [navigator.language || navigator.userLanguage];
+    for (let locale of browserLocales) {
+        const languageCode = locale.split('-')[0]; // Get the language code
+        if (supportedLocales.includes(languageCode)) {
+            return languageCode;
+        }
+    }
+    return null;
+}
+const languageBrowser = getLanguageBrowser();
+
+function getLanguageStorage() {
+    return localStorage.getItem('language') || null;
 }
 
 function bringToFront(event) {
@@ -193,7 +206,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedLanguage = languageDropdown.value;
 
         // Change the URL parameter
-        localStorage.setItem('language', selectedLanguage);
+        if (selectedLanguage === languageBrowser) {
+            localStorage.removeItem('language');
+        } else {
+            localStorage.setItem('language', selectedLanguage);
+        }
 
         // Apply language
         if (selectedLanguage === 'en') {
@@ -205,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
         applyTranslation();
         updateEphemeris();
     }
-    languageDropdown.value = getLanguageParameter();
+    languageDropdown.value = getLanguageStorage() || languageBrowser || 'en';
     languageDropdown.addEventListener('change', function() { changeLanguage(); });
 
     function clearAddress() {
