@@ -36,6 +36,10 @@ body {
 /*******************************/
 /* Controls */
 
+.language-selector {
+    text-align: center;
+}
+
 #languageDropdown {
     padding: 5px;
     font-size: 24px; /* Increase font size for better visibility of flags */
@@ -47,6 +51,16 @@ body {
 
 #languageDropdown::-ms-expand {
     display: none; /* Remove default dropdown arrow in IE */
+}
+
+#sciLanguageCheckbox {
+    cursor: pointer;
+}
+#sciLanguageLabel {
+    font-size: 130%;
+    cursor: pointer;
+    position: relative;
+    top: 3px;
 }
 
 .controls {

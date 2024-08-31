@@ -54,7 +54,8 @@ function createTimePoints(containerId, points, totalDuration, top) {
     });
 }
 
-const translation_english = {
+const translation_ui = {
+  'en': {
     'title': 'Solar System Ephemeris',
     'n': 'Night',
     'mad': 'Astro. Dawn',
@@ -76,6 +77,7 @@ const translation_english = {
     'eat': 'Astro. Twilight',
     'begin': 'Begin of',
     'endof': 'End of',
+    'constel': 'Constellation',
     'phase': 'Phase',
     'rise': 'Rise',
     'peak': 'High',
@@ -98,9 +100,9 @@ const translation_english = {
     'Saturn': 'Saturn',
     'Uranus': 'Uranus',
     'Neptune': 'Neptune'
-};
-const translation_french = {
-    'title': 'Éphemérides du systeme solaire',
+  },
+  'fr': {
+    'title': 'Éphemérides du système solaire',
     'n': 'Nuit',
     'mad': '',
     'mat': 'Aube astro.',
@@ -121,6 +123,7 @@ const translation_french = {
     'eat': 'Crépuscule astro.',
     'begin': 'Début de',
     'endof': 'Fin de',
+    'constel': 'Constellation',
     'phase': 'Phase',
     'rise': 'Lever',
     'peak': 'Haut',
@@ -143,9 +146,289 @@ const translation_french = {
     'Saturn': 'Saturne',
     'Uranus': 'Uranus',
     'Neptune': 'Neptune'
+  }
 };
 
-let tr = translation_english;
+let tr = translation_ui['en'];
+
+const translation_constel = {
+  "sci": {
+    "And": "Andromeda",
+    "Ant": "Antlia",
+    "Aps": "Apus",
+    "Aqr": "Aquarius",
+    "Aql": "Aquila",
+    "Ara": "Ara",
+    "Ari": "Aries",
+    "Aur": "Auriga",
+    "Boo": "Boötes",
+    "Cae": "Caelum",
+    "Cam": "Camelopardalis",
+    "Cnc": "Cancer",
+    "CVn": "Canes Venatici",
+    "CMa": "Canis Major",
+    "CMi": "Canis Minor",
+    "Cap": "Capricornus",
+    "Car": "Carina",
+    "Cas": "Cassiopeia",
+    "Cen": "Centaurus",
+    "Cep": "Cepheus",
+    "Cet": "Cetus",
+    "Cha": "Chamaeleon",
+    "Cir": "Circinus",
+    "Col": "Columba",
+    "Com": "Coma Berenices",
+    "CrA": "Corona Austrina",
+    "CrB": "Corona Borealis",
+    "Crv": "Corvus",
+    "Crt": "Crater",
+    "Cru": "Crux",
+    "Cyg": "Cygnus",
+    "Del": "Delphinus",
+    "Dor": "Dorado",
+    "Dra": "Draco",
+    "Equ": "Equuleus",
+    "Eri": "Eridanus",
+    "For": "Fornax",
+    "Gem": "Gemini",
+    "Gru": "Grus",
+    "Her": "Hercules",
+    "Hor": "Horologium",
+    "Hya": "Hydra",
+    "Hyi": "Hydrus",
+    "Ind": "Indus",
+    "Lac": "Lacerta",
+    "Leo": "Leo",
+    "LMi": "Leo Minor",
+    "Lep": "Lepus",
+    "Lib": "Libra",
+    "Lup": "Lupus",
+    "Lyn": "Lynx",
+    "Lyr": "Lyra",
+    "Men": "Mensa",
+    "Mic": "Microscopium",
+    "Mon": "Monoceros",
+    "Mus": "Musca",
+    "Nor": "Norma",
+    "Oct": "Octans",
+    "Oph": "Ophiuchus",
+    "Ori": "Orion",
+    "Pav": "Pavo",
+    "Peg": "Pegasus",
+    "Per": "Perseus",
+    "Phe": "Phoenix",
+    "Pic": "Pictor",
+    "Psc": "Pisces",
+    "PsA": "Piscis Austrinus",
+    "Pup": "Puppis",
+    "Pyx": "Pyxis",
+    "Ret": "Reticulum",
+    "Sge": "Sagitta",
+    "Sgr": "Sagittarius",
+    "Sco": "Scorpius",
+    "Scl": "Sculptor",
+    "Sct": "Scutum",
+    "Ser": "Serpens Caput",
+    "Ser": "Serpens Cauda",
+    "Sex": "Sextans",
+    "Tau": "Taurus",
+    "Tel": "Telescopium",
+    "Tri": "Triangulum",
+    "TrA": "Triangulum Australe",
+    "Tuc": "Tucana",
+    "UMa": "Ursa Major",
+    "UMi": "Ursa Minor",
+    "Vel": "Vela",
+    "Vir": "Virgo",
+    "Vol": "Volans",
+    "Vul": "Vulpecula",
+  },
+  "en": {
+    "And": "Andromeda",
+    "Ant": "Air Pump",
+    "Aps": "Bird of Paradise",
+    "Aqr": "Aquarius",
+    "Aql": "Eagle",
+    "Ara": "Altar",
+    "Ari": "Ram",
+    "Aur": "Charioteer",
+    "Boo": "Herdsman",
+    "Cae": "Graving tool",
+    "Cam": "Giraffe",
+    "Cnc": "Crab",
+    "CVn": "Hunting Dogs",
+    "CMa": "Great Dog",
+    "CMi": "Little Dog",
+    "Cap": "Capricorn",
+    "Car": "Keel",
+    "Cas": "Cassiopeia",
+    "Cen": "Centaur",
+    "Cep": "Cepheus",
+    "Cet": "Whale",
+    "Cha": "Chamaeleon",
+    "Cir": "Compass",
+    "Col": "Dove",
+    "Com": "Berenice's Hair",
+    "CrA": "Southern Crown",
+    "CrB": "Northern Crown",
+    "Crv": "Crow",
+    "Crt": "Cup",
+    "Cru": "Cross",
+    "Cyg": "Swan",
+    "Del": "Dolphin",
+    "Dor": "Goldfish",
+    "Dra": "Dragon",
+    "Equ": "Colt",
+    "Eri": "Eridanus",
+    "For": "Furnace",
+    "Gem": "Twins",
+    "Gru": "Crane",
+    "Her": "Hercules",
+    "Hor": "Clock",
+    "Hya": "Sea Serpent",
+    "Hyi": "Hydrus",
+    "Ind": "Indian",
+    "Lac": "Lizard",
+    "Leo": "Lion",
+    "LMi": "Little Lion",
+    "Lep": "Hare",
+    "Lib": "Balance",
+    "Lup": "Wolf",
+    "Lyn": "Lynx",
+    "Lyr": "Lyre",
+    "Men": "Mensa",
+    "Mic": "Microscope",
+    "Mon": "Unicorn",
+    "Mus": "Fly",
+    "Nor": "Level",
+    "Oct": "Octant",
+    "Oph": "Ophiuchus",
+    "Ori": "Orion",
+    "Pav": "Peacock",
+    "Peg": "Pegasus",
+    "Per": "Perseus",
+    "Phe": "Phoenix",
+    "Pic": "Painter",
+    "Psc": "Fishes",
+    "PsA": "Southern Fish",
+    "Pup": "Poop Deck",
+    "Pyx": "Compass",
+    "Ret": "Net",
+    "Sge": "Arrow",
+    "Sgr": "Archer",
+    "Sco": "Scorpion",
+    "Scl": "Sculptor",
+    "Sct": "Shield",
+    "Ser": "Serpent",
+    "Ser": "Serpent",
+    "Sex": "Sextant",
+    "Tau": "Bull",
+    "Tel": "Telescope",
+    "Tri": "Triangle",
+    "TrA": "Southern Triangle",
+    "Tuc": "Toucan",
+    "UMa": "Big Dipper",
+    "UMi": "Little Dipper",
+    "Vel": "Sails",
+    "Vir": "Virgin",
+    "Vol": "Flying Fish",
+    "Vul": "Little Fox"
+  },
+  "fr": {
+    "And": "Andromède",
+    "Ant": "Machine Pneumatique",
+    "Aps": "Oiseau de Paradis",
+    "Aqr": "Verseau",
+    "Aql": "Aigle",
+    "Ara": "Autel",
+    "Ari": "Bélier",
+    "Aur": "Cocher",
+    "Boo": "Bouvier",
+    "Cae": "Burin",
+    "Cam": "Girafe",
+    "Cnc": "Cancer",
+    "CVn": "Chiens de Chasse",
+    "CMa": "Grand Chien",
+    "CMi": "Petit Chien",
+    "Cap": "Capricorne",
+    "Car": "Carène",
+    "Cas": "Cassiopée",
+    "Cen": "Centaure",
+    "Cep": "Céphée",
+    "Cet": "Baleine",
+    "Cha": "Caméléon",
+    "Cir": "Compas",
+    "Col": "Colombe",
+    "Com": "Chevelure de Bérénice",
+    "CrA": "Couronne Australe",
+    "CrB": "Couronne Boréale",
+    "Crv": "Corbeau",
+    "Crt": "Coupe",
+    "Cru": "Croix du Sud",
+    "Cyg": "Cygne",
+    "Del": "Dauphin",
+    "Dor": "Dorade",
+    "Dra": "Dragon",
+    "Equ": "Petit Cheval",
+    "Eri": "Eridan",
+    "For": "Fourneau",
+    "Gem": "Gémeaux",
+    "Gru": "Grue",
+    "Her": "Hercule",
+    "Hor": "Horloge",
+    "Hya": "Hydre Femelle",
+    "Hyi": "Hydre Mâle",
+    "Ind": "Indien",
+    "Lac": "Lézard",
+    "Leo": "Lion",
+    "LMi": "Petit Lion",
+    "Lep": "Lièvre",
+    "Lib": "Balance",
+    "Lup": "Loup",
+    "Lyn": "Lynx",
+    "Lyr": "Lyre",
+    "Men": "Table",
+    "Mic": "Microscope",
+    "Mon": "Licorne",
+    "Mus": "Mouche",
+    "Nor": "Règle",
+    "Oct": "Octant",
+    "Oph": "Ophiuchus",
+    "Ori": "Orion",
+    "Pav": "Paon",
+    "Peg": "Pégase",
+    "Per": "Persée",
+    "Phe": "Phénix",
+    "Pic": "Peintre",
+    "Psc": "Poissons",
+    "PsA": "Poisson Austral",
+    "Pup": "Poupe",
+    "Pyx": "Boussole",
+    "Ret": "Réticule",
+    "Sge": "Flèche",
+    "Sgr": "Sagittaire",
+    "Sco": "Scorpion",
+    "Scl": "Sculpteur",
+    "Sct": "Écu de Sobieski",
+    "Ser": "Serpent",
+    "Ser": "Serpent",
+    "Sex": "Sextant",
+    "Tau": "Taureau",
+    "Tel": "Télescope",
+    "Tri": "Triangle",
+    "TrA": "Triangle Austral",
+    "Tuc": "Toucan",
+    "UMa": "Grande Ourse",
+    "UMi": "Petite Ourse",
+    "Vel": "Voiles",
+    "Vir": "Vierge",
+    "Vol": "Poisson Volant",
+    "Vul": "Petit Renard"
+  }
+};
+
+let trc = translation_constel['en'];
+
 
 function getLanguageBrowser() {
     const supportedLocales = ['en', 'fr'];
@@ -163,6 +446,9 @@ const languageBrowser = getLanguageBrowser();
 function getLanguageStorage() {
     return localStorage.getItem('language') || null;
 }
+function getSciLanguageStorage() {
+    return localStorage.getItem('sciLanguage') || null;
+}
 
 function bringToFront(event) {
   // Remove 'front' class from all time points
@@ -174,6 +460,10 @@ function bringToFront(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    const timelineTable = document.getElementById('timeline-table');
+    timelineTable.style.display = "none";
+
     //***************************/
     // Controls
 
@@ -186,44 +476,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const suggestionsDiv = document.getElementById('suggestions');
     const timezoneOutput = document.getElementById('timezone');
     const languageDropdown = document.getElementById('languageDropdown');
+    const sciLanguageCheckbox = document.getElementById('sciLanguageCheckbox');
     let refreshTimeout;
 
     function applyTranslation() {
         currentLocationButton.textContent = tr.here;
         currentDateButton.textContent = tr.now;
-        document.getElementById('title').textContent = tr.title;
-        document.getElementById('doc').textContent = tr.doc;
-        document.getElementById('code').textContent = tr.code;
-        document.getElementById('bugs').textContent = tr.bugs;
-        document.getElementById('phase').textContent = tr.phase;
-        document.getElementById('rise').textContent = tr.rise;
-        document.getElementById('peak').textContent = tr.peak;
-        document.getElementById('set').textContent = tr.set;
+        for(const s of ['title', 'doc', 'code', 'bugs', 'constel', 'phase', 'rise', 'peak', 'set']) {
+            document.getElementById(s).textContent = tr[s];
+        }
         //if (addressInput.value === old) // TODO
     }
 
     function changeLanguage() {
         const selectedLanguage = languageDropdown.value;
+        const selectedSciLanguage = sciLanguageCheckbox.checked === true ? 'sci' : selectedLanguage;
 
-        // Change the URL parameter
+        // Save the language preference
         if (selectedLanguage === languageBrowser) {
             localStorage.removeItem('language');
         } else {
             localStorage.setItem('language', selectedLanguage);
         }
+        if (sciLanguageCheckbox.checked) {
+            localStorage.setItem('sciLanguage', true);
+        } else {
+            localStorage.removeItem('sciLanguage');
+        }
 
         // Apply language
-        if (selectedLanguage === 'en') {
-            tr = translation_english;
-        } else if (selectedLanguage === 'fr') {
-            tr = translation_french;
-        }
+        tr = translation_ui[selectedLanguage];
+        trc = translation_constel[selectedSciLanguage];
 
         applyTranslation();
         updateEphemeris();
     }
     languageDropdown.value = getLanguageStorage() || languageBrowser || 'en';
     languageDropdown.addEventListener('change', function() { changeLanguage(); });
+    sciLanguageCheckbox.checked = getSciLanguageStorage() === "true" ? true : false;
+    sciLanguageCheckbox.addEventListener('change', function() { changeLanguage(); });
 
     function clearAddress() {
         addressInput.value = tr.addr;
@@ -804,6 +1095,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 setHorizon = Astronomy.Horizon(setTime, observer, setEquator.ra, setEquator.dec, 'normal');
             }
 
+            // Constellation
+            const constel = Astronomy.Constellation(transitEquator.ra, transitEquator.dec).symbol;
+
             // Populate table row
             const td = '<td>';
             const td_nvt = '<td class="notvisibletoday">';
@@ -811,6 +1105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const set_vt = Math.abs(dayOffset(setTime)) < 2;
             row.innerHTML = `
                 <td>${tr[objectName]}</td>
+                <td><a href="https://www.heavens-above.com/constellation.aspx?con=${constel}">${trc[constel]}</a></td>
                 <td>${phase}</td>
                 ${rise ? (rise_vt ? td : td_nvt) + formatDateTime(riseTime, true) : td_nvt + riseStr}</td>
                 ${rise_vt ? td + riseHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>

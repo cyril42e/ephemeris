@@ -21,6 +21,8 @@
                 <option value="en">&#x1F1EC;&#x1F1E7;</option>
                 <option value="fr">&#x1F1EB;&#x1F1F7;</option>
             </select>
+            <br/>
+            <input type="checkbox" id="sciLanguageCheckbox"><span id="sciLanguageLabel">&#128214;</span>
         </div>
         <h1 id="title">Solar System Ephemeris</h1>
         <div class="links">
@@ -71,7 +73,7 @@
         </div>
     </div>
 
-    <table>
+    <table id="timeline-table">
         <thead>
             <tr>
                 <th>🔭 ↦</th>
@@ -103,6 +105,7 @@
         <thead>
             <tr>
                 <th></th>
+                <th id="constel">Constellation</th>
                 <th id="phase">Phase</th>
                 <th colspan="2"><span id="rise">Rise</span> 🕒&nbsp;⬌</th>
                 <th colspan="2"><span id="peak">High</span> 🕒&nbsp;⬍</th>
