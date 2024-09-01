@@ -1,7 +1,12 @@
-function createTimePeriodsTop(containerId, data) {
+function createTimePeriods(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
-    let totalDuration = data.reduce((sum, item) => sum + item.duration, 0);
+    let fill = false;
+    if (totalDuration < 0) {
+        fill = true;
+        totalDuration = data.reduce((sum, item) => sum + item.duration, 0);
+    }
+    let current_start = 0;
 
     data.forEach(item => {
         if (item.duration == 0) {
@@ -9,26 +14,19 @@ function createTimePeriodsTop(containerId, data) {
         }
         const period = document.createElement('div');
         period.className = `period ${item.class}`;
-        period.style.width = `${(item.duration / totalDuration) * 100}%`;
-        period.textContent = item.name;
-        container.appendChild(period);
-    });
-}
-
-function createTimePeriodsBottom(containerId, data, totalDuration) {
-    const container = document.getElementById(containerId);
-    while (container.firstChild) container.removeChild(container.lastChild);
-    data.forEach(item => {
-        if (item.duration == 0) {
-            return;
+        let start;
+        if (fill) {
+            start = current_start;
+            current_start += item.duration;
+        } else {
+            start = item.start;
         }
-        const period = document.createElement('div');
-        period.className = `period ${item.class}`;
         period.style.position = 'absolute';
-        period.style.left = `${(item.start / totalDuration) * 100}%`;
+        period.style.left = `${(start / totalDuration) * 100}%`;
         period.style.width = `${(item.duration / totalDuration) * 100}%`;
         period.style.height = '100%';  // Set the height to 100%
         period.textContent = item.name;
+        start += item.duration;
         container.appendChild(period);
     });
 }
@@ -1051,13 +1049,13 @@ document.addEventListener('DOMContentLoaded', function() {
             {name: '', time: formatDateTime(blueHourEndDesc), class: '', position: civilDuskE, arrow: 'left'}
         ];
 
-        createTimePeriodsTop('morning-periods-top', morningPeriodsTop);
-        createTimePeriodsBottom('morning-periods-bottom', morningPeriodsBottom, morningTotalDuration);
+        createTimePeriods('morning-periods-top', morningPeriodsTop, -1);
+        createTimePeriods('morning-periods-bottom', morningPeriodsBottom, morningTotalDuration);
         createTimePoints('morning-points-top', morningPointsTop, morningTotalDuration, true);
         createTimePoints('morning-points-bottom', morningPointsBottom, morningTotalDuration, false);
 
-        createTimePeriodsTop('evening-periods-top', eveningPeriodsTop);
-        createTimePeriodsBottom('evening-periods-bottom', eveningPeriodsBottom, eveningTotalDuration);
+        createTimePeriods('evening-periods-top', eveningPeriodsTop, -1);
+        createTimePeriods('evening-periods-bottom', eveningPeriodsBottom, eveningTotalDuration);
         createTimePoints('evening-points-top', eveningPointsTop, eveningTotalDuration, true);
         createTimePoints('evening-points-bottom', eveningPointsBottom, eveningTotalDuration, false);
 
