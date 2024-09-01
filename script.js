@@ -56,7 +56,8 @@ function createTimePoints(containerId, points, totalDuration, top) {
 
 const translation_ui = {
   'en': {
-    'title': 'Solar System Ephemeris',
+    'title': 'Ephemeris',
+    'stitle': 'Solar System',
     'n': 'Night',
     'mad': 'Astro. Dawn',
     'mat': 'Astro. Twilight',
@@ -87,6 +88,7 @@ const translation_ui = {
     'set_d': 'Set Time and Azimuth',
     'now': 'Now',
     'here': 'Here',
+    'local': 'local',
     'addr': 'Search address...',
     'doc': 'Documentation',
     'code': 'Source code',
@@ -102,7 +104,8 @@ const translation_ui = {
     'Neptune': 'Neptune'
   },
   'fr': {
-    'title': 'Éphemérides du système solaire',
+    'title': 'Éphémérides',
+    'stitle': 'Système solaire',
     'n': 'Nuit',
     'mad': '',
     'mat': 'Aube astro.',
@@ -133,6 +136,7 @@ const translation_ui = {
     'set_d': 'Heure et azimut de coucher',
     'now': 'Maintenant',
     'here': 'Ici',
+    'local': 'local',
     'addr': 'Chercher une addresse...',
     'doc': 'Documentation',
     'code': 'Code source',
@@ -482,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyTranslation() {
         currentLocationButton.textContent = tr.here;
         currentDateButton.textContent = tr.now;
-        for(const s of ['title', 'doc', 'code', 'bugs', 'constel', 'phase', 'rise', 'peak', 'set']) {
+        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'constel', 'phase', 'rise', 'peak', 'set']) {
             document.getElementById(s).textContent = tr[s];
         }
         //if (addressInput.value === old) // TODO
@@ -692,7 +696,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const targetOffset = getTimezoneOffset(selectedDate, timeZone);
         const localOffset = getTimezoneOffset(selectedDate, undefined);
         const diff = formatOffset(targetOffset[1] - localOffset[1]);
-        timezoneOutput.textContent = timeZone + ' (UTC' + targetOffset[0] + ' = local' + diff + ')';
+        timezoneOutput.textContent = timeZone + ' (UTC' + targetOffset[0] + ' = ' + tr['local'] + diff + ')';
 
         // Calculate transit time
         function searchClosestTransit(object, date) {

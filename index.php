@@ -24,7 +24,11 @@
             <br/>
             <input type="checkbox" id="sciLanguageCheckbox"><span id="sciLanguageLabel">&#128214;</span>
         </div>
-        <h1 id="title">Solar System Ephemeris</h1>
+        <div class="title-text">
+            <h1 id="title">Ephemeris</h1>
+            <br/>
+            <h5 id="stitle">Solar System</h5>
+        </div>
         <div class="links">
             <a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
             <a id="code" href="https://github.com/cyril42e/ephemeris">Source Code</a><br/>
