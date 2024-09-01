@@ -580,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addressInput.addEventListener('focus', function() {
-        if (addressInput.value === emptyAddressStr) {
+        if (addressInput.value === tr['addr']) {
             addressInput.value = '';
         }
         addressInput.classList.remove('empty');
