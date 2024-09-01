@@ -22,7 +22,8 @@
                 <option value="fr">&#x1F1EB;&#x1F1F7;</option>
             </select>
             <br/>
-            <input type="checkbox" id="sciLanguageCheckbox"><span id="sciLanguageLabel">&#128214;</span>
+            <input type="checkbox" id="sciLanguageCheckbox">
+            <label for="sciLanguageCheckbox" id="sciLanguageLabel">&#128214;</label>
         </div>
         <div class="title-text">
             <h1 id="title">Ephemeris</h1>

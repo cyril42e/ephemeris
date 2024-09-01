@@ -43,13 +43,18 @@ body {
 
 #sciLanguageCheckbox {
     cursor: pointer;
+    display: none;
 }
 #sciLanguageLabel {
-    font-size: 130%;
+    font-size: 20px;
     cursor: pointer;
     position: relative;
-    top: 3px;
 }
+#sciLanguageCheckbox:not(:checked) + #sciLanguageLabel {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
 
 .title .text {
     text-align: center;
@@ -236,6 +241,7 @@ button:hover {
     /*font-weight: bold;*/
     font-size: 14px;
     border-radius: 8px; /* rounding */
+    cursor: default;
 }
  
 .time-point {
@@ -252,6 +258,7 @@ button:hover {
     padding: 3px 5px;
     font-size: 14px;
     z-index: 10;
+    cursor: default;
 }
  
 .time-point::before,
