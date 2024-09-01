@@ -58,6 +58,8 @@ const translation_ui = {
   'en': {
     'title': 'Ephemeris',
     'stitle': 'Solar System',
+    'languageDropdown': 'Language',
+    'sciLanguageLabel': 'Using or not using scientific constellations names',
     'n': 'Night',
     'mad': 'Astro. Dawn',
     'mat': 'Astro. Twilight',
@@ -83,6 +85,9 @@ const translation_ui = {
     'rise': 'Rise',
     'peak': 'High',
     'set': 'Set',
+    'time': 'Time',
+    'azimuth': 'Azimuth',
+    'elevation': 'Elevation',
     'rise_d': 'Rise Time and Azimuth',
     'peak_d': 'Culmination / High Point Time and Elevation',
     'set_d': 'Set Time and Azimuth',
@@ -106,6 +111,8 @@ const translation_ui = {
   'fr': {
     'title': 'Éphémérides',
     'stitle': 'Système solaire',
+    'languageDropdown': 'Langue',
+    'sciLanguageLabel': 'Utiliser ou non les noms scientifiques des constellations',
     'n': 'Nuit',
     'mad': '',
     'mat': 'Aube astro.',
@@ -131,6 +138,9 @@ const translation_ui = {
     'rise': 'Lever',
     'peak': 'Haut',
     'set': 'Coucher',
+    'time': 'Heure',
+    'azimuth': 'Azimut',
+    'elevation': 'Hauteur',
     'rise_d': 'Heure et azimut de lever',
     'peak_d': 'Heure et hauteur maximale',
     'set_d': 'Heure et azimut de coucher',
@@ -489,6 +499,15 @@ document.addEventListener('DOMContentLoaded', function() {
         for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'constel', 'phase', 'rise', 'peak', 'set']) {
             document.getElementById(s).textContent = tr[s];
         }
+        for(const s of ['languageDropdown', 'sciLanguageLabel', 'rise_d', 'peak_d', 'set_d']) {
+            document.getElementById(s).title = tr[s];
+        }
+        for(const s of ['time', 'azimuth', 'elevation']) {
+            document.querySelectorAll('.'+s).forEach(element => {
+                element.title = tr[s];
+            });
+        }
+
         //if (addressInput.value === old) // TODO
     }
 

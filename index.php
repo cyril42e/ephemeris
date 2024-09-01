@@ -17,13 +17,13 @@
 <div class="page">
     <div class="title">
         <div class="language-selector">
-            <select id="languageDropdown">
+            <select id="languageDropdown" title="Language">
                 <option value="en">&#x1F1EC;&#x1F1E7;</option>
                 <option value="fr">&#x1F1EB;&#x1F1F7;</option>
             </select>
             <br/>
             <input type="checkbox" id="sciLanguageCheckbox">
-            <label for="sciLanguageCheckbox" id="sciLanguageLabel">&#128214;</label>
+            <label for="sciLanguageCheckbox" id="sciLanguageLabel" title="Whether using scientific constellations names"> <span class="emoji">&#128214;</span></label>
         </div>
         <div class="title-text">
             <h1 id="title">Ephemeris</h1>
@@ -112,9 +112,9 @@
                 <th></th>
                 <th id="constel">Constellation</th>
                 <th id="phase">Phase</th>
-                <th colspan="2"><span id="rise">Rise</span> 🕒&nbsp;⬌</th>
-                <th colspan="2"><span id="peak">High</span> 🕒&nbsp;⬍</th>
-                <th colspan="2"><span id="set">Set</span> 🕒&nbsp;⬌</th>
+                <th colspan="2" id="rise_d"><span id="rise">Rise</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+                <th colspan="2" id="peak_d"><span id="peak">High</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
+                <th colspan="2" id="set_d" ><span id="set" >Set</span> <span class="emoji">🕒</span>&nbsp<span class="emoji">↔</span></th>
             </tr>
         </thead>
         <tbody id="ephemeris-table">
