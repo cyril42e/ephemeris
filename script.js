@@ -806,6 +806,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const controlsWDiv = document.getElementsByClassName('controls-wrapper')[0];
     const controlsSDiv = document.getElementById('controls-scroller');
 
+
     // callback to hide/show controls when scrolling down/up
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -813,12 +814,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollDown = currentScroll > lastScroll;
         // if change to scroll up, and controls are not visible, start making them appear
         if (!scrollDown && lastScrollDown && lastScroll > controlsDiv.offsetTop+controlsDiv.offsetHeight+controlsWDiv.offsetTop) {
-            controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`;
-            controlsSDiv.style.height = `${controlsDiv.offsetHeight}px`;
             controlsDiv.style.position = "absolute";
+            controlsWDiv.classList.add('floating');
+            controlsWDiv.classList.remove('static');
             controlsDiv.style.top = `${lastScroll-controlsDiv.offsetHeight-controlsWDiv.offsetTop}px`;
-            controlsDiv.classList.add('floating');
-            controlsDiv.classList.remove('static');
         }  else
         // if scrolling up, and controls are getting completely visible, stick it to the top (if it wasn't already)
         if (!scrollDown && predictedScroll <= controlsDiv.offsetTop+controlsWDiv.offsetTop && controlsDiv.style.position == "absolute") {
@@ -840,8 +839,8 @@ document.addEventListener('DOMContentLoaded', function() {
             controlsDiv.style.width = "100%";
             controlsDiv.style.left = 0;
 
-            controlsDiv.classList.add('static');
-            controlsDiv.classList.remove('floating');
+            controlsWDiv.classList.add('static');
+            controlsWDiv.classList.remove('floating');
         }
 
         lastScroll = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
@@ -1426,6 +1425,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize with current date
     changeLanguage();
     setCurrentDate();
+    controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`; // fix height
+    controlsSDiv.style.height = `${controlsDiv.offsetHeight}px`; // set height
 });
 
 if ('serviceWorker' in navigator) {
