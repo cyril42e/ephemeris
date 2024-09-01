@@ -31,13 +31,13 @@ function createTimePeriods(containerId, data, totalDuration) {
     });
 }
 
-function createTimePoints(containerId, points, totalDuration, top) {
+function createTimePoints(containerId, points, totalDuration, minOffset, top) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
     points.forEach(point => {
         // .time criterion is not sufficient due to +1/-1 that are sometimes legit, and sometimes not
         // FIXME .position criterion uses hard coded position equal to (holeDuration+dashDuration)*2
-        if (point.time === '' || point.position <= 12) {
+        if (point.time === '' || point.position <= minOffset || point.position >= totalDuration - minOffset) {
             return;
         }
         const timePoint = document.createElement('div');
@@ -786,6 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const dashDuration = 3;
         const holeDuration = 1;
         const extDuration = extremitiesDuration - holeDuration - dashDuration;
+        const minTimepointOffset = (holeDuration + dashDuration) * 2;
         const maxDuration = 120;
         const dayThreshold = 0.6;
 
@@ -1051,13 +1052,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         createTimePeriods('morning-periods-top', morningPeriodsTop, -1);
         createTimePeriods('morning-periods-bottom', morningPeriodsBottom, morningTotalDuration);
-        createTimePoints('morning-points-top', morningPointsTop, morningTotalDuration, true);
-        createTimePoints('morning-points-bottom', morningPointsBottom, morningTotalDuration, false);
+        createTimePoints('morning-points-top', morningPointsTop, morningTotalDuration, minTimepointOffset, true);
+        createTimePoints('morning-points-bottom', morningPointsBottom, morningTotalDuration, minTimepointOffset, false);
 
         createTimePeriods('evening-periods-top', eveningPeriodsTop, -1);
         createTimePeriods('evening-periods-bottom', eveningPeriodsBottom, eveningTotalDuration);
-        createTimePoints('evening-points-top', eveningPointsTop, eveningTotalDuration, true);
-        createTimePoints('evening-points-bottom', eveningPointsBottom, eveningTotalDuration, false);
+        createTimePoints('evening-points-top', eveningPointsTop, eveningTotalDuration, minTimepointOffset, true);
+        createTimePoints('evening-points-bottom', eveningPointsBottom, eveningTotalDuration, minTimepointOffset, false);
 
         objects.forEach(objectName => {
             const row = document.createElement('tr');
