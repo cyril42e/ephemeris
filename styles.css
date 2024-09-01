@@ -21,11 +21,11 @@ body {
     justify-content: center; /* Center the title */
     align-items: center; /* Vertically center items */
     position: relative; /* Position relative for absolute positioning of links */
-    padding: 20px;
+    padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.language-selector {
+.title .language-selector {
     text-align: center;
     position: absolute;
     left: 20px; /* Align links to the left */
@@ -58,17 +58,10 @@ body {
     opacity: 0.6;
 }
 
-
-.title .text {
-    text-align: center;
-    justify-content: center; /* Center the title */
-    position: absolute;
-
-}
-.title h5 {
+.title h4 {
     margin-top: -1em;
 }
-.title h1,h5 {
+.title h1,h4 {
     margin: 0;
     flex: 1; /* Allow the title to take up available space */
     text-align: center;

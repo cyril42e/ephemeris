@@ -28,7 +28,7 @@
         <div class="title-text">
             <h1 id="title">Ephemeris</h1>
             <br/>
-            <h5 id="stitle">Solar System</h5>
+            <h4 id="stitle">Solar System</h4>
         </div>
         <div class="links">
             <a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
