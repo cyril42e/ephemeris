@@ -83,9 +83,6 @@ const translation_ui = {
     'rise': 'Rise',
     'peak': 'High',
     'set': 'Set',
-    'time': 'Time',
-    'azimuth': 'Azimuth',
-    'elevation': 'Elevation',
     'rise_d': 'Rise Time and Azimuth',
     'peak_d': 'Culmination / High Point Time and Elevation',
     'set_d': 'Set Time and Azimuth',
@@ -136,9 +133,6 @@ const translation_ui = {
     'rise': 'Lever',
     'peak': 'Haut',
     'set': 'Coucher',
-    'time': 'Heure',
-    'azimuth': 'Azimut',
-    'elevation': 'Hauteur',
     'rise_d': 'Heure et azimut de lever',
     'peak_d': 'Heure et hauteur maximale',
     'set_d': 'Heure et azimut de coucher',
@@ -499,11 +493,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         for(const s of ['languageDropdown', 'sciLanguageLabel', 'rise_d', 'peak_d', 'set_d']) {
             document.getElementById(s).title = tr[s];
-        }
-        for(const s of ['time', 'azimuth', 'elevation']) {
-            document.querySelectorAll('.'+s).forEach(element => {
-                element.title = tr[s];
-            });
         }
 
         //if (addressInput.value === old) // TODO
