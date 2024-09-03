@@ -1,3 +1,5 @@
+const vertical = false;
+
 function createTimePeriods(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
     while (container.firstChild) container.removeChild(container.lastChild);
@@ -22,10 +24,17 @@ function createTimePeriods(containerId, data, totalDuration) {
             start = item.start;
         }
         period.style.position = 'absolute';
-        period.style.left = `${(start / totalDuration) * 100}%`;
-        period.style.width = `${(item.duration / totalDuration) * 100}%`;
-        period.style.height = '100%';  // Set the height to 100%
-        period.textContent = item.name;
+        if (vertical) {
+            period.innerHTML = item.name.replace(' ', '<br/>');
+            period.style.top = `${(start / totalDuration) * 100}%`;
+            period.style.height = `${(item.duration / totalDuration) * 100}%`;
+            period.style.width = '100%';
+        } else {
+            period.textContent = item.name;
+            period.style.left = `${(start / totalDuration) * 100}%`;
+            period.style.width = `${(item.duration / totalDuration) * 100}%`;
+            period.style.height = '100%';
+        }
         start += item.duration;
         container.appendChild(period);
     });
@@ -36,15 +45,24 @@ function createTimePoints(containerId, points, totalDuration, minOffset, top) {
     while (container.firstChild) container.removeChild(container.lastChild);
     points.forEach(point => {
         // .time criterion is not sufficient due to +1/-1 that are sometimes legit, and sometimes not
-        // FIXME .position criterion uses hard coded position equal to (holeDuration+dashDuration)*2
         if (point.time === '' || point.position <= minOffset || point.position >= totalDuration - minOffset) {
             return;
         }
         const timePoint = document.createElement('div');
-        timePoint.className = `time-point ${point.class}`;
-        timePoint.innerHTML = top ? point.name + (point.name === '' ? '' : '<br/>') + '<b class="bigger">' + point.time + '</b>' : '<b class="bigger">' + point.time + '</b></br>' + point.name;
-        timePoint.style.left = `${(point.position / totalDuration) * 100}%`;
-        arrowPosition = (point.arrow === 'left') ? 25 : ((point.arrow === 'right') ? 75 : 50);
+        timePoint.className = `time-point ${point.class} ${vertical ? 'mode-verti' : 'mode-horiz'}`;
+        const name = point.name.replace(' ', '\n');
+        if (top || vertical) {
+            timePoint.innerHTML = name + (name === '' ? '' : '<br/>') + '<b class="bigger">' + point.time + '</b>';
+        } else {
+            timePoint.innerHTML = '<b class="bigger">' + point.time + '</b></br>' + name;
+        }
+        if (vertical) {
+            timePoint.style.top = `${(point.position / totalDuration) * 100}%`;
+            arrowPosition = 50;
+        } else {
+            timePoint.style.left = `${(point.position / totalDuration) * 100}%`;
+            arrowPosition = (point.arrow === 'left') ? 25 : ((point.arrow === 'right') ? 75 : 50);
+        }
         timePoint.style.setProperty('--arrow-position', `${arrowPosition}%`);
         timePoint.addEventListener('mouseenter', bringToFront);
         timePoint.addEventListener('click', bringToFront);
@@ -465,10 +483,27 @@ function bringToFront(event) {
   event.currentTarget.classList.add('front');
 }
 
+function switchMode() {
+    for (const cl of ['timeline', 'timeline-container', 'timeline-periods-bottom', 'timeline-periods-top', 'timeline-points', 'time-point']) {
+        const elements = document.querySelectorAll('.' + cl);
+        elements.forEach(element => {
+            if (vertical) {
+                element.classList.remove('mode-horiz');
+                element.classList.add('mode-verti');
+            } else {
+                element.classList.remove('mode-verti');
+                element.classList.add('mode-horiz');
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
     const timelineTable = document.getElementById('timeline-table');
     timelineTable.style.display = "none";
+
+    switchMode();
 
     //***************************/
     // Controls
@@ -898,10 +933,10 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const morningPointsTop = [
-            {name: tr.mad.replace(' ', '\n'), time: formatDateTime(astronomicalDawn), class: '', position: astronomicalDawnM, arrow: 'center'},
-            {name: tr.mnd.replace(' ', '\n'), time: formatDateTime(nauticalDawn), class: '', position: nauticalDawnM, arrow: 'center'},
-            {name: tr.mcd.replace(' ', '\n'), time: formatDateTime(civilDawn), class: '', position: civilDawnM, arrow: 'center'},
-            {name: tr.sr.replace(' ', '\n'), time: formatDateTime(sunRise), class: 'sun-event', position: sunRiseM, arrow: 'center'}
+            {name: tr.mad, time: formatDateTime(astronomicalDawn), class: '', position: astronomicalDawnM, arrow: 'center'},
+            {name: tr.mnd, time: formatDateTime(nauticalDawn), class: '', position: nauticalDawnM, arrow: 'center'},
+            {name: tr.mcd, time: formatDateTime(civilDawn), class: '', position: civilDawnM, arrow: 'center'},
+            {name: tr.sr, time: formatDateTime(sunRise), class: 'sun-event', position: sunRiseM, arrow: 'center'}
         ];
 
         const morningPointsBottom = [
@@ -1027,10 +1062,10 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         const eveningPointsTop = [
-            {name: tr.ss.replace(' ', '\n'), time: formatDateTime(sunSet), class: 'sun-event', position: sunSetE, arrow: 'center'},
-            {name: tr.ecd.replace(' ', '\n'), time: formatDateTime(civilDusk), class: '', position: civilDuskE, arrow: 'center'},
-            {name: tr.end.replace(' ', '\n'), time: formatDateTime(nauticalDusk), class: '', position: nauticalDuskE, arrow: 'center'},
-            {name: tr.ead.replace(' ', '\n'), time: formatDateTime(astronomicalDusk), class: '', position: astronomicalDuskE, arrow: 'center'}
+            {name: tr.ss, time: formatDateTime(sunSet), class: 'sun-event', position: sunSetE, arrow: 'center'},
+            {name: tr.ecd, time: formatDateTime(civilDusk), class: '', position: civilDuskE, arrow: 'center'},
+            {name: tr.end, time: formatDateTime(nauticalDusk), class: '', position: nauticalDuskE, arrow: 'center'},
+            {name: tr.ead, time: formatDateTime(astronomicalDusk), class: '', position: astronomicalDuskE, arrow: 'center'}
         ];
 
         const eveningPointsBottom = [

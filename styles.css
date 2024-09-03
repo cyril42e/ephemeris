@@ -191,41 +191,80 @@ button:hover {
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.timeline.mode-verti {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+}
 
 .timeline-container {
     position: relative;
+}
+
+.timeline-container.mode-horiz {
     height: 210px;
+}
+.timeline-container.mode-verti {
+    height: 1024px;
+    width: 320px;
 }
 
 .timeline-periods-top, .timeline-periods-bottom, .timeline-points {
     position: absolute;
+}
+.timeline-periods-top.mode-horiz, .timeline-periods-bottom.mode-horiz, .timeline-points.mode-horiz {
     left: 0;
     right: 0;
 }
+.timeline-periods-top.mode-verti, .timeline-periods-bottom.mode-verti, .timeline-points.mode-verti {
+    top: 0;
+    bottom: 0;
+}
 
 .timeline-periods-top, .timeline-periods-bottom {
-    height: 40px;
     display: flex;
 }
+.timeline-periods-top.mode-horiz, .timeline-periods-bottom.mode-horiz {
+    height: 40px;
+}
+.timeline-periods-top.mode-verti, .timeline-periods-bottom.mode-verti {
+    width: 80px;
+    flex-direction: column;
+}
 
-.timeline-periods-top {
+.timeline-periods-top.mode-horiz {
     top: 80px;
 }
+.timeline-periods-top.mode-verti {
+    left: 80px;
+}
 
-.timeline-periods-bottom {
+.timeline-periods-bottom.mode-horiz {
     top: 120px;
 }
+.timeline-periods-bottom.mode-verti {
+    left: 160px;
+}
 
-.timeline-points {
+.timeline-points.mode-horiz {
     height: 30px;
 }
-
-.timeline-points.top .time-point {
-    bottom: -40px;
+.timeline-points.mode-verti {
+    width: 30px;
 }
 
-.timeline-points.bottom .time-point {
+.timeline-points.top.mode-horiz .time-point {
+    bottom: -40px;
+}
+.timeline-points.top.mode-verti .time-point {
+    right: -40px;
+}
+
+.timeline-points.bottom.mode-horiz .time-point {
     top: 170px;
+}
+.timeline-points.bottom.mode-verti .time-point {
+    left: 250px;
 }
 
 .period {
@@ -247,7 +286,6 @@ button:hover {
     justify-content: center;
     text-align: center;
     position: absolute;
-    transform: translateX(calc(-1 * var(--arrow-position)));
     background: white;
     border: 2px solid #333;
     border-radius: 8px; /* rounding */
@@ -256,38 +294,71 @@ button:hover {
     z-index: 10;
     cursor: default;
 }
+.time-point.mode-horiz {
+    transform: translateX(calc(-1 * var(--arrow-position)));
+}
+.time-point.mode-verti {
+    transform: translateY(calc(-1 * var(--arrow-position)));
+}
  
 .time-point::before,
 .time-point::after {
     content: '';
     position: absolute;
-    left: var(--arrow-position);
-    transform: translateX(-50%);
     width: 0;
     height: 0;
 }
+.time-point.mode-horiz::before,
+.time-point.mode-horiz::after {
+    left: var(--arrow-position);
+    transform: translateX(-50%);
+}
+.time-point.mode-verti::before,
+.time-point.mode-verti::after {
+    top: var(--arrow-position);
+    transform: translateY(-50%);
+}
  
-.time-point::after {
+.time-point.mode-horiz::after {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
 }
+.time-point.mode-verti::after {
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+}
 
-.time-point::before {
+.time-point.mode-horiz::before {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     z-index: 1;
 }
+.time-point.mode-verti::before {
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    z-index: 1;
+}
 
-.timeline-points.top .time-point::after,
-.timeline-points.top .time-point::before {
+.timeline-points.top .time-point.mode-horiz::after,
+.timeline-points.top .time-point.mode-horiz::before {
     bottom: -10px;
     border-top: 10px solid #333;
 }
+.timeline-points.top .time-point.mode-verti::after,
+.timeline-points.top .time-point.mode-verti::before {
+    right: -10px;
+    border-left: 10px solid #333;
+}
 
-.timeline-points.bottom .time-point::after,
-.timeline-points.bottom .time-point::before {
+.timeline-points.bottom .time-point.mode-horiz::after,
+.timeline-points.bottom .time-point.mode-horiz::before {
     top: -10px;
     border-bottom: 10px solid #333;
+}
+.timeline-points.bottom .time-point.mode-verti::after,
+.timeline-points.bottom .time-point.mode-verti::before {
+    left: -10px;
+    border-right: 10px solid #333;
 }
 
 .night { background-color: #000; }
