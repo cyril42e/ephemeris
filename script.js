@@ -49,7 +49,7 @@ function createTimePoints(containerId, points, totalDuration, minOffset, top) {
             return;
         }
         const timePoint = document.createElement('div');
-        timePoint.className = `time-point ${point.class} ${vertical ? 'mode-verti' : 'mode-horiz'}`;
+        timePoint.className = `time-point ${point.class}`;
         const name = point.name.replace(' ', '\n');
         if (top || vertical) {
             timePoint.innerHTML = name + (name === '' ? '' : '<br/>') + '<b class="bigger">' + point.time + '</b>';
@@ -58,7 +58,7 @@ function createTimePoints(containerId, points, totalDuration, minOffset, top) {
         }
         if (vertical) {
             timePoint.style.top = `${(point.position / totalDuration) * 100}%`;
-            arrowPosition = 50;
+            arrowPosition = (point.arrow === 'left') ? 35 : ((point.arrow === 'right') ? 65 : 50);
         } else {
             timePoint.style.left = `${(point.position / totalDuration) * 100}%`;
             arrowPosition = (point.arrow === 'left') ? 25 : ((point.arrow === 'right') ? 75 : 50);
@@ -484,17 +484,12 @@ function bringToFront(event) {
 }
 
 function switchMode() {
-    for (const cl of ['timeline', 'timeline-container', 'timeline-periods-bottom', 'timeline-periods-top', 'timeline-points', 'time-point']) {
-        const elements = document.querySelectorAll('.' + cl);
-        elements.forEach(element => {
-            if (vertical) {
-                element.classList.remove('mode-horiz');
-                element.classList.add('mode-verti');
-            } else {
-                element.classList.remove('mode-verti');
-                element.classList.add('mode-horiz');
-            }
-        });
+    if (vertical) {
+        document.body.classList.add('mode-verti');
+        document.body.classList.remove('mode-horiz');
+    } else {
+        document.body.classList.add('mode-horiz');
+        document.body.classList.remove('mode-verti');
     }
 }
 
