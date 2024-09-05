@@ -1,4 +1,4 @@
-const portrait = false;
+let portrait = false;
 
 function createTimePeriods(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
@@ -484,6 +484,9 @@ function bringToFront(event) {
 }
 
 function switchMode() {
+    const previous_portrait = portrait;
+    portrait = (window.innerHeight > window.innerWidth);
+
     if (portrait) {
         document.body.classList.add('portrait');
         document.body.classList.remove('landscape');
@@ -491,14 +494,25 @@ function switchMode() {
         document.body.classList.add('landscape');
         document.body.classList.remove('portrait');
     }
+
+    return portrait != previous_portrait;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
 
+    switchMode();
+
+    function switchModeAndUpdate() {
+        if (switchMode()) {
+            updateEphemeris();
+        }
+    }
+
+    window.addEventListener('resize', switchModeAndUpdate);
+    window.addEventListener('orientationchange', switchModeAndUpdate);
+
     const timelineTable = document.getElementById('timeline-table');
     timelineTable.style.display = "none";
-
-    switchMode();
 
     //***************************/
     // Controls
