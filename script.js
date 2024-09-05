@@ -1,4 +1,4 @@
-const vertical = false;
+const portrait = false;
 
 function createTimePeriods(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
@@ -24,7 +24,7 @@ function createTimePeriods(containerId, data, totalDuration) {
             start = item.start;
         }
         period.style.position = 'absolute';
-        if (vertical) {
+        if (portrait) {
             period.innerHTML = item.name.replace(' ', '<br/>');
             period.style.top = `${(start / totalDuration) * 100}%`;
             period.style.height = `${(item.duration / totalDuration) * 100}%`;
@@ -51,12 +51,12 @@ function createTimePoints(containerId, points, totalDuration, minOffset, top) {
         const timePoint = document.createElement('div');
         timePoint.className = `time-point ${point.class}`;
         const name = point.name.replace(' ', '\n');
-        if (top || vertical) {
+        if (top || portrait) {
             timePoint.innerHTML = name + (name === '' ? '' : '<br/>') + '<b class="bigger">' + point.time + '</b>';
         } else {
             timePoint.innerHTML = '<b class="bigger">' + point.time + '</b></br>' + name;
         }
-        if (vertical) {
+        if (portrait) {
             timePoint.style.top = `${(point.position / totalDuration) * 100}%`;
             arrowPosition = (point.arrow === 'left') ? 35 : ((point.arrow === 'right') ? 65 : 50);
         } else {
@@ -484,12 +484,12 @@ function bringToFront(event) {
 }
 
 function switchMode() {
-    if (vertical) {
-        document.body.classList.add('mode-verti');
-        document.body.classList.remove('mode-horiz');
+    if (portrait) {
+        document.body.classList.add('portrait');
+        document.body.classList.remove('landscape');
     } else {
-        document.body.classList.add('mode-horiz');
-        document.body.classList.remove('mode-verti');
+        document.body.classList.add('landscape');
+        document.body.classList.remove('portrait');
     }
 }
 

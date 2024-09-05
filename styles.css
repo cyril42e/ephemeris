@@ -191,7 +191,7 @@ button:hover {
     padding: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.mode-verti .timeline {
+.portrait .timeline {
     display: flex;
     flex-direction:column;
     align-items: center;
@@ -201,10 +201,10 @@ button:hover {
     position: relative;
 }
 
-.mode-horiz .timeline-container {
+.landscape .timeline-container {
     height: 210px;
 }
-.mode-verti .timeline-container {
+.portrait .timeline-container {
     height: 600px;
     width: 320px;
 }
@@ -212,11 +212,11 @@ button:hover {
 .timeline-periods-top, .timeline-periods-bottom, .timeline-points {
     position: absolute;
 }
-.mode-horiz .timeline-periods-top, .mode-horiz .timeline-periods-bottom, .mode-horiz .timeline-points {
+.landscape .timeline-periods-top, .landscape .timeline-periods-bottom, .landscape .timeline-points {
     left: 0;
     right: 0;
 }
-.mode-verti .timeline-periods-top, .mode-verti .timeline-periods-bottom, .mode-verti .timeline-points {
+.portrait .timeline-periods-top, .portrait .timeline-periods-bottom, .portrait .timeline-points {
     top: 0;
     bottom: 0;
 }
@@ -224,46 +224,46 @@ button:hover {
 .timeline-periods-top, .timeline-periods-bottom {
     display: flex;
 }
-.mode-horiz .timeline-periods-top, .mode-horiz .timeline-periods-bottom {
+.landscape .timeline-periods-top, .landscape .timeline-periods-bottom {
     height: 40px;
 }
-.mode-verti .timeline-periods-top, .mode-verti .timeline-periods-bottom {
+.portrait .timeline-periods-top, .portrait .timeline-periods-bottom {
     width: 80px;
     flex-direction: column;
 }
 
-.mode-horiz .timeline-periods-top {
+.landscape .timeline-periods-top {
     top: 80px;
 }
-.mode-verti .timeline-periods-top {
+.portrait .timeline-periods-top {
     left: 80px;
 }
 
-.mode-horiz .timeline-periods-bottom {
+.landscape .timeline-periods-bottom {
     top: 120px;
 }
-.mode-verti .timeline-periods-bottom {
+.portrait .timeline-periods-bottom {
     left: 160px;
 }
 
-.mode-horiz .timeline-points {
+.landscape .timeline-points {
     height: 30px;
 }
-.mode-verti .timeline-points {
+.portrait .timeline-points {
     width: 30px;
 }
 
-.mode-horiz .timeline-points.top .time-point {
+.landscape .timeline-points.top .time-point {
     bottom: -40px;
 }
-.mode-verti .timeline-points.top .time-point {
+.portrait .timeline-points.top .time-point {
     right: -40px;
 }
 
-.mode-horiz .timeline-points.bottom .time-point {
+.landscape .timeline-points.bottom .time-point {
     top: 170px;
 }
-.mode-verti .timeline-points.bottom .time-point {
+.portrait .timeline-points.bottom .time-point {
     left: 250px;
 }
 
@@ -294,10 +294,10 @@ button:hover {
     z-index: 10;
     cursor: default;
 }
-.mode-horiz .time-point {
+.landscape .time-point {
     transform: translateX(calc(-1 * var(--arrow-position)));
 }
-.mode-verti .time-point {
+.portrait .time-point {
     transform: translateY(calc(-1 * var(--arrow-position)));
 }
  
@@ -308,55 +308,55 @@ button:hover {
     width: 0;
     height: 0;
 }
-.mode-horiz .time-point::before,
-.mode-horiz .time-point::after {
+.landscape .time-point::before,
+.landscape .time-point::after {
     left: var(--arrow-position);
     transform: translateX(-50%);
 }
-.mode-verti .time-point::before,
-.mode-verti .time-point::after {
+.portrait .time-point::before,
+.portrait .time-point::after {
     top: var(--arrow-position);
     transform: translateY(-50%);
 }
  
-.mode-horiz .time-point::after {
+.landscape .time-point::after {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
 }
-.mode-verti .time-point::after {
+.portrait .time-point::after {
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
 }
 
-.mode-horiz .time-point::before {
+.landscape .time-point::before {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     z-index: 1;
 }
-.mode-verti .time-point::before {
+.portrait .time-point::before {
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     z-index: 1;
 }
 
-.mode-horiz .timeline-points.top .time-point::after,
-.mode-horiz .timeline-points.top .time-point::before {
+.landscape .timeline-points.top .time-point::after,
+.landscape .timeline-points.top .time-point::before {
     bottom: -10px;
     border-top: 10px solid #333;
 }
-.mode-verti .timeline-points.top .time-point::after,
-.mode-verti .timeline-points.top .time-point::before {
+.portrait .timeline-points.top .time-point::after,
+.portrait .timeline-points.top .time-point::before {
     right: -10px;
     border-left: 10px solid #333;
 }
 
-.mode-horiz .timeline-points.bottom .time-point::after,
-.mode-horiz .timeline-points.bottom .time-point::before {
+.landscape .timeline-points.bottom .time-point::after,
+.landscape .timeline-points.bottom .time-point::before {
     top: -10px;
     border-bottom: 10px solid #333;
 }
-.mode-verti .timeline-points.bottom .time-point::after,
-.mode-verti .timeline-points.bottom .time-point::before {
+.portrait .timeline-points.bottom .time-point::after,
+.portrait .timeline-points.bottom .time-point::before {
     left: -10px;
     border-right: 10px solid #333;
 }
