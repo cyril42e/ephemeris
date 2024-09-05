@@ -44,20 +44,24 @@
                 <div id="suggestions"></div>
             </div>
 
-            <input type="number" id="latitude" step="1.0" value="48.8566">
-            <input type="number" id="longitude" step="1.0" value="2.3522">
-
-            <button id="current-location">Here</button>
+            <div class="coords-container">
+                <input type="number" id="latitude" step="1.0" value="48.8566">
+                <input type="number" id="longitude" step="1.0" value="2.3522">
+                <button id="current-location">Here</button>
+            </div>
         </div>
 
         <div class="date-controls">
-            <button id="decrease-date"><</button>
-            <input type="text" id="date">
-            <script>flatpickr("#date", {dateFormat: "Y-m-d", disableMobile: "true"});</script>
-            <button id="increase-date">></button>
-
-            <button id="current-date">Now</button>
-            <label for="timezone" id="timezone"></label>
+            <div class="date-container">
+                <button id="decrease-date"><</button>
+                <input type="text" id="date">
+                <script>flatpickr("#date", {dateFormat: "Y-m-d", disableMobile: "true"});</script>
+                <button id="increase-date">></button>
+                <button id="current-date">Now</button>
+            </div>
+            <div class="timezone-container">
+                <label for="timezone" id="timezone"></label>
+            </div>
         </div>
     </div>
 

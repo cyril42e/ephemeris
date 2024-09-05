@@ -81,35 +81,48 @@ body {
 /* Controls */
 
 .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     text-align: center;
-    padding-bottom: 10px;
-    padding-top: 20px;
+    padding-bottom: 15px;
+    padding-top: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 20px 60px;
+}
+
+.address-container, .coords-container, .date-container, .timezone-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
 }
 
 .position-controls, .date-controls {
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px; /* Space between elements */
+    flex-wrap: wrap;
+    justify-content: center; /* Center the form horizontally */
+    width: 300px;
 }
 
-.controls label {
-    margin-right: 5px;
+.controls label, .controls input, .controls button {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .controls input {
-    margin-right: 20px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-#date {
-    margin-right: 0px;
-    text-align: center;
-    width: 100px;
-}
-#current-date {
-    margin-left: 20px;
-    margin-right: 20px;
+#current-location, #current-date {
+    margin-left: auto;
 }
 
 input.invalid {
@@ -131,27 +144,20 @@ button:hover {
 }
 
 #address {
-    width: 30ch;
+    width: 100%;
+    left-margin:0;
+    right-margin:0;
+}
+#latitude, #longitude {
+    width: 90px;
 }
 #latitude {
-    margin-right: 0px;
-    width: 11ch;
-}
-#longitude {
-    width: 11ch;
+    margin-right: 5px;
 }
 #address.empty {
     color: #888;
 }
 
-
-.position-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between elements */
-    flex-wrap: wrap; /* Allows wrapping for smaller screens */
-    justify-content: center; /* Center the form horizontally */
-}
 
 .address-container {
 /*    display: flex;*/
@@ -181,6 +187,17 @@ button:hover {
 
 #suggestions:empty {
     display: none;
+}
+
+#date {
+    text-align: center;
+    width: 100px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#timezone {
+    width: 100%;
 }
 
 
