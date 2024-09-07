@@ -483,6 +483,224 @@ function bringToFront(event) {
   event.currentTarget.classList.add('front');
 }
 
+const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
+
+
+function buildEphemerisTableLandscape() {
+    const tablep = document.getElementById('table_portrait');
+    if (tablep) {
+        tablep.remove();
+    }
+    const tablel = document.getElementById('table_landscape');
+    if (tablel) {
+       return;
+    }
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'table_landscape');
+
+    // header
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+
+    // object
+    const th1 = document.createElement('th');
+    th1.textContent = "";
+    headerRow.appendChild(th1);
+
+    // constellation
+    const classc = 'constel';
+    const thc = document.createElement('th');
+    thc.setAttribute('class', classc);
+    headerRow.appendChild(thc);
+
+    // phase
+    const classp = 'phase';
+    const thp = document.createElement('th');
+    thp.setAttribute('class', classp);
+    headerRow.appendChild(thp);
+
+    // rise
+    const classr = 'rise';
+    const thr = document.createElement('th');
+    thr.setAttribute('colspan', '2');
+    thr.setAttribute('id', 'rise_d');
+    thr.innerHTML = '<span class="' + classr + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
+    headerRow.appendChild(thr);
+
+    // high
+    const classh = 'peak';
+    const thh = document.createElement('th');
+    thh.setAttribute('colspan', '2');
+    thh.setAttribute('id', 'peak_d');
+    thh.innerHTML = '<span class="' + classh + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span>';
+    headerRow.appendChild(thh);
+
+    // set
+    const classs = 'set';
+    const ths = document.createElement('th');
+    ths.setAttribute('colspan', '2');
+    ths.setAttribute('id', 'set_d');
+    ths.innerHTML = '<span class="' + classs + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
+    headerRow.appendChild(ths);
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+
+    for (const obj of objects) {
+        const row = document.createElement('tr');
+
+        // object
+        const tho = document.createElement('th');
+        tho.setAttribute('id', obj);
+        row.appendChild(tho);
+
+        // constellation
+        const tdc = document.createElement('td');
+        tdc.setAttribute('id', classc + '_' + obj);
+        row.appendChild(tdc);
+
+        // phase
+        const tdp = document.createElement('td');
+        tdp.setAttribute('id', classp + '_' + obj);
+        row.appendChild(tdp);
+
+        // rise
+        const tdr1 = document.createElement('td');
+        tdr1.setAttribute('id', classr + '1_' + obj);
+        row.appendChild(tdr1);
+        const tdr2 = document.createElement('td');
+        tdr2.setAttribute('id', classr + '2_' + obj);
+        row.appendChild(tdr2);
+
+        // high
+        const tdh1 = document.createElement('td');
+        tdh1.setAttribute('id', classh + '1_' + obj);
+        row.appendChild(tdh1);
+        const tdh2 = document.createElement('td');
+        tdh2.setAttribute('id', classh + '2_' + obj);
+        row.appendChild(tdh2);
+
+        // set
+        const tds1 = document.createElement('td');
+        tds1.setAttribute('id', classs + '1_' + obj);
+        row.appendChild(tds1);
+        const tds2 = document.createElement('td');
+        tds2.setAttribute('id', classs + '2_' + obj);
+        row.appendChild(tds2);
+
+        tbody.appendChild(row);
+    }
+    table.appendChild(tbody);
+    const page = document.getElementById('page');
+    page.appendChild(table);
+}
+
+function buildEphemerisTablePortrait() {
+    const tablel = document.getElementById('table_landscape');
+    if (tablel) {
+        tablel.remove();
+    }
+    const tablep = document.getElementById('table_portrait');
+    if (tablep) {
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.setAttribute('id', 'table_portrait');
+
+    for (const obj of objects) {
+        // header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const th1 = document.createElement('th');
+        th1.textContent = "";
+        headerRow.appendChild(th1);
+        const th2 = document.createElement('th');
+        th2.setAttribute('colspan', '2');
+        th2.setAttribute('id', obj);
+        headerRow.appendChild(th2);
+        thead.appendChild(headerRow);
+
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+
+        // constellation
+        const classc = 'constel';
+        const rowc = document.createElement('tr');
+        const thc = document.createElement('th');
+        thc.setAttribute('class', classc);
+        rowc.appendChild(thc);
+        const tdc = document.createElement('td');
+        tdc.setAttribute('colspan', '2');
+        tdc.setAttribute('id', classc + '_' + obj);
+        rowc.appendChild(tdc);
+        tbody.appendChild(rowc);
+
+        // phase
+        const classp = 'phase';
+        const rowp = document.createElement('tr');
+        const thp = document.createElement('th');
+        thp.setAttribute('class', classp);
+        rowp.appendChild(thp);
+        const tdp = document.createElement('td');
+        tdp.setAttribute('colspan', '2');
+        tdp.setAttribute('id', classp + '_' + obj);
+        rowp.appendChild(tdp);
+        tbody.appendChild(rowp);
+
+        // rise
+        const classr = 'rise';
+        const rowr = document.createElement('tr');
+        const thr = document.createElement('th');
+        thr.setAttribute('id', 'rise_d');
+        thr.innerHTML = '<span class="' + classr + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
+        rowr.appendChild(thr);
+        const tdr1 = document.createElement('td');
+        tdr1.setAttribute('id', classr + '1_' + obj);
+        rowr.appendChild(tdr1);
+        const tdr2 = document.createElement('td');
+        tdr2.setAttribute('id', classr + '2_' + obj);
+        rowr.appendChild(tdr2);
+        tbody.appendChild(rowr);
+
+        // high
+        const classh = 'peak';
+        const rowh = document.createElement('tr');
+        const thh = document.createElement('th');
+        thh.setAttribute('id', 'peak_d');
+        thh.innerHTML = '<span class="' + classh + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span>';
+        rowh.appendChild(thh);
+        const tdh1 = document.createElement('td');
+        tdh1.setAttribute('id', classh + '1_' + obj);
+        rowh.appendChild(tdh1);
+        const tdh2 = document.createElement('td');
+        tdh2.setAttribute('id', classh + '2_' + obj);
+        rowh.appendChild(tdh2);
+        tbody.appendChild(rowh);
+
+        // set
+        const classs = 'set';
+        const rows = document.createElement('tr');
+        const ths = document.createElement('th');
+        ths.setAttribute('id', 'set_d');
+        ths.innerHTML = '<span class="' + classs + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
+        rows.appendChild(ths);
+        const tds1 = document.createElement('td');
+        tds1.setAttribute('id', classs + '1_' + obj);
+        rows.appendChild(tds1);
+        const tds2 = document.createElement('td');
+        tds2.setAttribute('id', classs + '2_' + obj);
+        rows.appendChild(tds2);
+        tbody.appendChild(rows);
+
+        table.appendChild(tbody);
+    }
+    const page = document.getElementById('page');
+    page.appendChild(table);
+}
+
 function switchMode() {
     const previous_portrait = portrait;
     portrait = (window.innerHeight > window.innerWidth);
@@ -490,9 +708,11 @@ function switchMode() {
     if (portrait) {
         document.body.classList.add('portrait');
         document.body.classList.remove('landscape');
+        buildEphemerisTablePortrait();
     } else {
         document.body.classList.add('landscape');
         document.body.classList.remove('portrait');
+        buildEphemerisTableLandscape();
     }
 
     return portrait != previous_portrait;
@@ -504,6 +724,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function switchModeAndUpdate() {
         if (switchMode()) {
+            applyTranslation();
             updateEphemeris();
         }
     }
@@ -532,8 +753,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyTranslation() {
         currentLocationButton.textContent = tr.here;
         currentDateButton.textContent = tr.now;
-        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'constel', 'phase', 'rise', 'peak', 'set']) {
+        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs']) {
             document.getElementById(s).textContent = tr[s];
+        }
+        for(const s of ['constel', 'phase', 'rise', 'peak', 'set']) {
+            const elements = document.querySelectorAll('.' + s);
+            for (const el of elements) {
+                el.textContent = tr[s];
+            }
         }
         for(const s of ['languageDropdown', 'sciLanguageLabel', 'rise_d', 'peak_d', 'set_d']) {
             document.getElementById(s).title = tr[s];
@@ -731,7 +958,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const hours = parseInt(match[2], 10);
             const minutes = match[3] ? parseInt(match[3], 10) : 0;
 
-	    return [offset, sign * (hours * 60 + minutes)];
+            return [offset, sign * (hours * 60 + minutes)];
         }
 
         function formatOffset(diff) {
@@ -757,14 +984,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const solarNoon = searchClosestTransit("Sun", civilNoon); // use the solar noon when symmetry is required
 
         const limitDays = 300; // Search within a wide range to handle polar regions
-        const objects = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'];
         const sunDawnDuskRow = document.getElementById('sun-dawn-dusk-row');
         const sunBlueGoldenHourRow = document.getElementById('sun-blue-golden-hour-row');
-        const tableBody = document.getElementById('ephemeris-table');
 
         sunDawnDuskRow.innerHTML = ''; // Clear previous sun dawn/dusk data
         sunBlueGoldenHourRow.innerHTML = ''; // Clear previous sun blue/golden hour data
-        tableBody.innerHTML = ''; // Clear previous ephemeris data
 
         // Calculate dawn and dusk times for the Sun
         const astronomicalDawn = Astronomy.SearchAltitude('Sun', observer, +1, solarNoon, -limitDays, -18).date;
@@ -1154,22 +1378,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const constel = Astronomy.Constellation(transitEquator.ra, transitEquator.dec).symbol;
 
             // Populate table row
-            const td = '<td>';
-            const td_nvt = '<td class="notvisibletoday">';
+            document.getElementById(objectName).innerHTML = tr[objectName];
+            document.getElementById('constel_' + objectName).innerHTML = `<a href="https://www.heavens-above.com/constellation.aspx?con=${constel}">${trc[constel]}</a>`;
+            document.getElementById('phase_' + objectName).innerHTML = phase;
+
+            function formatEvent(eventKey, event, event_vt, event_vta, eventTime, eventHorizon, eventStr) {
+                tdr1 = document.getElementById(eventKey + '1_' + objectName);
+                if (event) {
+                    if (event_vt) tdr1.classList.remove('notvisibletoday'); else tdr1.classList.add('notvisibletoday');
+                    tdr1.innerHTML = formatDateTime(eventTime, true);
+                } else {
+                    tdr1.classList.add('notvisibletoday');
+                    tdr1.innerHTML = eventStr;
+                }
+
+                tdr2 = document.getElementById(eventKey + '2_' + objectName);
+                if (event_vt) tdr2.classList.remove('notvisibletoday'); else tdr2.classList.add('notvisibletoday');
+                tdr2.innerHTML = event_vta ? eventHorizon.toFixed(0) + "°" : "";
+            }
+
             const rise_vt = Math.abs(dayOffset(riseTime)) < 2;
             const set_vt = Math.abs(dayOffset(setTime)) < 2;
-            row.innerHTML = `
-                <td>${tr[objectName]}</td>
-                <td><a href="https://www.heavens-above.com/constellation.aspx?con=${constel}">${trc[constel]}</a></td>
-                <td>${phase}</td>
-                ${rise ? (rise_vt ? td : td_nvt) + formatDateTime(riseTime, true) : td_nvt + riseStr}</td>
-                ${rise_vt ? td + riseHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>
-                ${visible ? td : td_nvt}${formatDateTime(transitTime, true)}</td>
-                ${visible ? td : td_nvt}${transitHorizon.altitude.toFixed(0)}°</td>
-                ${set ? (set_vt ? td : td_nvt) + formatDateTime(setTime, true) : td_nvt + setStr}</td>
-                ${set_vt ? td + setHorizon.azimuth.toFixed(0) + "°" : td_nvt}</td>
-            `;
-            tableBody.appendChild(row);
+
+            formatEvent('rise', rise, rise_vt, rise_vt, riseTime, rise_vt ? riseHorizon.azimuth : null, riseStr);
+            formatEvent('peak', true, visible, true, transitTime, transitHorizon.altitude, '');
+            formatEvent('set', set, set_vt, set_vt, setTime, set_vt ? setHorizon.azimuth : null, setStr);
         });
     }
 

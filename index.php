@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar System Ephemeris</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
@@ -14,7 +14,7 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-<div class="page">
+<div id="page">
     <div class="title">
         <div class="language-selector">
             <select id="languageDropdown" title="Language">
@@ -107,21 +107,6 @@
             </tr>
         </thead>
         <tbody id="sun-blue-golden-hour-row">
-            <!-- Populated here by JavaScript -->
-        </tbody>
-    </table>
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th id="constel">Constellation</th>
-                <th id="phase">Phase</th>
-                <th colspan="2" id="rise_d"><span id="rise">Rise</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
-                <th colspan="2" id="peak_d"><span id="peak">High</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
-                <th colspan="2" id="set_d" ><span id="set" >Set</span> <span class="emoji">🕒</span>&nbsp<span class="emoji">↔</span></th>
-            </tr>
-        </thead>
-        <tbody id="ephemeris-table">
             <!-- Populated here by JavaScript -->
         </tbody>
     </table>
