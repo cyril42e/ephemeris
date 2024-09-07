@@ -503,46 +503,14 @@ function buildEphemerisTableLandscape() {
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
 
-    // object
-    const th1 = document.createElement('th');
-    th1.textContent = "";
-    headerRow.appendChild(th1);
-
-    // constellation
-    const classc = 'constel';
-    const thc = document.createElement('th');
-    thc.setAttribute('class', classc);
-    headerRow.appendChild(thc);
-
-    // phase
-    const classp = 'phase';
-    const thp = document.createElement('th');
-    thp.setAttribute('class', classp);
-    headerRow.appendChild(thp);
-
-    // rise
-    const classr = 'rise';
-    const thr = document.createElement('th');
-    thr.setAttribute('colspan', '2');
-    thr.setAttribute('id', 'rise_d');
-    thr.innerHTML = '<span class="' + classr + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
-    headerRow.appendChild(thr);
-
-    // high
-    const classh = 'peak';
-    const thh = document.createElement('th');
-    thh.setAttribute('colspan', '2');
-    thh.setAttribute('id', 'peak_d');
-    thh.innerHTML = '<span class="' + classh + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span>';
-    headerRow.appendChild(thh);
-
-    // set
-    const classs = 'set';
-    const ths = document.createElement('th');
-    ths.setAttribute('colspan', '2');
-    ths.setAttribute('id', 'set_d');
-    ths.innerHTML = '<span class="' + classs + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
-    headerRow.appendChild(ths);
+    headerRow.innerHTML = `
+            <th></th>
+            <th class="constel">Constellation</th>
+            <th class="phase">Phase</th>
+            <th colspan="2" id="rise_d"><span class="rise">Rise</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <th colspan="2" id="peak_d"><span class="peak">High</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
+            <th colspan="2" id="set_d" ><span class="set" >Set</span> <span class="emoji">🕒</span>&nbsp<span class="emoji">↔</span></th>
+    `
 
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -551,45 +519,17 @@ function buildEphemerisTableLandscape() {
     for (const obj of objects) {
         const row = document.createElement('tr');
 
-        // object
-        const tho = document.createElement('th');
-        tho.setAttribute('id', obj);
-        row.appendChild(tho);
-
-        // constellation
-        const tdc = document.createElement('td');
-        tdc.setAttribute('id', classc + '_' + obj);
-        row.appendChild(tdc);
-
-        // phase
-        const tdp = document.createElement('td');
-        tdp.setAttribute('id', classp + '_' + obj);
-        row.appendChild(tdp);
-
-        // rise
-        const tdr1 = document.createElement('td');
-        tdr1.setAttribute('id', classr + '1_' + obj);
-        row.appendChild(tdr1);
-        const tdr2 = document.createElement('td');
-        tdr2.setAttribute('id', classr + '2_' + obj);
-        row.appendChild(tdr2);
-
-        // high
-        const tdh1 = document.createElement('td');
-        tdh1.setAttribute('id', classh + '1_' + obj);
-        row.appendChild(tdh1);
-        const tdh2 = document.createElement('td');
-        tdh2.setAttribute('id', classh + '2_' + obj);
-        row.appendChild(tdh2);
-
-        // set
-        const tds1 = document.createElement('td');
-        tds1.setAttribute('id', classs + '1_' + obj);
-        row.appendChild(tds1);
-        const tds2 = document.createElement('td');
-        tds2.setAttribute('id', classs + '2_' + obj);
-        row.appendChild(tds2);
-
+        row.innerHTML = `
+            <th id="${obj}"></th>
+            <td id="constel_${obj}"></td>
+            <td id="phase_${obj}"></td>
+            <td id="rise1_${obj}"></td>
+            <td id="rise2_${obj}"></td>
+            <td id="peak1_${obj}"></td>
+            <td id="peak2_${obj}"></td>
+            <td id="set1_${obj}"></td>
+            <td id="set2_${obj}"></td>
+        `
         tbody.appendChild(row);
     }
     table.appendChild(tbody);
@@ -613,88 +553,27 @@ function buildEphemerisTablePortrait() {
     for (const obj of objects) {
         // header
         const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        const th1 = document.createElement('th');
-        th1.textContent = "";
-        headerRow.appendChild(th1);
-        const th2 = document.createElement('th');
-        th2.setAttribute('colspan', '2');
-        th2.setAttribute('id', obj);
-        headerRow.appendChild(th2);
-        thead.appendChild(headerRow);
-
+        thead.innerHTML = `
+            <tr><th></th><th colspan="2" id="${obj}"></th></tr>
+        `
         table.appendChild(thead);
+
         const tbody = document.createElement('tbody');
-
-        // constellation
-        const classc = 'constel';
-        const rowc = document.createElement('tr');
-        const thc = document.createElement('th');
-        thc.setAttribute('class', classc);
-        rowc.appendChild(thc);
-        const tdc = document.createElement('td');
-        tdc.setAttribute('colspan', '2');
-        tdc.setAttribute('id', classc + '_' + obj);
-        rowc.appendChild(tdc);
-        tbody.appendChild(rowc);
-
-        // phase
-        const classp = 'phase';
-        const rowp = document.createElement('tr');
-        const thp = document.createElement('th');
-        thp.setAttribute('class', classp);
-        rowp.appendChild(thp);
-        const tdp = document.createElement('td');
-        tdp.setAttribute('colspan', '2');
-        tdp.setAttribute('id', classp + '_' + obj);
-        rowp.appendChild(tdp);
-        tbody.appendChild(rowp);
-
-        // rise
-        const classr = 'rise';
-        const rowr = document.createElement('tr');
-        const thr = document.createElement('th');
-        thr.setAttribute('id', 'rise_d');
-        thr.innerHTML = '<span class="' + classr + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
-        rowr.appendChild(thr);
-        const tdr1 = document.createElement('td');
-        tdr1.setAttribute('id', classr + '1_' + obj);
-        rowr.appendChild(tdr1);
-        const tdr2 = document.createElement('td');
-        tdr2.setAttribute('id', classr + '2_' + obj);
-        rowr.appendChild(tdr2);
-        tbody.appendChild(rowr);
-
-        // high
-        const classh = 'peak';
-        const rowh = document.createElement('tr');
-        const thh = document.createElement('th');
-        thh.setAttribute('id', 'peak_d');
-        thh.innerHTML = '<span class="' + classh + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span>';
-        rowh.appendChild(thh);
-        const tdh1 = document.createElement('td');
-        tdh1.setAttribute('id', classh + '1_' + obj);
-        rowh.appendChild(tdh1);
-        const tdh2 = document.createElement('td');
-        tdh2.setAttribute('id', classh + '2_' + obj);
-        rowh.appendChild(tdh2);
-        tbody.appendChild(rowh);
-
-        // set
-        const classs = 'set';
-        const rows = document.createElement('tr');
-        const ths = document.createElement('th');
-        ths.setAttribute('id', 'set_d');
-        ths.innerHTML = '<span class="' + classs + '"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span>';
-        rows.appendChild(ths);
-        const tds1 = document.createElement('td');
-        tds1.setAttribute('id', classs + '1_' + obj);
-        rows.appendChild(tds1);
-        const tds2 = document.createElement('td');
-        tds2.setAttribute('id', classs + '2_' + obj);
-        rows.appendChild(tds2);
-        tbody.appendChild(rows);
-
+        tbody.innerHTML = `
+            <tr><th class="constel"></th>
+                <td colspan="2" id="constel_${obj}"></td></tr>
+            <tr><th class="phase"></th>
+                <td colspan="2" id="phase_${obj}"></td></tr>
+            <tr><th id="rise_d"><span class="rise"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+                <td id="rise1_${obj}"></td>
+                <td id="rise2_${obj}"></td></tr>
+            <tr><th id="peak_d"><span class="peak"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+                <td id="peak1_${obj}"></td>
+                <td id="peak2_${obj}"></td></tr>
+            <tr><th id="set_d"><span class="set"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+                <td id="set1_${obj}"></td>
+                <td id="set2_${obj}"></td></tr>
+        `
         table.appendChild(tbody);
     }
     const page = document.getElementById('page');
