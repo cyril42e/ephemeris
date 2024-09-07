@@ -23,6 +23,7 @@ body {
     position: relative; /* Position relative for absolute positioning of links */
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
 }
 
 .title .language-selector {
@@ -89,6 +90,11 @@ body {
     padding-top: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     gap: 20px 60px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #f4f4f9;
 }
 
 .address-container, .coords-container, .date-container, .timezone-container {
@@ -389,7 +395,7 @@ button:hover {
 .sun-event { background-color: #808080 !important; color: white !important; }
 
 .front {
-  z-index: 1000;
+  z-index: 999;
 }
 
 .bigger {
