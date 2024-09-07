@@ -507,9 +507,9 @@ function buildEphemerisTableLandscape() {
             <th></th>
             <th class="constel">Constellation</th>
             <th class="phase">Phase</th>
-            <th colspan="2" id="rise_d"><span class="rise">Rise</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
-            <th colspan="2" id="peak_d"><span class="peak">High</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
-            <th colspan="2" id="set_d" ><span class="set" >Set</span> <span class="emoji">🕒</span>&nbsp<span class="emoji">↔</span></th>
+            <th colspan="2" class="rise_d"><span class="rise">Rise</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <th colspan="2" class="peak_d"><span class="peak">High</span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
+            <th colspan="2" class="set_d" ><span class="set" >Set</span> <span class="emoji">🕒</span>&nbsp<span class="emoji">↔</span></th>
     `
 
     thead.appendChild(headerRow);
@@ -564,13 +564,13 @@ function buildEphemerisTablePortrait() {
                 <td colspan="2" id="constel_${obj}"></td></tr>
             <tr><th class="phase"></th>
                 <td colspan="2" id="phase_${obj}"></td></tr>
-            <tr><th id="rise_d"><span class="rise"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <tr><th class="rise_d"><span class="rise"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
                 <td id="rise1_${obj}"></td>
                 <td id="rise2_${obj}"></td></tr>
-            <tr><th id="peak_d"><span class="peak"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <tr><th class="peak_d"><span class="peak"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
                 <td id="peak1_${obj}"></td>
                 <td id="peak2_${obj}"></td></tr>
-            <tr><th id="set_d"><span class="set"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <tr><th class="set_d"><span class="set"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
                 <td id="set1_${obj}"></td>
                 <td id="set2_${obj}"></td></tr>
         `
@@ -641,8 +641,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.textContent = tr[s];
             }
         }
-        for(const s of ['languageDropdown', 'sciLanguageLabel', 'rise_d', 'peak_d', 'set_d']) {
+        for(const s of ['languageDropdown', 'sciLanguageLabel']) {
             document.getElementById(s).title = tr[s];
+        }
+        for(const s of ['rise_d', 'peak_d', 'set_d']) {
+            const elements = document.querySelectorAll('.' + s);
+            for (const el of elements) {
+                el.title = tr[s];
+            }
         }
 
         //if (addressInput.value === old) // TODO
