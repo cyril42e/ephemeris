@@ -103,6 +103,12 @@ body {
     top: 0;
     z-index: 1000;
     background-color: var(--bgcolor);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.hidden {
+    transform: translateY(-50%); /* Move the element out of view */
+    opacity: 0;
 }
 
 .address-container, .coords-container, .date-container, .timezone-container {

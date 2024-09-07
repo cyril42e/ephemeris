@@ -772,6 +772,27 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    let lastScrollTop = 0;
+    const controlsDiv = document.getElementsByClassName('controls')[0];
+    const controlsTop = controlsDiv.offsetTop;
+    let controlsHidden = false;
+
+    // callback to hide/show controls when scrolling down/up
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > lastScrollTop && currentScroll > controlsTop && !controlsHidden) {
+            // Scrolling down
+            controlsDiv.classList.add('hidden');
+            controlsHidden = true;
+        } else if (currentScroll < lastScrollTop && controlsHidden) {
+            // Scrolling up
+            controlsDiv.classList.remove('hidden');
+            controlsHidden = false;
+        }
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+    });
+
+
     function updateEphemeris() {
         if (!validateInputs()) return;
 
