@@ -582,7 +582,8 @@ function buildEphemerisTablePortrait() {
 
 function switchMode() {
     const previous_portrait = portrait;
-    portrait = (window.innerHeight > window.innerWidth);
+    //portrait = (window.innerHeight > window.innerWidth);
+    portrait = (window.innerWidth < 700);
 
     if (portrait) {
         document.body.classList.add('portrait');
