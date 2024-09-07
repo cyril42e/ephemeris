@@ -164,7 +164,7 @@ const translation_ui = {
     'Sun': 'Soleil',
     'Moon': 'Lune',
     'Mercury': 'Mercure',
-    'Venus': 'Venus',
+    'Venus': 'Vénus',
     'Mars': 'Mars',
     'Jupiter': 'Jupiter',
     'Saturn': 'Saturne',
