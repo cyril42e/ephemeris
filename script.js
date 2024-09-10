@@ -772,24 +772,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    let lastScrollTop = 0;
+    let lastScroll = 0;
+    let lastScrollDown = true;
     const controlsDiv = document.getElementsByClassName('controls')[0];
-    const controlsTop = controlsDiv.offsetTop;
-    let controlsHidden = false;
+    const controlsWDiv = document.getElementsByClassName('controls-wrapper')[0];
 
     // callback to hide/show controls when scrolling down/up
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-        if (currentScroll > lastScrollTop && currentScroll > controlsTop && !controlsHidden) {
-            // Scrolling down
-            controlsDiv.classList.add('hidden');
-            controlsHidden = true;
-        } else if (currentScroll < lastScrollTop && controlsHidden) {
-            // Scrolling up
-            controlsDiv.classList.remove('hidden');
-            controlsHidden = false;
+        const predictedScroll = currentScroll + (currentScroll - lastScroll);
+        const scrollDown = currentScroll > lastScroll;
+        // if change to scroll up, and controls are not visible, start making them appear
+        if (!scrollDown && lastScrollDown && lastScroll > controlsDiv.offsetTop+controlsDiv.offsetHeight+controlsWDiv.offsetTop) {
+            controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`;
+            controlsDiv.style.position = "absolute";
+            controlsDiv.style.top = `${lastScroll-controlsDiv.offsetHeight-controlsWDiv.offsetTop}px`;
+        }  else
+        // if scrolling up, and controls are getting completely visible, stick it to the top (if it wasn't already)
+        if (!scrollDown && predictedScroll <= controlsDiv.offsetTop+controlsWDiv.offsetTop && controlsDiv.style.position == "absolute") {
+            controlsDiv.style.position = "fixed";
+            controlsDiv.style.top = 0;
+            controlsDiv.style.marginRight = "20px";
+        } else
+        // if change to scroll down and controls were sticky, anchor them to the page to allow them to progressively disappear
+        if (scrollDown && !lastScrollDown && controlsDiv.style.position == "fixed") {
+            controlsDiv.style.position = "absolute";
+            controlsDiv.style.top = `${lastScroll-controlsWDiv.offsetTop}px`;
+            controlsDiv.style.marginRight = "0";
+        } else
+        // if scrolling up and controls become above their nominal place, put them back at their nominal place
+        if (!scrollDown && currentScroll <= controlsWDiv.offsetTop && controlsDiv.style.position != "static") {
+            controlsDiv.style.position = "static";
+            controlsDiv.style.marginRight = "0";
         }
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+
+        lastScroll = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+        lastScrollDown = scrollDown;
     });
 
 

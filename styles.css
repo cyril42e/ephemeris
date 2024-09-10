@@ -88,6 +88,11 @@ body {
 /*******************************/
 /* Controls */
 
+.controls-wrapper {
+    position: relative;
+    margin-bottom: var(--bottom-shadow);
+}
+
 .controls {
     display: flex;
     flex-wrap: wrap;
@@ -95,20 +100,11 @@ body {
     text-align: center;
     padding-bottom: 10px;
     box-shadow: 0 var(--side-shadow) var(--bottom-shadow) rgba(0, 0, 0, 0.1);
-    margin-bottom: var(--bottom-shadow);
     padding-top: calc(15px - var(--bottom-shadow));
     gap: 20px 60px;
 
-    position: sticky;
-    top: 0;
     z-index: 1000;
     background-color: var(--bgcolor);
-    transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-.hidden {
-    transform: translateY(-50%); /* Move the element out of view */
-    opacity: 0;
 }
 
 .address-container, .coords-container, .date-container, .timezone-container {

@@ -37,6 +37,7 @@
         </div>
     </div>
 
+    <div class="controls-wrapper">
     <div class="controls">
         <div class="position-controls">
             <div class="address-container">
@@ -63,6 +64,7 @@
                 <label for="timezone" id="timezone"></label>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="timeline">
