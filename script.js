@@ -787,6 +787,8 @@ document.addEventListener('DOMContentLoaded', function() {
             controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`;
             controlsDiv.style.position = "absolute";
             controlsDiv.style.top = `${lastScroll-controlsDiv.offsetHeight-controlsWDiv.offsetTop}px`;
+            controlsDiv.classList.add('floating');
+            controlsDiv.classList.remove('static');
         }  else
         // if scrolling up, and controls are getting completely visible, stick it to the top (if it wasn't already)
         if (!scrollDown && predictedScroll <= controlsDiv.offsetTop+controlsWDiv.offsetTop && controlsDiv.style.position == "absolute") {
@@ -804,6 +806,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!scrollDown && currentScroll <= controlsWDiv.offsetTop && controlsDiv.style.position != "static") {
             controlsDiv.style.position = "static";
             controlsDiv.style.marginRight = "0";
+            controlsDiv.classList.add('static');
+            controlsDiv.classList.remove('floating');
         }
 
         lastScroll = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling

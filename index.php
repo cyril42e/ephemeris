@@ -38,7 +38,7 @@
     </div>
 
     <div class="controls-wrapper">
-    <div class="controls">
+    <div class="controls static">
         <div class="position-controls">
             <div class="address-container">
                 <input type="text" id="address" autocomplete="off" value="Paris, France">

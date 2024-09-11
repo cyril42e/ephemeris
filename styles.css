@@ -99,12 +99,20 @@ body {
     justify-content: center;
     text-align: center;
     padding-bottom: 10px;
-    box-shadow: 0 var(--side-shadow) var(--bottom-shadow) rgba(0, 0, 0, 0.1);
     padding-top: calc(15px - var(--bottom-shadow));
     gap: 20px 60px;
 
     z-index: 1000;
+}
+
+.controls.static {
+    box-shadow: 0 var(--side-shadow) var(--bottom-shadow) rgba(0, 0, 0, 0.1);
     background-color: var(--bgcolor);
+}
+.controls.floating {
+    border: solid 1px #888;
+    border-radius: 12px;
+    background-color: #f4f4f9ee;
 }
 
 .address-container, .coords-container, .date-container, .timezone-container {
