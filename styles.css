@@ -105,6 +105,12 @@ body {
     z-index: 1000;
 }
 
+.portrait .controls {
+    gap: 4px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 .controls.static {
     box-shadow: 0 var(--side-shadow) var(--bottom-shadow) rgba(0, 0, 0, 0.1);
     background-color: var(--bgcolor);
@@ -128,10 +134,17 @@ body {
 .position-controls, .date-controls {
     display: flex;
     align-items: center;
-    gap: 7px; /* Space between elements */
     flex-wrap: wrap;
     justify-content: center; /* Center the form horizontally */
     width: 300px;
+}
+
+.landscape .position-controls, .landscape .date-controls {
+    gap: 7px; /* Space between elements */
+}
+
+.portrait .position-controls, .portrait .date-controls {
+    gap: 1px 0px;
 }
 
 .controls label, .controls input, .controls button {
@@ -140,9 +153,15 @@ body {
 }
 
 .controls input {
-    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.landscape .controls input {
+    padding: 5px 5px;
+}
+.portrait .controls input {
+    padding: 2px 5px;
 }
 
 #current-location, #current-date {
@@ -154,13 +173,19 @@ input.invalid {
 }
 
 button {
-    padding: 5px 10px;
     border: none;
     border-radius: 5px;
     background-color: #3498db;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+.landscape button {
+    padding: 5px 10px;
+}
+.portrait button {
+    padding: 2px 10px;
 }
 
 button:hover {
@@ -222,6 +247,11 @@ button:hover {
 
 #timezone {
     width: 100%;
+}
+
+.portrait #timezone {
+    width: 100%;
+    font-size: 90%;
 }
 
 
