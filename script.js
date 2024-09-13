@@ -664,8 +664,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.title = tr[s];
             }
         }
-
-        //if (addressInput.value === old) // TODO
+        if (addressInput.classList.contains('empty')) {
+            addressInput.value = tr['addr'];
+        }
     }
 
     function changeLanguage() {
