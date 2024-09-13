@@ -61,7 +61,7 @@ All the dates and times (inputs and outputs) are expressed in the time zone corr
 - The 'Now' button sets the current date in the target timezone.
 - The times of the timeline and ephemeris table are expressed in the target timezone.
 
-For clarity, the target timezone is displayed at the top, along with its corresponding UTC offset and its offset compared
+For clarity purposes, the target timezone is displayed at the top, along with its corresponding UTC offset and its offset compared
 with the local (i.e. browser) timezone.
 
 Only the transit time is guaranteed to be the requested day. The rise and set time may be the day before or after,
@@ -86,7 +86,18 @@ It is followed by an arrow that indicates whether it is increasing or decreasing
 For rise and set events, the azimuth at which it happens is also shown, which is the clockwise angle from North
 (thus with 0° indicating North, and 90° indicating East).
 
-For peak elevation (i.e. transit), the reached elevation is also shown, which is the angle above the horizon.
+For high point (i.e. transit), the reached elevation is also shown, which is the angle above the horizon.
+
+The constellation in which each object can be found at the configured date is also shown, with a link to
+https://www.heavens-above.com/ that allows to see where exactly in the constellation.
+
+### Configuration
+
+The interface language can be selected by clicking on the flag at the top left.
+
+The book icon below the flag allows to enable or disable the display of constellation names with their scientific
+(latin) name, instead of the current language.
+
 
 ## Technical explanations
 
