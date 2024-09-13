@@ -628,6 +628,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const timezoneOutput = document.getElementById('timezone');
     const languageDropdown = document.getElementById('languageDropdown');
     const sciLanguageCheckbox = document.getElementById('sciLanguageCheckbox');
+    const menuIcon = document.getElementById('menu-icon');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    // Toggle the visibility of the navigation overlay
+    menuIcon.addEventListener('click', () => {
+        navOverlay.classList.toggle('show');
+    });
+    navOverlay.addEventListener('click', (event) => {
+        if (!event.target.closest('.nav-links')) {
+            navOverlay.classList.remove('show');
+        }
+    });
+
     let refreshTimeout;
 
     function applyTranslation() {

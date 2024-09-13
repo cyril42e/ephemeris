@@ -30,11 +30,19 @@
             <br/>
             <h4 id="stitle">Solar System</h4>
         </div>
-        <div class="links">
-            <a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/>
-            <a id="code" href="https://github.com/cyril42e/ephemeris">Source Code</a><br/>
-            <a id="bugs" href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/>
+        <div class="navbar">
+            <div class="menu-icon" id="menu-icon">
+                &#x2261; <!-- Unicode character for the hamburger icon -->
+            </div>
         </div>
+    </div>
+
+    <div class="nav-overlay" id="nav-overlay">
+        <ul class="nav-links">
+            <li><a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/></li>
+            <li><a id="code" href="https://github.com/cyril42e/ephemeris">Source Code</a><br/></li>
+            <li><a id="bugs" href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/></li>
+        </ul>
     </div>
 
     <div class="controls-wrapper">
