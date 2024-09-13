@@ -1,4 +1,5 @@
 let portrait = false;
+let lastAddress = "Paris, France";
 
 function createTimePeriods(containerId, data, totalDuration) {
     const container = document.getElementById(containerId);
@@ -700,10 +701,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function clearAddress() {
         addressInput.value = tr.addr;
         addressInput.classList.add('empty');
+        lastAddress = "";
     }
     function setAddress(text) {
         addressInput.value = text;
         addressInput.classList.remove('empty');
+        lastAddress = text;
+    }
+    function resetAddress() {
+        if (lastAddress === "") {
+            clearAddress();
+        } else {
+            addressInput.value = lastAddress;
+            addressInput.classList.remove('empty');
+        }
     }
 
     function dayDistance(eventDate, referenceDate) {
@@ -738,12 +749,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addressInput.addEventListener('focus', function() {
-        if (addressInput.value === tr['addr']) {
-            addressInput.value = '';
-        }
+        addressInput.value = '';
         addressInput.classList.remove('empty');
     });
-
     addressInput.addEventListener('input', function() {
         const query = addressInput.value;
         if (query.length < 3) {
@@ -779,11 +787,18 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error fetching data:', error));
     });
 
+    let lostfocus = false;
+
+    addressInput.addEventListener('focusout', function(event) {
+        lostfocus = true;
+    });
+
     document.addEventListener('click', function(event) {
-        if (event.target !== addressInput && event.target.className !== 'suggestion-item' && (suggestionsDiv.innerHTML !== '' || addressInput.value === '')) {
+        if (lostfocus && event.target !== addressInput && event.target.className !== 'suggestion-item' && (suggestionsDiv.innerHTML !== '' || addressInput.value !== lastAddress || lastAddress === "")) {
             suggestionsDiv.innerHTML = '';
-            clearAddress();
+            resetAddress();
         }
+        lostfocus = false;
     });
 
     let lastScroll = 0;
