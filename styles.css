@@ -526,3 +526,12 @@ th {
 td {
     padding: 2px;
 }
+
+td a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+.portrait thead th {
+    font-weight: bold;
+}
