@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <table id="timeline-table">
+    <table id="timeline-table" style="display: none">
         <thead>
             <tr>
                 <th>🔭 ↦</th>

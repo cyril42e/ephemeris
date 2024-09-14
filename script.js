@@ -613,9 +613,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', switchModeAndUpdate);
     window.addEventListener('orientationchange', switchModeAndUpdate);
 
-    const timelineTable = document.getElementById('timeline-table');
-    timelineTable.style.display = "none";
-
     //***************************/
     // Controls
 
