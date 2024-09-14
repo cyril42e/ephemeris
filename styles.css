@@ -1,5 +1,7 @@
 :root {
   --bgcolor: #f4f4f9;
+  --hovercolor: #f0f0f0;
+  --fontcolor: #333;
   --bottom-shadow: 8px;
   --side-shadow: 4px;
 }
@@ -9,7 +11,7 @@ body {
     margin: 20px;
     margin-top: 0px;
     background-color: var(--bgcolor);
-    color: #333;
+    color: var(--fontcolor);
 }
 
 #page {
@@ -73,7 +75,7 @@ body {
     margin: 0;
     flex: 1; /* Allow the title to take up available space */
     text-align: center;
-    color: #333;
+    color: var(--fontcolor);
 }
 .title .navbar {
     position: absolute;
@@ -82,7 +84,7 @@ body {
 .menu-icon {
     cursor: pointer;
     font-size: 36px;
-    color: #333;
+    color: var(--fontcolor);
 }
 
 .nav-links {
@@ -94,7 +96,7 @@ body {
 }
 
 .nav-links a {
-    color: #333;
+    color: var(--fontcolor);
     text-decoration: none;
     font-size: 1.5em;
     width: 100%;
@@ -106,7 +108,7 @@ body {
 }
 
 .nav-links li:hover {
-    background-color: #f0f0f0;
+    background-color: var(--hovercolor);
 }
 
 .nav-overlay.show {
@@ -162,7 +164,7 @@ body {
 .controls.floating {
     border: solid 1px #888;
     border-radius: 12px;
-    background-color: #f4f4f9ee;
+    background-color: #f4f4f9ee; /* --bgcolor with transparency */
 }
 
 .address-container, .coords-container, .date-container, .timezone-container {
@@ -199,6 +201,7 @@ body {
 .controls input {
     border: 1px solid #ccc;
     border-radius: 5px;
+    color: var(--fontcolor);
 }
 
 .landscape .controls input {
@@ -275,7 +278,7 @@ button:hover {
     cursor: pointer;
 }
 .suggestion-item:hover {
-    background-color: #f0f0f0;
+    background-color: var(--hovercolor);
 }
 
 #suggestions:empty {
@@ -405,7 +408,7 @@ button:hover {
     text-align: center;
     position: absolute;
     background: white;
-    border: 2px solid #333;
+    border: 2px solid var(--fontcolor);
     border-radius: 8px; /* rounding */
     padding: 3px 5px;
     font-size: 14px;
@@ -460,23 +463,23 @@ button:hover {
 .landscape .timeline-points.top .time-point::after,
 .landscape .timeline-points.top .time-point::before {
     bottom: -10px;
-    border-top: 10px solid #333;
+    border-top: 10px solid var(--fontcolor);
 }
 .portrait .timeline-points.top .time-point::after,
 .portrait .timeline-points.top .time-point::before {
     right: -10px;
-    border-left: 10px solid #333;
+    border-left: 10px solid var(--fontcolor);
 }
 
 .landscape .timeline-points.bottom .time-point::after,
 .landscape .timeline-points.bottom .time-point::before {
     top: -10px;
-    border-bottom: 10px solid #333;
+    border-bottom: 10px solid var(--fontcolor);
 }
 .portrait .timeline-points.bottom .time-point::after,
 .portrait .timeline-points.bottom .time-point::before {
     left: -10px;
-    border-right: 10px solid #333;
+    border-right: 10px solid var(--fontcolor);
 }
 
 .night { background-color: #000; }
