@@ -823,18 +823,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!scrollDown && predictedScroll <= controlsDiv.offsetTop+controlsWDiv.offsetTop && controlsDiv.style.position == "absolute") {
             controlsDiv.style.position = "fixed";
             controlsDiv.style.top = 0;
-            controlsDiv.style.marginRight = "20px";
+            controlsDiv.style.width = `${controlsWDiv.offsetWidth}px`;
+            controlsDiv.style.left = `${controlsWDiv.getBoundingClientRect().left}px`;
         } else
         // if change to scroll down and controls were sticky, anchor them to the page to allow them to progressively disappear
         if (scrollDown && !lastScrollDown && controlsDiv.style.position == "fixed") {
             controlsDiv.style.position = "absolute";
             controlsDiv.style.top = `${lastScroll-controlsWDiv.offsetTop}px`;
-            controlsDiv.style.marginRight = "0";
+            controlsDiv.style.width = "100%";
+            controlsDiv.style.left = 0;
         } else
         // if scrolling up and controls become above their nominal place, put them back at their nominal place
         if (!scrollDown && currentScroll <= controlsWDiv.offsetTop && controlsDiv.style.position != "static") {
             controlsDiv.style.position = "static";
-            controlsDiv.style.marginRight = "0";
+            controlsDiv.style.width = "100%";
+            controlsDiv.style.left = 0;
+
             controlsDiv.classList.add('static');
             controlsDiv.classList.remove('floating');
         }
