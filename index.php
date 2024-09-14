@@ -120,6 +120,10 @@
             <!-- Populated here by JavaScript -->
         </tbody>
     </table>
+    <div id="table">
+        <!-- Populated here by JavaScript -->
+    </div>
+    <div id="controls-scroller"></div>
 </div>
 </body>
 </html>

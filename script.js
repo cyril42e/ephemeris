@@ -534,8 +534,8 @@ function buildEphemerisTableLandscape() {
         tbody.appendChild(row);
     }
     table.appendChild(tbody);
-    const page = document.getElementById('page');
-    page.appendChild(table);
+    const tableDiv = document.getElementById('table');
+    tableDiv.appendChild(table);
 }
 
 function buildEphemerisTablePortrait() {
@@ -577,8 +577,8 @@ function buildEphemerisTablePortrait() {
         `
         table.appendChild(tbody);
     }
-    const page = document.getElementById('page');
-    page.appendChild(table);
+    const tableDiv = document.getElementById('table');
+    tableDiv.appendChild(table);
 }
 
 function switchMode() {
@@ -805,6 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastScrollDown = true;
     const controlsDiv = document.getElementsByClassName('controls')[0];
     const controlsWDiv = document.getElementsByClassName('controls-wrapper')[0];
+    const controlsSDiv = document.getElementById('controls-scroller');
 
     // callback to hide/show controls when scrolling down/up
     window.addEventListener('scroll', function() {
@@ -814,6 +815,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // if change to scroll up, and controls are not visible, start making them appear
         if (!scrollDown && lastScrollDown && lastScroll > controlsDiv.offsetTop+controlsDiv.offsetHeight+controlsWDiv.offsetTop) {
             controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`;
+            controlsSDiv.style.height = `${controlsDiv.offsetHeight}px`;
             controlsDiv.style.position = "absolute";
             controlsDiv.style.top = `${lastScroll-controlsDiv.offsetHeight-controlsWDiv.offsetTop}px`;
             controlsDiv.classList.add('floating');
