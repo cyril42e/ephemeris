@@ -42,6 +42,7 @@
             <li><a id="doc" href="https://github.com/cyril42e/ephemeris?tab=readme-ov-file#definitions">Documentation</a><br/></li>
             <li><a id="code" href="https://github.com/cyril42e/ephemeris">Source Code</a><br/></li>
             <li><a id="bugs" href="https://github.com/cyril42e/ephemeris/issues">Bug Reports</a><br/></li>
+            <li><a id="privacy" href="./privacy.php">Privacy Policy</a><br/></li>
         </ul>
     </div>
 

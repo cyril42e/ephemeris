@@ -4,6 +4,7 @@ self.addEventListener('install', event => {
             return cache.addAll([
                 './',
                 './index.php',
+                './privacy.php',
                 './styles.css',
                 './script.js',
                 './icon-192.png',

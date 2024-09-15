@@ -110,8 +110,9 @@ const translation_ui = {
     'local': 'local',
     'addr': 'Search address...',
     'doc': 'Documentation',
-    'code': 'Source code',
-    'bugs': 'Bug reports',
+    'code': 'Source Code',
+    'bugs': 'Bug Reports',
+    'privacy': 'Privacy Policy',
     'Sun': 'Sun',
     'Moon': 'Moon',
     'Mercury': 'Mercury',
@@ -162,6 +163,7 @@ const translation_ui = {
     'doc': 'Documentation',
     'code': 'Code source',
     'bugs': 'Signaler un bug',
+    'privacy': 'Politique de vie privée',
     'Sun': 'Soleil',
     'Moon': 'Lune',
     'Mercury': 'Mercure',
@@ -644,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyTranslation() {
         currentLocationButton.textContent = tr.here;
         currentDateButton.textContent = tr.now;
-        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs']) {
+        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'privacy']) {
             document.getElementById(s).textContent = tr[s];
         }
         for(const s of ['constel', 'phase', 'rise', 'peak', 'set']) {
