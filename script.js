@@ -568,7 +568,7 @@ function buildEphemerisTablePortrait() {
             <tr><th class="rise_d"><span class="rise"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
                 <td id="rise1_${obj}"></td>
                 <td id="rise2_${obj}"></td></tr>
-            <tr><th class="peak_d"><span class="peak"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
+            <tr><th class="peak_d"><span class="peak"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↕</span></th>
                 <td id="peak1_${obj}"></td>
                 <td id="peak2_${obj}"></td></tr>
             <tr><th class="set_d"><span class="set"></span> <span class="emoji">🕒</span>&nbsp;<span class="emoji">↔</span></th>
