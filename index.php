@@ -8,8 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.5.0/build/global/luxon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tz-lookup@6.1.25/tz.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js "></script>
-    <link href=" https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css " rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+    <link id="flatpickr-light-theme" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet">
+    <link id="flatpickr-dark-theme" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/themes/dark.min.css" rel="stylesheet" disabled>
     <script src="script.js" defer></script>
     <link rel="manifest" href="manifest.json">
 </head>

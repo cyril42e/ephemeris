@@ -1,4 +1,5 @@
 let portrait = false;
+let theme = "light";
 let lastAddress = "Paris, France";
 
 function createTimePeriods(containerId, data, totalDuration) {
@@ -599,6 +600,21 @@ function switchMode() {
     }
 
     return portrait != previous_portrait;
+}
+
+function switchTheme() {
+    const lightTheme = document.getElementById('flatpickr-light-theme');
+    const darkTheme = document.getElementById('flatpickr-dark-theme');
+
+    if (theme === 'light') {
+        document.documentElement.setAttribute('theme', 'light');
+        lightTheme.disabled = false;
+        darkTheme.disabled = true;
+    } else {
+        document.documentElement.setAttribute('theme', 'dark');
+        lightTheme.disabled = true;
+        darkTheme.disabled = false;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1423,6 +1439,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Initialize with current date
+    switchTheme();
     changeLanguage();
     setCurrentDate();
     controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`; // fix height
