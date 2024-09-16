@@ -77,7 +77,10 @@ const translation_ui = {
     'title': 'Ephemeris',
     'stitle': 'Solar System',
     'languageDropdown': 'Language',
-    'sciLanguageLabel': 'Using or not using scientific constellations names',
+    'settings-icon': 'Settings',
+    'nav-icon': 'Menu',
+    'sciLanguageLabel': 'Show scientific constellations names',
+    'themeLabel': 'Theme',
     'n': 'Night',
     'mad': 'Astro. Dawn',
     'mat': 'Astro. Twilight',
@@ -128,7 +131,10 @@ const translation_ui = {
     'title': 'Éphémérides',
     'stitle': 'Système solaire',
     'languageDropdown': 'Langue',
-    'sciLanguageLabel': 'Utiliser ou non les noms scientifiques des constellations',
+    'settings-icon': 'Paramètres',
+    'nav-icon': 'Menu',
+    'sciLanguageLabel': 'Afficher les noms scientifiques des constellations',
+    'themeLabel': 'Thème',
     'n': 'Nuit',
     'mad': '',
     'mat': 'Aube astro.',
@@ -471,11 +477,18 @@ function getLanguageBrowser() {
 }
 const languageBrowser = getLanguageBrowser();
 
+function getThemeBrowser() {
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+}
+
 function getLanguageStorage() {
     return localStorage.getItem('language') || null;
 }
 function getSciLanguageStorage() {
     return localStorage.getItem('sciLanguage') || null;
+}
+function getThemeStorage() {
+    return localStorage.getItem('theme') || null;
 }
 
 function bringToFront(event) {
@@ -602,21 +615,6 @@ function switchMode() {
     return portrait != previous_portrait;
 }
 
-function switchTheme() {
-    const lightTheme = document.getElementById('flatpickr-light-theme');
-    const darkTheme = document.getElementById('flatpickr-dark-theme');
-
-    if (theme === 'light') {
-        document.documentElement.setAttribute('theme', 'light');
-        lightTheme.disabled = false;
-        darkTheme.disabled = true;
-    } else {
-        document.documentElement.setAttribute('theme', 'dark');
-        lightTheme.disabled = true;
-        darkTheme.disabled = false;
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
     switchMode();
@@ -643,12 +641,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const suggestionsDiv = document.getElementById('suggestions');
     const timezoneOutput = document.getElementById('timezone');
     const languageDropdown = document.getElementById('languageDropdown');
+    const themeDropdown = document.getElementById('themeDropdown');
     const sciLanguageCheckbox = document.getElementById('sciLanguageCheckbox');
-    const menuIcon = document.getElementById('menu-icon');
+    const navIcon = document.getElementById('nav-icon');
     const navOverlay = document.getElementById('nav-overlay');
+    const settingsIcon = document.getElementById('settings-icon');
+    const settingsOverlay = document.getElementById('settings-overlay');
 
     // Toggle the visibility of the navigation overlay
-    menuIcon.addEventListener('click', () => {
+    navIcon.addEventListener('click', () => {
         navOverlay.classList.toggle('show');
     });
     navOverlay.addEventListener('click', (event) => {
@@ -657,12 +658,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Toggle the visibility of the settings overlay
+    settingsIcon.addEventListener('click', () => {
+        settingsOverlay.classList.toggle('show');
+    });
+    settingsOverlay.addEventListener('click', (event) => {
+        if (!event.target.closest('.settings')) {
+            settingsOverlay.classList.remove('show');
+        }
+    });
+
     let refreshTimeout;
 
     function applyTranslation() {
         currentLocationButton.textContent = tr.here;
         currentDateButton.textContent = tr.now;
-        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'privacy']) {
+        for(const s of ['title', 'stitle', 'doc', 'code', 'bugs', 'privacy', 'sciLanguageLabel', 'themeLabel']) {
             document.getElementById(s).textContent = tr[s];
         }
         for(const s of ['constel', 'phase', 'rise', 'peak', 'set']) {
@@ -671,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.textContent = tr[s];
             }
         }
-        for(const s of ['languageDropdown', 'sciLanguageLabel']) {
+        for(const s of ['languageDropdown', 'settings-icon', 'nav-icon']) {
             document.getElementById(s).title = tr[s];
         }
         for(const s of ['rise_d', 'peak_d', 'set_d']) {
@@ -685,7 +696,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function changeLanguage() {
+    function switchLanguage() {
         const selectedLanguage = languageDropdown.value;
         const selectedSciLanguage = sciLanguageCheckbox.checked === true ? 'sci' : selectedLanguage;
 
@@ -709,9 +720,44 @@ document.addEventListener('DOMContentLoaded', function() {
         updateEphemeris();
     }
     languageDropdown.value = getLanguageStorage() || languageBrowser || 'en';
-    languageDropdown.addEventListener('change', function() { changeLanguage(); });
+    languageDropdown.addEventListener('change', function() { switchLanguage(); });
+
+    function switchTheme() {
+        if (themeDropdown.value == "default" || themeDropdown.value == "auto") {
+            theme = getThemeBrowser();
+            if (themeDropdown.value == "auto") {
+                // TODO
+            }
+        } else {
+            theme = themeDropdown.value;
+        }
+
+        // Save the theme preference
+        if (themeDropdown.value == "default") {
+            localStorage.removeItem('theme');
+        } else {
+            localStorage.setItem('theme', themeDropdown.value);
+        }
+
+        // set page theme
+        document.documentElement.setAttribute('theme', theme);
+
+        // set calendar theme
+        const lightTheme = document.getElementById('flatpickr-light-theme');
+        const darkTheme = document.getElementById('flatpickr-dark-theme');
+        if (theme === 'light') {
+            lightTheme.disabled = false;
+            darkTheme.disabled = true;
+        } else {
+            lightTheme.disabled = true;
+            darkTheme.disabled = false;
+        }
+    }
+    themeDropdown.value = getThemeStorage() || 'default';
+    themeDropdown.addEventListener('change', function() { switchTheme(); });
+
     sciLanguageCheckbox.checked = getSciLanguageStorage() === "true" ? true : false;
-    sciLanguageCheckbox.addEventListener('change', function() { changeLanguage(); });
+    sciLanguageCheckbox.addEventListener('change', function() { switchLanguage(); });
 
     function clearAddress() {
         addressInput.value = tr.addr;
@@ -1440,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize with current date
     switchTheme();
-    changeLanguage();
+    switchLanguage();
     setCurrentDate();
     controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`; // fix height
     controlsSDiv.style.height = `${controlsDiv.offsetHeight}px`; // set height

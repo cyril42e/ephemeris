@@ -8,7 +8,7 @@
   --background-color-components: 244, 244, 249; /* #f4f4f9 */
   --shadow-color: rgba(0, 0, 0, 0.1);
   --font-color: #333;
-  --hover-color: #f0f0f0;
+  --hover-color: #d0d0d0;
   --tableheader-color: #abdbff;
   --tableborder-color: #ddd;
   --timepoint-color: white;
@@ -90,18 +90,14 @@ body {
     outline: none;
 }
 
+#themeDropdown {
+    cursor: pointer;
+}
 #sciLanguageCheckbox {
     cursor: pointer;
-    display: none;
 }
 #sciLanguageLabel {
-    font-size: 20px;
     cursor: pointer;
-    position: relative;
-}
-#sciLanguageCheckbox:not(:checked) + #sciLanguageLabel {
-    filter: grayscale(100%);
-    opacity: 0.6;
 }
 
 .title h4 {
@@ -123,13 +119,28 @@ body {
     color: var(--font-color);
 }
 
-.nav-links {
+.nav-links, .settings {
     list-style: none;
     text-align: center;
     background-color: var(--background-color);
     padding: 20px;
     border-radius: 8px;
 }
+
+.nav-links {
+    text-align: center;
+}
+.settings {
+    text-align: left;
+    padding-top: 0px;
+}
+
+.settings input {
+    margin-right: 10px;
+}
+.settings select {
+    margin-left: 10px;
+} 
 
 .nav-links a {
     color: var(--font-color);
@@ -139,7 +150,7 @@ body {
     display: block;
 }
 
-.nav-links li {
+.nav-links li, .settings li {
     padding: 20px 10px 0px 10px;
 }
 
@@ -147,11 +158,11 @@ body {
     background-color: var(--hover-color);
 }
 
-.nav-overlay.show {
+.nav-overlay.show, .settings-overlay.show {
     display: flex;
 }
 
-.nav-overlay {
+.nav-overlay, .settings-overlay {
     display: none; /* Hidden by default */
     position: fixed;
     top: 0;
@@ -237,7 +248,7 @@ body {
     margin-right: 0;
 }
 
-.controls input {
+input, select {
     border: 1px solid var(--inputborder-color);
     border-radius: 5px;
     color: var(--font-color);

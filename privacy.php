@@ -42,7 +42,7 @@
     </ul>
 
     <h3>System settings</h3>
-    <p>Our Service may access your system settings (system language and timezone settings) through JavaScript to provide a more
+    <p>Our Service may access your system settings (system language, timezone settings, system theme) through JavaScript to provide a more
        tailored experience.
        The information is used solely within the current session of your browser and is not stored or accessible or inferable by
        our servers.</p>
