@@ -726,7 +726,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (themeDropdown.value == "default" || themeDropdown.value == "auto") {
             theme = getThemeBrowser();
             if (themeDropdown.value == "auto") {
-                // TODO
+                const latitude = parseFloat(latitudeInput.value);
+                const longitude = parseFloat(longitudeInput.value);
+                const observer = new Astronomy.Observer(latitude, longitude, 0.0);
+                const now = new Date();
+                const currentEquator = Astronomy.Equator('Sun', now, observer, true, true);
+                const currentHorizon = Astronomy.Horizon(now, observer, currentEquator.ra, currentEquator.dec, 'normal');
+                theme = (currentHorizon.altitude > 0.0) ? 'light' : 'dark';
             }
         } else {
             theme = themeDropdown.value;
@@ -912,6 +918,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateEphemeris() {
         if (!validateInputs()) return;
+        switchTheme(); // because in auto mode it depends on time
 
         const latitude = parseFloat(latitudeInput.value);
         const longitude = parseFloat(longitudeInput.value);
@@ -1485,7 +1492,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Initialize with current date
-    switchTheme();
     switchLanguage();
     setCurrentDate();
     controlsWDiv.style.height = `${controlsDiv.offsetHeight}px`; // fix height
