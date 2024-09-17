@@ -154,7 +154,7 @@ body.portrait {
 .nav-links a {
     color: var(--font-color);
     text-decoration: none;
-    font-size: 1.2em;
+    font-size: 120%;
     width: 100%;
     display: block;
 }
@@ -401,7 +401,7 @@ button:hover {
 }
 
 .landscape .timeline-container {
-    height: 210px;
+    height: 220px;
 }
 .portrait .timeline-container {
     height: 600px;
@@ -473,7 +473,7 @@ button:hover {
     text-align: center;
     color: white;
     /*font-weight: bold;*/
-    font-size: 14px;
+    font-size: 95%;
     border-radius: 8px; /* rounding */
     cursor: default;
 }
@@ -489,7 +489,7 @@ button:hover {
     border: 2px solid var(--font-color);
     border-radius: 8px; /* rounding */
     padding: 3px 5px;
-    font-size: 14px;
+    font-size: 95%;
     z-index: 10;
     cursor: default;
 }
@@ -567,7 +567,7 @@ button:hover {
 .civil-twilight { background-color: #00bad2; }
 .day { background-color: #dddd00; color: #333 !important; }
 .blue-hour { background-color: #00AAFF; }
-.golden-hour { background-color: #FFA500; }
+.golden-hour { background-color: #FFA500; color: #333 !important; }
 .sun-event { background-color: #808080 !important; color: white !important; }
 
 .front {
@@ -575,7 +575,7 @@ button:hover {
 }
 
 .bigger {
-  font-size: 110%;
+  font-size: 105%;
 }
 
 /*******************************/
