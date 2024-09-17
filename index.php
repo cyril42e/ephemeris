@@ -17,7 +17,7 @@
 <body>
 <div id="page">
     <div class="title">
-        <div class="language-selector">
+        <div class="settings-selector">
             <select id="languageDropdown" title="Language">
                 <option value="en">&#x1F1EC;&#x1F1E7;</option>
                 <option value="fr">&#x1F1EB;&#x1F1F7;</option>

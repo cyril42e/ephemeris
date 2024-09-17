@@ -40,10 +40,17 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
-    margin-top: 0px;
     background-color: var(--background-color);
     color: var(--font-color);
+}
+
+body.landscape {
+    margin: 20px;
+    margin-top: 0px;
+}
+body.portrait {
+    margin: 10px;
+    margin-top: 0px;
 }
 
 #page {
@@ -61,25 +68,26 @@ body {
     justify-content: center; /* Center the title */
     align-items: center; /* Vertically center items */
     position: relative; /* Position relative for absolute positioning of links */
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 var(--side-shadow) var(--bottom-shadow) var(--shadow-color);
     margin-bottom: var(--bottom-shadow);
     background-color: var(--background-color);
 }
 
-.title .language-selector {
+.title .settings-selector {
     text-align: center;
     position: absolute;
-    left: 20px; /* Align links to the left */
+    left: 15px; /* Align links to the left */
 }
 
 #languageDropdown {
-    padding: 5px;
+    padding: 0px 5px;
     font-size: 24px; /* Increase font size for better visibility of flags */
     border: none;
     background: transparent;
     appearance: none;
     cursor: pointer;
+    margin-bottom: -5px;
 }
 
 #languageDropdown::-ms-expand {
@@ -111,9 +119,10 @@ body {
 }
 .title .navbar {
     position: absolute;
-    right: 20px; /* Align links to the right */
+    right: 15px; /* Align links to the right */
 }
 .menu-icon {
+    padding: 0px 5px;
     cursor: pointer;
     font-size: 36px;
     color: var(--font-color);
@@ -373,16 +382,18 @@ button:hover {
 /* Timeline */
 
 .timeline {
-    padding-bottom: 10px;
     box-shadow: 0 var(--side-shadow) var(--bottom-shadow) var(--shadow-color);
     margin-bottom: var(--bottom-shadow);
-    padding-top: calc(10px - var(--bottom-shadow));
     background-color: var(--background-color);
+}
+.landscape .timeline {
+    padding: 0px 5px;
 }
 .portrait .timeline {
     display: flex;
     flex-direction:column;
     align-items: center;
+    padding: 5px 0px;
 }
 
 .timeline-container {
@@ -394,7 +405,7 @@ button:hover {
 }
 .portrait .timeline-container {
     height: 600px;
-    width: 320px;
+    width: 300px;
 }
 
 .timeline-periods-top, .timeline-periods-bottom, .timeline-points {
