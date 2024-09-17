@@ -170,7 +170,7 @@ const translation_ui = {
     'doc': 'Documentation',
     'code': 'Code source',
     'bugs': 'Signaler un bug',
-    'privacy': 'Politique de vie privée',
+    'privacy': 'Politique de confidentialité',
     'Sun': 'Soleil',
     'Moon': 'Lune',
     'Mercury': 'Mercure',

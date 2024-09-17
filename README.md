@@ -94,10 +94,20 @@ https://www.heavens-above.com/ that allows to see where exactly in the constella
 ### Configuration
 
 The interface language can be selected by clicking on the flag at the top left.
+By default it will use the system language.
 
-The book icon below the flag allows to enable or disable the display of constellation names with their scientific
-(latin) name, instead of the current language.
+In the settings panel, accessible with the gear icon at the top left, the following additional preferences can be set:
 
+- Whether to use the scientific (latin) name or current language for the constellations.
+- Preferred theme, among 'light', 'dark', 'default' (i.e. device system default), and 'auto'
+  (i.e. device system default during the day, and dark when the sun is set at the configured location).
+
+### Privacy Policy
+
+The complete privacy policy is available in the file policy.php.
+The main ideas are to collect only the information necessary to provide the service,
+and to adhere to a privacy-by-design philosophy to ensure that, wherever possible,
+information is kept on the device and not shared with the servers.
 
 ## Technical explanations
 
