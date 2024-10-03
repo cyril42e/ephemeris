@@ -318,8 +318,8 @@ button:hover {
 
 #address {
     width: 100%;
-    left-margin:0;
-    right-margin:0;
+    margin-left:0;
+    margin-right:0;
 }
 #latitude, #longitude {
     width: 90px;

@@ -3,8 +3,8 @@ self.addEventListener('install', event => {
         caches.open('pwa-cache').then(cache => {
             return cache.addAll([
                 './',
-                './index.php',
-                './privacy.php',
+                './index.html',
+                './privacy.html',
                 './styles.css',
                 './script.js',
                 './icon-192.png',
