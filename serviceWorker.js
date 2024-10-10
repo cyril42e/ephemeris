@@ -20,10 +20,22 @@ self.addEventListener('install', event => {
     );
 });
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request).then(response => {
-            return response || fetch(event.request);
-        })
-    );
+
+async function cacheFirstWithRefresh(request) {
+  // launch fetch+cache in background
+  const fetchResponsePromise = fetch(request).then(async (networkResponse) => {
+    if (networkResponse.ok) {
+      const cache = await caches.open("pwa-cache");
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  });
+
+  // but return cached version if available (otherwise wait the fetch)
+  return (await caches.match(request)) || (await fetchResponsePromise);
+}
+
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(cacheFirstWithRefresh(event.request));
 });
